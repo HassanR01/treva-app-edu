@@ -1,39 +1,56 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { SplashScreen, Stack } from "expo-router";
+import '../global.css'
+import { useFonts } from 'expo-font'
+import { useEffect } from "react";
+import { Colors } from "@/Constants/Colors";
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { I18nManager } from "react-native";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets()
+
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+    'Beiruti-Black': require('../assets/fonts/Beiruti-Black.ttf'),
+    'Beiruti-Bold': require('../assets/fonts/Beiruti-Bold.ttf'),
+    'Beiruti-Medium': require('../assets/fonts/Beiruti-Medium.ttf'),
+    'Beiruti-Regular': require('../assets/fonts/Beiruti-Regular.ttf'),
+    'Beiruti-Light': require('../assets/fonts/Beiruti-Light.ttf'),
+  })
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      SplashScreen.hideAsync()
     }
-  }, [loaded]);
+
+  }, [loaded])
 
   if (!loaded) {
-    return null;
+    return null
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    <>
+      <SafeAreaProvider>
+          <Stack screenOptions={{
+            headerShown: false,
+          }}>
+            <Stack.Screen name="index" />
+
+            <Stack.Screen name="(SignIn)" options={{
+              title: 'Registration',
+            }} />
+
+            <Stack.Screen name="(tabs)" options={{
+              title: 'Home',
+            }} />
+
+            <Stack.Screen name="(subPages)" options={{
+              title: 'Home',
+            }} />
+          </Stack>
+      </SafeAreaProvider>
+    </>
+  )
 }

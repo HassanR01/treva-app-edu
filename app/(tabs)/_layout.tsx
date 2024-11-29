@@ -1,45 +1,73 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { View, Text } from 'react-native'
+import React from 'react'
+import { Tabs } from 'expo-router'
+import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { Colors } from '@/Constants/Colors';
+import { Fonts } from '@/Constants/Fonts';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
-  );
+export default function Layout() {
+    return (
+        <SafeAreaView edges={['top', 'left', 'right']} style={{
+            flex: 1,
+            backgroundColor: Colors.bgColor,
+        }}>
+            <Tabs screenOptions={{
+                headerShown: false,
+                tabBarStyle: {
+                    paddingBottom: 0,
+                    margin: 0,
+                    gap: 0,
+                    direction: 'rtl'
+                },
+                tabBarLabelStyle: {
+                    marginTop: 5,
+                    fontFamily: Fonts.boldText,
+                    fontSize: 14,
+                    textAlign: 'center'
+                }
+            }}>
+                <Tabs.Screen name='index' options={{
+                    title: 'الرئيسية',
+                    tabBarActiveTintColor: Colors.mainColor,
+                    tabBarInactiveBackgroundColor: Colors.bgColor,
+                    tabBarActiveBackgroundColor: Colors.bgColor,
+                    tabBarInactiveTintColor: Colors.textColor,
+                    tabBarHideOnKeyboard: true,
+                    tabBarAllowFontScaling: true,
+                    tabBarIcon: ({ color }) => <AntDesign name="home" size={30} color={color} />
+                }} />
+                <Tabs.Screen name='Courses' options={{
+                    title: 'المحاضرات',
+                    tabBarActiveTintColor: Colors.mainColor,
+                    tabBarInactiveBackgroundColor: Colors.bgColor,
+                    tabBarActiveBackgroundColor: Colors.bgColor,
+                    tabBarInactiveTintColor: Colors.textColor,
+                    tabBarHideOnKeyboard: true,
+                    tabBarAllowFontScaling: true,
+                    tabBarIcon: ({ color }) => <Ionicons name="logo-electron" size={30} color={color} />
+                }} />
+                <Tabs.Screen name='Wallet' options={{
+                    title: 'المحفظة',
+                    tabBarActiveTintColor: Colors.mainColor,
+                    tabBarInactiveBackgroundColor: Colors.bgColor,
+                    tabBarActiveBackgroundColor: Colors.bgColor,
+                    tabBarInactiveTintColor: Colors.textColor,
+                    tabBarHideOnKeyboard: true,
+                    tabBarAllowFontScaling: true,
+                    tabBarIcon: ({ color }) => <Ionicons name="wallet-outline" size={30} color={color} />
+                }} />
+                <Tabs.Screen name='Profile' options={{
+                    title: 'بياناتـــك',
+                    tabBarActiveTintColor: Colors.mainColor,
+                    tabBarInactiveBackgroundColor: Colors.bgColor,
+                    tabBarActiveBackgroundColor: Colors.bgColor,
+                    tabBarInactiveTintColor: Colors.textColor,
+                    tabBarHideOnKeyboard: true,
+                    tabBarAllowFontScaling: true,
+                    tabBarIcon: ({ color }) => <Ionicons name="person-outline" size={30} color={color} />
+                }} />
+            </Tabs>
+        </SafeAreaView>
+    )
 }
