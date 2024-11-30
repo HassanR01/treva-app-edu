@@ -16,8 +16,8 @@ export default function Layout() {
                 headerShown: false,
                 tabBarStyle: {
                     paddingBottom: 0,
-                    margin: 0,
-                    gap: 0,
+                    marginVertical: 0,
+                    gap: 10,
                     direction: 'rtl'
                 },
                 tabBarLabelStyle: {

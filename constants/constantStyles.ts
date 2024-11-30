@@ -61,14 +61,25 @@ export const ConstantStyles = StyleSheet.create({
     },
 
     inputText: {
-        borderWidth: 1,
-        borderRadius: 5,
         padding: 3,
         fontSize: 24,
         fontFamily: Fonts.mediumText,
-        marginBottom: 10,
-        width: "100%",
+        width: '90%',
         textAlign: 'right',
+        marginRight: 10
+    },
+    
+    inputContainer: {
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        width: "100%",
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        backgroundColor: Colors.calmWhite,
+        marginVertical: 5
     }
 
 })
