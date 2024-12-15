@@ -11,6 +11,14 @@ import Button from '@/components/Button'
 import { router } from 'expo-router'
 import { MaterialIcons } from '@expo/vector-icons'
 import { TextInput } from 'react-native'
+import { Formik } from 'formik'
+import * as yup from 'yup'
+import { Fonts } from '@/Constants/Fonts'
+
+const validationSchema = yup.object().shape({
+  emailOrUsername: yup.string().required("Username Is Required").label('username'),
+  password: yup.string().required("Password Is Required").min(4).label('Password')
+})
 
 export default function LogInScreen() {
   const animation = useRef<LottieView>(null)
@@ -19,7 +27,7 @@ export default function LogInScreen() {
     emailOrUsername: '',
     password: ''
   })
-  
+
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={{
       flex: 1,
@@ -42,43 +50,57 @@ export default function LogInScreen() {
           <View style={[styles.centerObjects, { marginVertical: 10 }]}>
             <Text style={ConstantStyles.Title1}>حمدلله علي السلامة 😁</Text>
           </View>
-          <View style={[styles.centerObjects, { width: '100%', paddingHorizontal: 20, alignItems: 'flex-start', direction: 'rtl' }]}>
-            <View style={ConstantStyles.inputContainer}>
-              <MaterialIcons name="alternate-email" size={24} color="black" />
-              <TextInput
-                style={ConstantStyles.inputText}
-                keyboardType="email-address"
-                placeholder='اسم المستخدم بالانجليزية'
-                placeholderTextColor={"#ccc"}
-                value={userInfo.emailOrUsername}
-                onChangeText={(e) => setUserInfo({ ...userInfo, emailOrUsername: e })}
-              />
-            </View>
-          </View>
-          <View style={[styles.centerObjects, { width: '100%', paddingHorizontal: 20, alignItems: 'flex-start', direction: 'rtl' }]}>
-            <View style={ConstantStyles.inputContainer}>
-              <MaterialIcons name="password" size={24} color="black" />
-              <TextInput
-                style={ConstantStyles.inputText}
-                keyboardType='default'
-                placeholder='كلمة المرور'
-                placeholderTextColor={"#ccc"}
-                defaultValue=''
-                secureTextEntry={true}
-                value={userInfo.password}
-                onChangeText={(e) => setUserInfo({ ...userInfo, password: e })}
-              />
-            </View>
-          </View>
-          <View style={[styles.centerObjects, { flexDirection: 'row', justifyContent: 'flex-start', direction: 'rtl', paddingHorizontal: 20 }]}>
-            <Text style={[ConstantStyles.Title1, { fontSize: 28 }]}>تسجيــل بإستخدام جوجل: </Text>
-            <TouchableOpacity>
-              <Image style={{ width: 50, height: 50 }} source={require('../../assets/images/Google.gif')} width={50} height={50} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.centerObjects}>
-            <Button title={'تسجيــل الدخول'} action={() => router.replace('/(tabs)')} />
-          </View>
+          <Formik
+            initialValues={{ emailOrUsername: '', password: '' }}
+            onSubmit={(values) => console.log(values)}
+            validationSchema={validationSchema}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+              <>
+                <View style={[styles.centerObjects, { width: '100%', paddingHorizontal: 20, alignItems: 'flex-start', direction: 'rtl' }]}>
+                  <View style={ConstantStyles.inputContainer}>
+                    <MaterialIcons name="alternate-email" size={24} color="black" />
+                    <TextInput
+                      style={ConstantStyles.inputText}
+                      keyboardType="email-address"
+                      placeholder='اسم المستخدم بالانجليزية'
+                      placeholderTextColor={"#ccc"}
+                      value={values.emailOrUsername}
+                      onBlur={handleBlur('emailOrUsername')}
+                      onChangeText={handleChange('emailOrUsername')}
+                    />
+                  </View>
+                </View>
+                {errors.emailOrUsername && touched.emailOrUsername ? <Text style={styles.errorText}>{errors.emailOrUsername}</Text> : null}
+                <View style={[styles.centerObjects, { width: '100%', paddingHorizontal: 20, alignItems: 'flex-start', direction: 'rtl' }]}>
+                  <View style={ConstantStyles.inputContainer}>
+                    <MaterialIcons name="password" size={24} color="black" />
+                    <TextInput
+                      style={ConstantStyles.inputText}
+                      keyboardType='default'
+                      placeholder='كلمة المرور'
+                      placeholderTextColor={"#ccc"}
+                      defaultValue=''
+                      secureTextEntry={true}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                      onChangeText={handleChange('password')}
+                    />
+                  </View>
+                </View>
+                {errors.password && touched.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
+                <View style={[styles.centerObjects, { flexDirection: 'row', justifyContent: 'flex-start', direction: 'rtl', paddingHorizontal: 20 }]}>
+                  <Text style={[ConstantStyles.Title1, { fontSize: 28 }]}>تسجيــل بإستخدام جوجل: </Text>
+                  <TouchableOpacity>
+                    <Image style={{ width: 50, height: 50 }} source={require('../../assets/images/Google.gif')} width={50} height={50} />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.centerObjects}>
+                  <Button title={'تسجيــل الدخول'} action={handleSubmit} />
+                </View>
+              </>
+            )}
+          </Formik>
         </ScrollView>
       </KeyboardAwareScrollView>
     </SafeAreaView>
@@ -110,5 +132,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    fontFamily: Fonts.lightText,
+    textAlign: 'center',
+    width: '100%'
   }
 })

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { Colors } from "@/Constants/Colors";
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { I18nManager } from "react-native";
+import DataProvider from "@/components/context/DataContext";
 
 SplashScreen.preventAutoHideAsync()
 
@@ -33,6 +34,8 @@ export default function RootLayout() {
   return (
     <>
       <SafeAreaProvider>
+        <DataProvider>
+
           <Stack screenOptions={{
             headerShown: false,
           }}>
@@ -50,6 +53,7 @@ export default function RootLayout() {
               title: 'Home',
             }} />
           </Stack>
+        </DataProvider>
       </SafeAreaProvider>
     </>
   )

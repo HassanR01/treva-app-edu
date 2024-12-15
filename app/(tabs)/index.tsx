@@ -4,9 +4,13 @@ import { Link } from 'expo-router'
 import { Fonts } from '@/Constants/Fonts'
 import { Colors } from '@/Constants/Colors'
 import { ConstantStyles } from '@/Constants/constantStyles'
+import { useDataContext } from '@/components/context/DataContext'
 
 export default function Home() {
     const name = 'حسن'
+
+    const { users } = useDataContext()
+
     return (
         <>
             <View style={styles.header}>
@@ -20,7 +24,11 @@ export default function Home() {
             </View>
             <ScrollView style={ConstantStyles.page}>
                 <View>
-
+                    {users && users.map((user, index) => (
+                        <View key={index}>
+                            <Text>{user.name}</Text>
+                        </View>
+                    ))}
                 </View>
             </ScrollView>
         </>
