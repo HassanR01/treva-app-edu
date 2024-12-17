@@ -16,19 +16,13 @@ import { Fonts } from '@/Constants/Fonts'
 const validationSchema = yup.object().shape({
   name: yup.string().required("Name Is Required").label('name'),
   emailOrUsername: yup.string().required("Username Is Required").label('username'),
-  mobile: yup.number().required("Mobile Is Required").label('mobile').strict(true),
+  mobile: yup.string().required("Mobile Is Required").label('mobile').strict(true),
   password: yup.string().required("Password Is Required").min(4).label('Password'),
   confirmPassword: yup.string().required("Must be similar").min(4).label('Password')
 })
 
 export default function SignUp() {
   const animation = useRef<LottieView>(null)
-  const [userInfo, setUserInfo] = useState({
-    name: '',
-    emailOrUsername: '',
-    mobile: '',
-    password: '',
-  })
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={{
