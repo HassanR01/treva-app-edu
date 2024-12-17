@@ -1,5 +1,5 @@
 import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Colors } from '@/Constants/Colors'
 import { ConstantStyles } from '@/Constants/constantStyles'
@@ -14,6 +14,13 @@ import { TextInput } from 'react-native'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { Fonts } from '@/Constants/Fonts'
+import * as WebBrowser from 'expo-web-browser'
+import * as Google from 'expo-auth-session/providers/google'
+
+
+const webClientId = '101717640430-vlbljmo054o43njior3meibpt5fac2gs.apps.googleusercontent.com'
+const iosClientId = '101717640430-3bdf6frlflglrk9jml2af556hg0pf6u5.apps.googleusercontent.com'
+const androidClientId = '101717640430-k4g793bmhnna6k0ipfjjkfr0e7f7sctj.apps.googleusercontent.com'
 
 const validationSchema = yup.object().shape({
   emailOrUsername: yup.string().required("Username Is Required").label('username'),
@@ -21,12 +28,31 @@ const validationSchema = yup.object().shape({
 })
 
 export default function LogInScreen() {
+  const config = {
+    iosClientId,
+    androidClientId,
+    webClientId
+  }
+  
   const animation = useRef<LottieView>(null)
-
   const [userInfo, setUserInfo] = useState({
     emailOrUsername: '',
     password: ''
   })
+
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest(config)
+
+  const handelToken = async () => {
+    if (response?.type === 'success') {
+      const { authentication } = response
+      const token = authentication?.accessToken
+      console.log(token)
+    }
+  }
+
+  useEffect(() => {
+    handelToken()
+  }, [response])
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={{

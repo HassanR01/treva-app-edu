@@ -1,4 +1,5 @@
 import { Redirect } from "expo-router";
+import React from "react";
 import { useState } from "react";
 import { StatusBar, Text, View } from "react-native";
 
