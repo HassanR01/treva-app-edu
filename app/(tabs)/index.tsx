@@ -1,15 +1,31 @@
 import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { Link } from 'expo-router'
+import React, { useEffect, useState } from 'react'
+import { Link, router } from 'expo-router'
 import { Fonts } from '@/Constants/Fonts'
 import { Colors } from '@/Constants/Colors'
 import { ConstantStyles } from '@/Constants/constantStyles'
-import { useDataContext } from '@/components/context/DataContext'
+import { useDataContext, user } from '@/components/context/DataContext'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Home() {
-    const name = 'حسن'
+    const [user, setUser] = useState<user>()
+    const name = user ? user.name : 'مجهول'
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const userExist = await AsyncStorage.getItem('user')
+            if (userExist) {
+                setUser(JSON.parse(userExist))
+            } else {
+                router.push('/(SignIn)')
+            }
+            
+        }
+        fetchUser()
+    }, [])
 
     const { users } = useDataContext()
+
 
     return (
         <>

@@ -140,13 +140,14 @@ export default function DataProvider({ children }: { children: React.ReactNode }
     const [users, setUsers] = React.useState<user[] | null>(null)
     const [payments, setPayments] = React.useState<payment[] | null>(null)
 
+    const apiURL = 'http://10.0.0.7:5000/api/v1'
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const [resLessons, resUsers, resPayments] = await Promise.all([
-                    axios.get<lesson[]>('http://172.20.10.2:5000/api/v1/lessons/getLessons'),
-                    axios.get<user[]>('http://172.20.10.2:5000/api/v1/users/getUsers'),
-                    axios.get<payment[]>('http://172.20.10.2:5000/api/v1/payments/getPayments'),
+                    axios.get<lesson[]>(`${apiURL}/lessons/getLessons`),
+                    axios.get<user[]>(`${apiURL}/users/getUsers`),
+                    axios.get<payment[]>(`${apiURL}/payments/getPayments`),
                 ])
 
                 setLessons(resLessons.data)
@@ -159,7 +160,7 @@ export default function DataProvider({ children }: { children: React.ReactNode }
         }
 
         fetchData()
-    }, [])    
+    }, [])
 
     return (
         <DataContext.Provider value={{ lessons, users, payments, setLessons, setUsers, setPayments }}>

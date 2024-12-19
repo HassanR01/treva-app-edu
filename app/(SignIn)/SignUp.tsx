@@ -12,17 +12,41 @@ import { Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { Fonts } from '@/Constants/Fonts'
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const validationSchema = yup.object().shape({
   name: yup.string().required("Name Is Required").label('name'),
-  emailOrUsername: yup.string().required("Username Is Required").label('username'),
-  mobile: yup.string().required("Mobile Is Required").label('mobile').strict(true),
+  email: yup.string().required("Username Is Required").label('username'),
+  mobile: yup.string().required("Mobile Is Required").label('mobile'),
   password: yup.string().required("Password Is Required").min(4).label('Password'),
   confirmPassword: yup.string().required("Must be similar").min(4).label('Password')
 })
 
 export default function SignUp() {
   const animation = useRef<LottieView>(null)
+
+  const SignUpHandling = (values: any) => {
+    const { name, email, mobile, password } = values
+    if (password !== values.confirmPassword) {
+      alert('Password Must Be Similar')
+      return
+    }
+    try {
+      axios.post('http://10.0.0.7:5000/api/v1/users/register', { name, email, mobile, password })
+        .then(res => {
+          if (res.data.status == 'ok') {
+            alert('User Registered Successfully')
+            router.push('/LogInScreen')
+          } else {
+            alert('User Already Exist')
+          }
+        })
+        .catch(err => alert(err))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={{
@@ -49,8 +73,8 @@ export default function SignUp() {
             <Text style={ConstantStyles.Title1}>تسجيل دخول لاول مرة</Text>
           </View>
           <Formik
-            initialValues={{ name: '', emailOrUsername: '', mobile: '', password: '' , confirmPassword: ''}}
-            onSubmit={(values) => console.log(values)}
+            initialValues={{ name: '', email: '', mobile: '', password: '', confirmPassword: '' }}
+            onSubmit={(values) => SignUpHandling(values)}
             validationSchema={validationSchema}
           >
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -75,16 +99,16 @@ export default function SignUp() {
                     <MaterialIcons name="alternate-email" size={24} color="black" />
                     <TextInput
                       style={ConstantStyles.inputText}
-                      keyboardType="email-address"
+                      keyboardType="default"
                       placeholder='اسم المستخدم بالانجليزية'
                       placeholderTextColor={"#ccc"}
-                      onBlur={handleBlur('emailOrUsername')}
-                      value={values.emailOrUsername}
-                      onChangeText={handleChange('emailOrUsername')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                      onChangeText={handleChange('email')}
                     />
                   </View>
                 </View>
-                {errors.emailOrUsername && touched.emailOrUsername ? <Text style={styles.errorText}>{errors.emailOrUsername}</Text> : null}
+                {errors.email && touched.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
                 <View style={[styles.centerObjects, { width: '100%', paddingHorizontal: 20, alignItems: 'flex-start', direction: 'rtl' }]}>
                   <View style={ConstantStyles.inputContainer}>
                     <Octicons name="device-mobile" size={24} color="black" />
@@ -134,19 +158,19 @@ export default function SignUp() {
                   </View>
                 </View>
                 {errors.confirmPassword && touched.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
-                  <View style={[styles.centerObjects, { flexDirection: 'row', justifyContent: 'flex-start', direction: 'rtl', paddingHorizontal: 20 }]}>
-                    <Text style={[ConstantStyles.Title1, { fontSize: 28 }]}>تسجيــل بإستخدام جوجل: </Text>
-                    <TouchableOpacity>
-                      <Image style={{ width: 50, height: 50 }} source={require('../../assets/images/Google.gif')} width={50} height={50} />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.centerObjects}>
-                    <Button title={'تسجيــل'} action={handleSubmit} />
-                    <Text style={ConstantStyles.normalText}>بالفعل لديك حساب ؟ <Link style={{ color: Colors.mainColor }} href={'/LogInScreen'}>تسجيل دخول</Link></Text>
-                  </View>
-                </>
+                <View style={[styles.centerObjects, { flexDirection: 'row', justifyContent: 'flex-start', direction: 'rtl', paddingHorizontal: 20 }]}>
+                  <Text style={[ConstantStyles.Title1, { fontSize: 28 }]}>تسجيــل بإستخدام جوجل: </Text>
+                  <TouchableOpacity>
+                    <Image style={{ width: 50, height: 50 }} source={require('../../assets/images/Google.gif')} width={50} height={50} />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.centerObjects}>
+                  <Button title={'تسجيــل'} action={handleSubmit} />
+                  <Text style={ConstantStyles.normalText}>بالفعل لديك حساب ؟ <Link style={{ color: Colors.mainColor }} href={'/LogInScreen'}>تسجيل دخول</Link></Text>
+                </View>
+              </>
             )}
-              </Formik>
+          </Formik>
         </ScrollView>
       </KeyboardAwareScrollView>
     </SafeAreaView>

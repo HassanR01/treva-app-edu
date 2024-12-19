@@ -16,6 +16,10 @@ import * as yup from 'yup'
 import { Fonts } from '@/Constants/Fonts'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useDataContext } from '@/components/context/DataContext'
+import Loading from '@/components/Loading'
+import axios from 'axios'
 
 
 const webClientId = '101717640430-vlbljmo054o43njior3meibpt5fac2gs.apps.googleusercontent.com'
@@ -23,7 +27,7 @@ const iosClientId = '101717640430-3bdf6frlflglrk9jml2af556hg0pf6u5.apps.googleus
 const androidClientId = '101717640430-k4g793bmhnna6k0ipfjjkfr0e7f7sctj.apps.googleusercontent.com'
 
 const validationSchema = yup.object().shape({
-  emailOrUsername: yup.string().required("Username Is Required").label('username'),
+  email: yup.string().required("Username Is Required").label('username'),
   password: yup.string().required("Password Is Required").min(4).label('Password')
 })
 
@@ -33,15 +37,7 @@ export default function LogInScreen() {
     androidClientId,
     webClientId
   }
-  
-  const animation = useRef<LottieView>(null)
-  const [userInfo, setUserInfo] = useState({
-    emailOrUsername: '',
-    password: ''
-  })
-
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest(config)
-
   const handelToken = async () => {
     if (response?.type === 'success') {
       const { authentication } = response
@@ -49,88 +45,125 @@ export default function LogInScreen() {
       console.log(token)
     }
   }
-
   useEffect(() => {
     handelToken()
   }, [response])
 
-  return (
-    <SafeAreaView edges={['top', 'left', 'right']} style={{
-      flex: 1,
-      backgroundColor: Colors.mainColor
-    }}>
-      <KeyboardAwareScrollView
-        contentContainerStyle={styles.container}
-      >
-        <ScrollView style={styles.CenterScreen}>
-          <Animated.View style={styles.headerSignIn}
-            entering={FadeInUp.duration(1000).delay(100)}>
-            <LottieView
-              ref={animation}
-              source={require('../../assets/animations/LogIn.json')}
-              autoPlay
-              loop
-              style={{ width: 250, height: 250 }}
-            />
-          </Animated.View>
-          <View style={[styles.centerObjects, { marginVertical: 10 }]}>
-            <Text style={ConstantStyles.Title1}>حمدلله علي السلامة 😁</Text>
-          </View>
-          <Formik
-            initialValues={{ emailOrUsername: '', password: '' }}
-            onSubmit={(values) => console.log(values)}
-            validationSchema={validationSchema}
-          >
-            {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-              <>
-                <View style={[styles.centerObjects, { width: '100%', paddingHorizontal: 20, alignItems: 'flex-start', direction: 'rtl' }]}>
-                  <View style={ConstantStyles.inputContainer}>
-                    <MaterialIcons name="alternate-email" size={24} color="black" />
-                    <TextInput
-                      style={ConstantStyles.inputText}
-                      keyboardType="email-address"
-                      placeholder='اسم المستخدم بالانجليزية'
-                      placeholderTextColor={"#ccc"}
-                      value={values.emailOrUsername}
-                      onBlur={handleBlur('emailOrUsername')}
-                      onChangeText={handleChange('emailOrUsername')}
-                    />
+  const { users } = useDataContext()
+
+
+  const animation = useRef<LottieView>(null)
+  const [userInfo, setUserInfo] = useState({
+    email: '',
+    password: ''
+  })
+
+  const SignInHandling = async (values: any) => {
+    const { email, password } = values
+
+    const user = users?.find(user => user.email === email && user.password === password)
+    if (user) {
+      await AsyncStorage.setItem('user', JSON.stringify(user))
+      router.push('/(tabs)')
+    } else {
+      alert('User Not Found')
+    }
+
+    // try {
+    //   const res = await axios.post('http://10.0.0.7:5000/api/v1/users/login', { email, password })
+    //   if (res.data.status == 'ok') {
+    //     alert('User Logged In Successfully')
+    //     AsyncStorage.setItem('token', res.data.data)
+    //     router.push('/(tabs)')
+    //   } else {
+    //     alert('User Not Found')
+    //   }
+    // } catch (error) {
+    //   console.log(error)
+    // }
+  }
+
+  if (!users) {
+    return <Loading />
+  } else {
+    return (
+      <SafeAreaView edges={['top', 'left', 'right']} style={{
+        flex: 1,
+        backgroundColor: Colors.mainColor
+      }}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={styles.container}
+        >
+          <ScrollView style={styles.CenterScreen}>
+            <Animated.View style={styles.headerSignIn}
+              entering={FadeInUp.duration(1000).delay(100)}>
+              <LottieView
+                ref={animation}
+                source={require('../../assets/animations/LogIn.json')}
+                autoPlay
+                loop
+                style={{ width: 250, height: 250 }}
+              />
+            </Animated.View>
+            <View style={[styles.centerObjects, { marginVertical: 10 }]}>
+              <Text style={ConstantStyles.Title1}>حمدلله علي السلامة 😁</Text>
+            </View>
+            <Formik
+              initialValues={{ email: '', password: '' }}
+              onSubmit={(values) => SignInHandling(values)}
+              validationSchema={validationSchema}
+            >
+              {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                <>
+                  <View style={[styles.centerObjects, { width: '100%', paddingHorizontal: 20, alignItems: 'flex-start', direction: 'rtl' }]}>
+                    <View style={ConstantStyles.inputContainer}>
+                      <MaterialIcons name="alternate-email" size={24} color="black" />
+                      <TextInput
+                        style={ConstantStyles.inputText}
+                        keyboardType="email-address"
+                        placeholder='اسم المستخدم بالانجليزية'
+                        placeholderTextColor={"#ccc"}
+                        value={values.email}
+                        onBlur={handleBlur('email')}
+                        onChangeText={handleChange('email')}
+                      />
+                    </View>
                   </View>
-                </View>
-                {errors.emailOrUsername && touched.emailOrUsername ? <Text style={styles.errorText}>{errors.emailOrUsername}</Text> : null}
-                <View style={[styles.centerObjects, { width: '100%', paddingHorizontal: 20, alignItems: 'flex-start', direction: 'rtl' }]}>
-                  <View style={ConstantStyles.inputContainer}>
-                    <MaterialIcons name="password" size={24} color="black" />
-                    <TextInput
-                      style={ConstantStyles.inputText}
-                      keyboardType='default'
-                      placeholder='كلمة المرور'
-                      placeholderTextColor={"#ccc"}
-                      defaultValue=''
-                      secureTextEntry={true}
-                      onBlur={handleBlur('password')}
-                      value={values.password}
-                      onChangeText={handleChange('password')}
-                    />
+                  {errors.email && touched.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
+                  <View style={[styles.centerObjects, { width: '100%', paddingHorizontal: 20, alignItems: 'flex-start', direction: 'rtl' }]}>
+                    <View style={ConstantStyles.inputContainer}>
+                      <MaterialIcons name="password" size={24} color="black" />
+                      <TextInput
+                        style={ConstantStyles.inputText}
+                        keyboardType='default'
+                        placeholder='كلمة المرور'
+                        placeholderTextColor={"#ccc"}
+                        defaultValue=''
+                        secureTextEntry={true}
+                        onBlur={handleBlur('password')}
+                        value={values.password}
+                        onChangeText={handleChange('password')}
+                      />
+                    </View>
                   </View>
-                </View>
-                {errors.password && touched.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
-                <View style={[styles.centerObjects, { flexDirection: 'row', justifyContent: 'flex-start', direction: 'rtl', paddingHorizontal: 20 }]}>
-                  <Text style={[ConstantStyles.Title1, { fontSize: 28 }]}>تسجيــل بإستخدام جوجل: </Text>
-                  <TouchableOpacity>
-                    <Image style={{ width: 50, height: 50 }} source={require('../../assets/images/Google.gif')} width={50} height={50} />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.centerObjects}>
-                  <Button title={'تسجيــل الدخول'} action={handleSubmit} />
-                </View>
-              </>
-            )}
-          </Formik>
-        </ScrollView>
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
-  )
+                  {errors.password && touched.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
+                  <View style={[styles.centerObjects, { flexDirection: 'row', justifyContent: 'flex-start', direction: 'rtl', paddingHorizontal: 20 }]}>
+                    <Text style={[ConstantStyles.Title1, { fontSize: 28 }]}>تسجيــل بإستخدام جوجل: </Text>
+                    <TouchableOpacity>
+                      <Image style={{ width: 50, height: 50 }} source={require('../../assets/images/Google.gif')} width={50} height={50} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.centerObjects}>
+                    <Button title={'تسجيــل الدخول'} action={handleSubmit} />
+                  </View>
+                </>
+              )}
+            </Formik>
+          </ScrollView>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
