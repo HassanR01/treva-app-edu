@@ -138,7 +138,6 @@ export default function LogInScreen() {
                         keyboardType='default'
                         placeholder='كلمة المرور'
                         placeholderTextColor={"#ccc"}
-                        defaultValue=''
                         secureTextEntry={true}
                         onBlur={handleBlur('password')}
                         value={values.password}

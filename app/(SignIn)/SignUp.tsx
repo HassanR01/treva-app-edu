@@ -25,7 +25,7 @@ const validationSchema = yup.object().shape({
 
 export default function SignUp() {
   const animation = useRef<LottieView>(null)
-
+  const role = 'student'
   const SignUpHandling = (values: any) => {
     const { name, username, mobile, password } = values
     if (password !== values.confirmPassword) {
@@ -33,7 +33,7 @@ export default function SignUp() {
       return
     }
     try {
-      axios.post('http://10.0.0.7:5000/api/v1/users/register', { name, username, mobile, password })
+      axios.post('http://10.0.0.7:5000/api/v1/users/register', { name, username, mobile, password, role })
         .then(res => {
           if (res.data.status == 'ok') {
             alert('User Registered Successfully')
