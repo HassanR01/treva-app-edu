@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Redirect } from "expo-router";
+import { Redirect, router } from "expo-router";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { StatusBar, Text, View } from "react-native";
@@ -12,6 +12,7 @@ export default function Index() {
       const token = await AsyncStorage.getItem('user')
       if (token) {
         setIsLoggedIn(true)
+        router.replace('/(tabs)')
       }
     }
     checkLogin()

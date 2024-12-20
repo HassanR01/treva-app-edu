@@ -27,7 +27,7 @@ const iosClientId = '101717640430-3bdf6frlflglrk9jml2af556hg0pf6u5.apps.googleus
 const androidClientId = '101717640430-k4g793bmhnna6k0ipfjjkfr0e7f7sctj.apps.googleusercontent.com'
 
 const validationSchema = yup.object().shape({
-  email: yup.string().required("Username Is Required").label('username'),
+  mobile: yup.string().required("mobile Is Required").label('mobile'),
   password: yup.string().required("Password Is Required").min(4).label('Password')
 })
 
@@ -54,23 +54,23 @@ export default function LogInScreen() {
 
   const animation = useRef<LottieView>(null)
   const [userInfo, setUserInfo] = useState({
-    email: '',
+    mobile: '',
     password: ''
   })
 
   const SignInHandling = async (values: any) => {
-    const { email, password } = values
+    const { mobile, password } = values
 
-    const user = users?.find(user => user.email === email && user.password === password)
+    const user = users?.find(user => user.mobile === mobile && user.password === password)
     if (user) {
       await AsyncStorage.setItem('user', JSON.stringify(user))
-      router.push('/(tabs)')
+      router.replace('/(tabs)')
     } else {
       alert('User Not Found')
     }
 
     // try {
-    //   const res = await axios.post('http://10.0.0.7:5000/api/v1/users/login', { email, password })
+    //   const res = await axios.post('http://10.0.0.7:5000/api/v1/users/login', { mobile, password })
     //   if (res.data.status == 'ok') {
     //     alert('User Logged In Successfully')
     //     AsyncStorage.setItem('token', res.data.data)
@@ -109,7 +109,7 @@ export default function LogInScreen() {
               <Text style={ConstantStyles.Title1}>حمدلله علي السلامة 😁</Text>
             </View>
             <Formik
-              initialValues={{ email: '', password: '' }}
+              initialValues={{ mobile: '', password: '' }}
               onSubmit={(values) => SignInHandling(values)}
               validationSchema={validationSchema}
             >
@@ -120,16 +120,16 @@ export default function LogInScreen() {
                       <MaterialIcons name="alternate-email" size={24} color="black" />
                       <TextInput
                         style={ConstantStyles.inputText}
-                        keyboardType="email-address"
-                        placeholder='اسم المستخدم بالانجليزية'
+                        keyboardType='phone-pad'
+                        placeholder='رقم الهاتف المُسجل'
                         placeholderTextColor={"#ccc"}
-                        value={values.email}
-                        onBlur={handleBlur('email')}
-                        onChangeText={handleChange('email')}
+                        value={values.mobile}
+                        onBlur={handleBlur('mobile')}
+                        onChangeText={handleChange('mobile')}
                       />
                     </View>
                   </View>
-                  {errors.email && touched.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
+                  {errors.mobile && touched.mobile ? <Text style={styles.errorText}>{errors.mobile}</Text> : null}
                   <View style={[styles.centerObjects, { width: '100%', paddingHorizontal: 20, alignItems: 'flex-start', direction: 'rtl' }]}>
                     <View style={ConstantStyles.inputContainer}>
                       <MaterialIcons name="password" size={24} color="black" />

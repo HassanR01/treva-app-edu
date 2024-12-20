@@ -80,6 +80,13 @@ export const ConstantStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         backgroundColor: Colors.calmWhite,
         marginVertical: 5
+    },
+    section: {
+        marginVertical: 10,
+        padding: 10,
+        backgroundColor: Colors.calmWhite,
+        borderRadius: 10,
+        direction: 'rtl'
     }
 
 })

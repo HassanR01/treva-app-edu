@@ -3,7 +3,7 @@ import React, { createContext, Dispatch, SetStateAction, useEffect } from 'react
 import axios from 'axios'
 
 export interface lesson {
-    _id: number,
+    _id: string,
     title: string,
     description: string,
     teacher: string,
@@ -69,7 +69,7 @@ export interface lesson {
 }
 
 export interface user {
-    _id: number,
+    _id: string,
     name: string,
     username: string,
     email: string,
@@ -104,7 +104,7 @@ export interface user {
 }
 
 export interface payment {
-    _id: number,
+    _id: string,
     name: string,
     username: string,
     cost: number,
@@ -140,7 +140,8 @@ export default function DataProvider({ children }: { children: React.ReactNode }
     const [users, setUsers] = React.useState<user[] | null>(null)
     const [payments, setPayments] = React.useState<payment[] | null>(null)
 
-    const apiURL = 'http://10.0.0.7:5000/api/v1'
+    const apiURL = 'http://172.20.10.2:5000/api/v1'
+
     useEffect(() => {
         const fetchData = async () => {
             try {

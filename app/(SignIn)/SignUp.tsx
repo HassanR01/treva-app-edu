@@ -16,9 +16,9 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const validationSchema = yup.object().shape({
-  name: yup.string().required("Name Is Required").label('name'),
-  email: yup.string().required("Username Is Required").label('username'),
-  mobile: yup.string().required("Mobile Is Required").label('mobile'),
+  name: yup.string().required("Name Is Required").trim().label('name'),
+  username: yup.string().required("Username Is Required").trim().label('username'),
+  mobile: yup.string().required("Mobile Is Required").trim().label('mobile'),
   password: yup.string().required("Password Is Required").min(4).label('Password'),
   confirmPassword: yup.string().required("Must be similar").min(4).label('Password')
 })
@@ -27,13 +27,13 @@ export default function SignUp() {
   const animation = useRef<LottieView>(null)
 
   const SignUpHandling = (values: any) => {
-    const { name, email, mobile, password } = values
+    const { name, username, mobile, password } = values
     if (password !== values.confirmPassword) {
       alert('Password Must Be Similar')
       return
     }
     try {
-      axios.post('http://10.0.0.7:5000/api/v1/users/register', { name, email, mobile, password })
+      axios.post('http://10.0.0.7:5000/api/v1/users/register', { name, username, mobile, password })
         .then(res => {
           if (res.data.status == 'ok') {
             alert('User Registered Successfully')
@@ -73,7 +73,7 @@ export default function SignUp() {
             <Text style={ConstantStyles.Title1}>تسجيل دخول لاول مرة</Text>
           </View>
           <Formik
-            initialValues={{ name: '', email: '', mobile: '', password: '', confirmPassword: '' }}
+            initialValues={{ name: '', username: '', mobile: '', password: '', confirmPassword: '' }}
             onSubmit={(values) => SignUpHandling(values)}
             validationSchema={validationSchema}
           >
@@ -102,13 +102,13 @@ export default function SignUp() {
                       keyboardType="default"
                       placeholder='اسم المستخدم بالانجليزية'
                       placeholderTextColor={"#ccc"}
-                      onBlur={handleBlur('email')}
-                      value={values.email}
-                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('username')}
+                      value={values.username}
+                      onChangeText={handleChange('username')}
                     />
                   </View>
                 </View>
-                {errors.email && touched.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
+                {errors.username && touched.username ? <Text style={styles.errorText}>{errors.username}</Text> : null}
                 <View style={[styles.centerObjects, { width: '100%', paddingHorizontal: 20, alignItems: 'flex-start', direction: 'rtl' }]}>
                   <View style={ConstantStyles.inputContainer}>
                     <Octicons name="device-mobile" size={24} color="black" />
@@ -158,15 +158,15 @@ export default function SignUp() {
                   </View>
                 </View>
                 {errors.confirmPassword && touched.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
-                <View style={[styles.centerObjects, { flexDirection: 'row', justifyContent: 'flex-start', direction: 'rtl', paddingHorizontal: 20 }]}>
-                  <Text style={[ConstantStyles.Title1, { fontSize: 28 }]}>تسجيــل بإستخدام جوجل: </Text>
-                  <TouchableOpacity>
-                    <Image style={{ width: 50, height: 50 }} source={require('../../assets/images/Google.gif')} width={50} height={50} />
-                  </TouchableOpacity>
-                </View>
                 <View style={styles.centerObjects}>
                   <Button title={'تسجيــل'} action={handleSubmit} />
                   <Text style={ConstantStyles.normalText}>بالفعل لديك حساب ؟ <Link style={{ color: Colors.mainColor }} href={'/LogInScreen'}>تسجيل دخول</Link></Text>
+                </View>
+                <View style={[styles.centerObjects, { flexDirection: 'row', justifyContent: 'flex-start', direction: 'rtl', paddingHorizontal: 20 }]}>
+                  <Text style={[ConstantStyles.Title1, { fontSize: 28 , marginBottom: 10 }]}>تسجيــل بإستخدام جوجل: </Text>
+                  <TouchableOpacity>
+                    <Image style={{ width: 50, height: 50 }} source={require('../../assets/images/Google.gif')} width={50} height={50} />
+                  </TouchableOpacity>
                 </View>
               </>
             )}
