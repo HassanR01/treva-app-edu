@@ -66,6 +66,8 @@ export interface lesson {
 
         }[]
     },
+    createdAt: string,
+    updatedAt: string,
 }
 
 export interface user {
@@ -84,14 +86,11 @@ export interface user {
     StdOfMonth: Boolean,
     videos: {
         title: string,
-        description: string,
-        link: string,
         attaches: string,
         comments: {}[]
     }[], // title , lessone
     exams: {
         title: string,
-        description: string,
         totalPoints: number,
         Date: string,
         answers: {

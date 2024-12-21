@@ -1,23 +1,29 @@
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Link, router } from 'expo-router'
 import { Fonts } from '@/Constants/Fonts'
 import { Colors } from '@/Constants/Colors'
 import { ConstantStyles } from '@/Constants/constantStyles'
-import { useDataContext, user } from '@/components/context/DataContext'
+import { lesson, useDataContext, user } from '@/components/context/DataContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import CompletingDataFrom from '@/components/Forms/CompletingDataFrom'
 import Loading from '@/components/Loading'
+import { date } from 'yup'
+import LessonComponent from '@/components/elements/LessonComponent'
+import { FontAwesome, Ionicons } from '@expo/vector-icons'
 
 
 export default function Home() {
     const [user, setUser] = useState<user>()
+    const [search, setSearch] = useState('')
+    const [lessonsInStorage, setLessonsInStorage] = useState<lesson[]>([])
     const name = user ? user.name : 'مجهول'
 
     const { users, lessons } = useDataContext()
     useEffect(() => {
         const fetchUser = async () => {
             const userExist = await AsyncStorage.getItem('user')
+            const lastLessons = await AsyncStorage.getItem('lastLessons');
             if (userExist) {
                 setUser(JSON.parse(userExist))
                 const user = users?.find(user => user._id === JSON.parse(userExist)._id)
@@ -29,10 +35,32 @@ export default function Home() {
                 router.push('/(SignIn)')
             }
 
+            if (lastLessons) {
+                setLessonsInStorage(JSON.parse(lastLessons));
+            }
+
         }
         fetchUser()
     }, [])
 
+    const subjects = [
+        { image: require('../../assets/images/subjects/arabic.png'), name: 'اللغة العربية' },
+        { image: require('../../assets/images/subjects/english.png'), name: 'اللغة الانجليزية' },
+        { image: require('../../assets/images/subjects/french.png'), name: 'اللغة الفرنسية' },
+        { image: require('../../assets/images/subjects/german.png'), name: 'اللغة الالمانية' },
+        { image: require('../../assets/images/subjects/italy.png'), name: 'اللغة الايطالية' },
+        { image: require('../../assets/images/subjects/spanish.png'), name: 'اللغة الاسبانية' },
+        { image: require('../../assets/images/subjects/chinese.png'), name: 'اللغة الصينية' },
+        { image: require('../../assets/images/subjects/calculating.png'), name: 'الرياضيات' },
+        { image: require('../../assets/images/subjects/physics.png'), name: 'الفيزياء' },
+        { image: require('../../assets/images/subjects/chemistry.png'), name: 'الكيمياء' },
+        { image: require('../../assets/images/subjects/biology.png'), name: 'الاحياء' },
+        { image: require('../../assets/images/subjects/geology.png'), name: 'الجيولوجيا' },
+        { image: require('../../assets/images/subjects/history.png'), name: 'التاريخ' },
+        { image: require('../../assets/images/subjects/geography.png'), name: 'الجغرافيا' },
+        { image: require('../../assets/images/subjects/psychology.png'), name: 'الفلسفة' },
+        { image: require('../../assets/images/subjects/philosophy.png'), name: 'علم النفس' },
+    ]
 
     const Techers = users?.filter(user => user.role === 'teacher')
 
@@ -40,6 +68,41 @@ export default function Home() {
     if (!users || !lessons || !user) {
         return <Loading />
     } else {
+
+        let score = 0;
+        user.videos.forEach(video => {
+            score += 25;
+        })
+
+        user.exams.forEach(exam => {
+            score += exam.totalPoints ? exam.totalPoints : 0;
+        })
+
+        // Sort Students depends on the score and give me the rank of the user
+        const sortedStudents = users?.sort((a, b) => {
+            let scoreA = 0;
+            a.videos.forEach(video => {
+                scoreA += 25;
+            })
+
+            a.exams.forEach(exam => {
+                scoreA += exam.totalPoints ? exam.totalPoints : 0;
+            })
+
+            let scoreB = 0;
+            b.videos.forEach(video => {
+                scoreB += 25;
+            })
+
+            b.exams.forEach(exam => {
+                scoreB += exam.totalPoints ? exam.totalPoints : 0;
+            })
+
+            return scoreB - scoreA;
+        })
+
+        const rank = sortedStudents?.findIndex(student => student._id === user._id) + 1;
+
 
         return (
             <>
@@ -55,17 +118,80 @@ export default function Home() {
                 <ScrollView style={ConstantStyles.page}>
                     {user?.grade && user?.major ? (
                         <>
-                            {/* Techers */}
-                            <View style={ConstantStyles.section}>
-                                <Text style={[ConstantStyles.Title2, {textAlign: 'left'}]}>المدرسين</Text>
-                                <ScrollView horizontal>
-                                    {Techers?.map((teacher, index) => (
-                                        <TouchableOpacity key={index} style={styles.teacher}>
-                                            <Image className='border border-black rounded-full overflow-hidden' source={{ uri: teacher.image || 'https://res.cloudinary.com/db152mwtg/image/upload/v1732834946/Treva%20Edu%20App/users/majicowky6me6stkjpuf.jpg' }} width={50} height={50} />
-                                            <Text style={ConstantStyles.normalText}>م/ {teacher.name.split(' ').slice(0, 2).join(' ')}</Text>
+                            {/* Search input */}
+                            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 10, direction: 'rtl' }}>
+                                <TouchableOpacity style={styles.iconContainer} onPress={() => router.push('/(subPages)/search')}>
+                                    <FontAwesome name="search" size={24} color={Colors.bgColor} />
+                                </TouchableOpacity>
+                                <View>
+                                    <TextInput
+                                        style={[styles.inputText]}
+                                        placeholder="ابحث عن محاضرة"
+                                        placeholderTextColor={Colors.mainColor}
+                                        onFocus={() => router.push('/(subPages)/search')}
+
+                                        value={search}
+                                        onChangeText={(e => setSearch(e))}
+                                    />
+                                </View>
+                            </View>
+                            {/* Scoure */}
+                            <View style={styles.ScoureContainer}>
+                                <Image source={require('../../assets/images/star.gif')} style={{ width: 40, height: 40, borderRadius: 50, position: 'absolute', top: -5, right: -5 }} />
+                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
+                                    <Text style={[ConstantStyles.Title1, { fontSize: 30 }]}>النقاط</Text>
+                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Text style={[ConstantStyles.Title1, { fontSize: 70 }]}>{score}</Text>
+                                    </View>
+                                </View>
+                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl', marginBottom: 10 }}>
+                                    <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>الترتيب</Text>
+                                    <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>{rank}st</Text>
+                                </View>
+                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
+                                    <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>المحاضرات المشاهدة</Text>
+                                    <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>{user.videos.length}</Text>
+                                </View>
+                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
+                                    <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>الامتحانات</Text>
+                                    <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>{user.exams.length}</Text>
+                                </View>
+                            </View>
+
+                            {/* Subjects */}
+                            <View style={styles.Subjects}>
+                                <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>المواد</Text>
+                                <ScrollView
+                                    style={{ direction: 'rtl' }}
+                                    showsHorizontalScrollIndicator={false}
+                                    horizontal
+                                >
+                                    {subjects.map((subject, index) => (
+                                        <TouchableOpacity key={index} style={styles.cardsubject} onPress={() => router.push({
+                                            pathname: '/(subPages)/Results',
+                                            params: {
+                                                data: subject.name,
+                                            }
+                                        })}>
+                                            <Image source={subject.image} width={100} height={100} style={{ width: 50, height: 50 }} />
+                                            <Text style={ConstantStyles.Title3}>{subject.name}</Text>
                                         </TouchableOpacity>
                                     ))}
                                 </ScrollView>
+                                <Text style={[ConstantStyles.Title1, { fontSize: 26, marginTop: 20 }]}>المحاضرات السابقة</Text>
+                                {lessonsInStorage.length > 0 ? (
+                                    <ScrollView
+                                        style={{ direction: 'rtl', width: "100%" }}
+                                        showsHorizontalScrollIndicator={false}
+                                        horizontal
+                                    >
+                                        {lessonsInStorage.map((lesson, index) => (
+                                            <LessonComponent key={index} lesson={lesson} user={user} />
+                                        ))}
+                                    </ScrollView>
+                                ) : (
+                                    <Text style={ConstantStyles.Title2}>لم تقم بمشاهدة اي محاضرة بعد</Text>
+                                )}
                             </View>
 
                         </>
@@ -96,10 +222,52 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'space-between',
     },
-    teacher: {
+    Subjects: {
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        direction: 'rtl',
+        margin: 10,
+    },
+    cardsubject: {
+        backgroundColor: Colors.calmWhite,
+        padding: 10,
+        margin: 5,
+        borderRadius: 10,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        margin: 10
+        justifyContent: 'space-around',
+        width: 120,
+        height: 120,
     },
+    iconContainer: {
+        backgroundColor: Colors.mainColor,
+        padding: 10,
+        borderRadius: 5,
+    },
+    inputText: {
+        padding: 6,
+        fontSize: 24,
+        fontFamily: Fonts.mediumText,
+        width: Dimensions.get('screen').width - 90,
+        textAlign: 'right',
+        marginRight: 10,
+        borderWidth: 2,
+        borderColor: Colors.mainColor,
+        borderRadius: 5,
+    },
+    ScoureContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        width: Dimensions.get('screen').width - 40,
+        height: 200,
+        backgroundColor: Colors.calmWhite,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        alignItems: 'center',
+        margin: 10,
+        direction: 'rtl',
+        borderRadius: 10,
+    }
 })

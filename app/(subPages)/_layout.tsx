@@ -37,6 +37,10 @@ export default function Layout() {
           title: "تعديل المستخدم"
         }}
       />
+      <Stack.Screen name='search' 
+        options={{
+          headerShown: false
+        }} />
     </Stack>
   )
 }
