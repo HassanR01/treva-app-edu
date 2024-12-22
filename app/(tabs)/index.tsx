@@ -1,4 +1,4 @@
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, RefreshControl, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Link, router } from 'expo-router'
 import { Fonts } from '@/Constants/Fonts'
@@ -18,28 +18,34 @@ export default function Home() {
     const [search, setSearch] = useState('')
     const [lessonsInStorage, setLessonsInStorage] = useState<lesson[]>([])
     const name = user ? user.name : 'مجهول'
-
     const { users, lessons } = useDataContext()
-    useEffect(() => {
-        const fetchUser = async () => {
-            const userExist = await AsyncStorage.getItem('user')
-            const lastLessons = await AsyncStorage.getItem('lastLessons');
-            if (userExist) {
-                setUser(JSON.parse(userExist))
-                const user = users?.find(user => user._id === JSON.parse(userExist)._id)
-                if (user) {
-                    await AsyncStorage.setItem('user', JSON.stringify(user))
-                    setUser(user)
-                }
-            } else {
-                router.push('/(SignIn)')
-            }
 
-            if (lastLessons) {
-                setLessonsInStorage(JSON.parse(lastLessons));
-            }
-
+    const fetchUser = async () => {
+        const userExist = await AsyncStorage.getItem('user')
+        const lastLessons = await AsyncStorage.getItem('lastLessons');
+        if (userExist) {
+            setUser(JSON.parse(userExist))
+        } else {
+            router.push('/(SignIn)/Welcome')
         }
+
+        if (lastLessons) {
+            // find the lessons and update from database
+            setLessonsInStorage(JSON.parse(lastLessons));
+            
+            const updatedLessons = lessons?.filter(lesson => {
+                return JSON.parse(lastLessons).some((lessonInStorage: lesson) => lessonInStorage._id === lesson._id)
+            })
+
+            if (updatedLessons) {
+                AsyncStorage.setItem('lastLessons', JSON.stringify(updatedLessons))
+                setLessonsInStorage(updatedLessons.reverse())
+            }
+        }
+
+    }
+
+    useEffect(() => {
         fetchUser()
     }, [])
 
@@ -62,24 +68,23 @@ export default function Home() {
         { image: require('../../assets/images/subjects/philosophy.png'), name: 'علم النفس' },
     ]
 
-    const Techers = users?.filter(user => user.role === 'teacher')
-
-
+    
+    
     if (!users || !lessons || !user) {
         return <Loading />
     } else {
-
+        const Techers = users?.filter(user => user.role === 'teacher')
+        const students = users?.filter(user => user.role === 'student')
         let score = 0;
-        user.videos.forEach(video => {
+        user?.videos.forEach(video => {
             score += 25;
         })
-
-        user.exams.forEach(exam => {
+        user?.exams.forEach(exam => {
             score += exam.totalPoints ? exam.totalPoints : 0;
         })
 
         // Sort Students depends on the score and give me the rank of the user
-        const sortedStudents = users?.sort((a, b) => {
+        const sortedStudents = students?.sort((a, b) => {
             let scoreA = 0;
             a.videos.forEach(video => {
                 scoreA += 25;
@@ -115,7 +120,17 @@ export default function Home() {
                         <Text style={ConstantStyles.normalText}>الساعة بتقبل القسمة علي 60 ؟ 👀</Text>
                     </View>
                 </View>
-                <ScrollView style={ConstantStyles.page}>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            colors={[Colors.mainColor]}
+                            progressBackgroundColor={Colors.bgColor}
+                            refreshing={false}
+                            onRefresh={() => fetchUser()}
+                        />
+                    }
+                    style={ConstantStyles.page}
+                >
                     {user?.grade && user?.major ? (
                         <>
                             {/* Search input */}
@@ -183,6 +198,7 @@ export default function Home() {
                                     <ScrollView
                                         style={{ direction: 'rtl', width: "100%" }}
                                         showsHorizontalScrollIndicator={false}
+                                        pagingEnabled={true}
                                         horizontal
                                     >
                                         {lessonsInStorage.map((lesson, index) => (

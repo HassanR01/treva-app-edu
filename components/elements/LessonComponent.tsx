@@ -58,7 +58,8 @@ export default function LessonComponent({ lesson, user }: LessonComponentProps) 
 
         // I want to add the lessons to the local storage to know the last videos that the user watched and I want it as a array of lessons
         if (lessonsInStorage.some(lessonInStorage => lessonInStorage._id === lesson._id)) {
-            // let this lesson be the first in the array
+            // let this lesson be the first in the array and update it from database
+            
             const updatedLessons = lessonsInStorage.filter(lessonInStorage => lessonInStorage._id !== lesson._id)
             updatedLessons.unshift(lesson)
             await AsyncStorage.setItem('lastLessons', JSON.stringify(updatedLessons))
@@ -175,7 +176,8 @@ export default function LessonComponent({ lesson, user }: LessonComponentProps) 
 
 const styles = StyleSheet.create({
     lessonContainer: {
-        width: Dimensions.get('screen').width - 40,
+        width: '100%',
+        minWidth: Dimensions.get('window').width - 60,
         height: 150,
         backgroundColor: Colors.calmWhite,
         flexDirection: 'column',

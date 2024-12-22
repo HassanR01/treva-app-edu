@@ -100,6 +100,9 @@ export interface user {
     }[], // title , techer, lessone, answers , finalResult
     bills: {}[],
     logs: {}[],
+
+    // Techers
+    subject: string,
 }
 
 export interface payment {

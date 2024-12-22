@@ -32,10 +32,10 @@ export default function CompletingDataFrom({ user }: any) {
         if (grade && major) {
             await axios.post('http://172.20.10.2:5000/api/v1/users/updateUser', { _id, grade, major }).then(res => {
                 console.log(res.data)
-                alert('تم تحديث البيانات بنجاح')
-                router.push('/(tabs)/Profile')
                 const updateUser = { ...user, grade, major }
                 AsyncStorage.setItem('user', JSON.stringify(updateUser))
+                alert('تم تحديث البيانات بنجاح')
+                router.push('/(tabs)/Profile')
                 
             }).catch(err => {
                 console.log(err)

@@ -33,7 +33,7 @@ export default function SignUp() {
       return
     }
     try {
-      axios.post('http://10.0.0.7:5000/api/v1/users/register', { name, username, mobile, password, role })
+      axios.post('http://172.20.10.2:5000/api/v1/users/register', { name, username, mobile, password, role })
         .then(res => {
           if (res.data.status == 'ok') {
             alert('User Registered Successfully')

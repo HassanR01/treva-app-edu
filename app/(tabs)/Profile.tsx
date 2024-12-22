@@ -1,4 +1,4 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ConstantStyles } from '@/Constants/constantStyles'
 import Animated, { ZoomInEasyUp, ZoomOutEasyDown } from 'react-native-reanimated'
@@ -14,15 +14,15 @@ export default function Profile() {
     const grade = user ? user.grade : 'غير محدد'
     const major = user ? user.major : 'غير محدد'
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            const userExist = await AsyncStorage.getItem('user')
-            if (userExist) {
-                setUser(JSON.parse(userExist))
-            } else {
-                router.push('/(SignIn)')
-            }
+    const fetchUser = async () => {
+        const userExist = await AsyncStorage.getItem('user')
+        if (userExist) {
+            setUser(JSON.parse(userExist))
+        } else {
+            router.push('/(SignIn)')
         }
+    }
+    useEffect(() => {
         fetchUser()
     }, [])
 
@@ -35,7 +35,17 @@ export default function Profile() {
 
 
     return (
-        <ScrollView style={ConstantStyles.page}>
+        <ScrollView
+            refreshControl={
+                <RefreshControl
+                    colors={[Colors.mainColor]}
+                    progressBackgroundColor={Colors.bgColor}
+                    refreshing={false}
+                    onRefresh={() => fetchUser()}
+                />
+            }
+            style={ConstantStyles.page}
+        >
             <TouchableOpacity onPress={() => router.navigate('/(subPages)/EditUser')} style={styles.editIcon}>
                 <FontAwesome5 name="user-edit" size={24} color={Colors.mainColor} />
             </TouchableOpacity>
@@ -112,7 +122,7 @@ export default function Profile() {
             </TouchableOpacity>
             {/* Version and Copyrights */}
             <Text style={[ConstantStyles.normalText, { textAlign: 'center', marginTop: 20, color: 'gray' }]}>الاصدار 1.0.0</Text>
-            <Text style={[ConstantStyles.normalText, { textAlign: 'center', marginBottom: 20 , color: 'gray'}]}>جميع الحقوق محفوظة لتريفا</Text>
+            <Text style={[ConstantStyles.normalText, { textAlign: 'center', marginBottom: 20, color: 'gray' }]}>جميع الحقوق محفوظة لتريفا</Text>
         </ScrollView>
     )
 }
