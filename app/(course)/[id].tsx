@@ -6,6 +6,8 @@ import { Colors } from '@/Constants/Colors'
 import { ConstantStyles } from '@/Constants/constantStyles'
 import { Fonts } from '@/Constants/Fonts'
 import { useDataContext } from '@/components/context/DataContext'
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 export default function Course() {
@@ -20,6 +22,36 @@ export default function Course() {
   const techerData = users?.find(user => user.name === lessonData?.teacher)
 
   // update user Data with new video in database
+  const updateUser = async (video: { title: any }) => {
+    if (userData?.videos?.find((vid: { title: string | undefined }) => vid.title === video.title)) {
+      alert('لقد قمت بمشاهدة هذا الدرس من قبل')
+      return
+    } else {
+      const updatedUser = { ...userData, videos: [...userData.videos, video] }
+      await axios.post('http://172.20.10.2:5000/api/v1/users/updateUser', updatedUser).then(res => {
+        AsyncStorage.setItem('user', JSON.stringify(updatedUser))
+        alert('تم اضافة الفيديو بنجاح')
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+  }
+
+  // update user Data with new exam in database
+  const updateExam = async (exam: { title: any }) => {
+    if (userData?.exams?.find((ex: { title: string | undefined }) => ex.title === exam.title)) {
+      alert('لقد قمت بحل هذا الامتحان من قبل')
+      return
+    } else {
+      const updatedUser = { ...userData, exams: [...userData.exams, exam] }
+      await axios.post('http://172.20.10.2:5000/api/v1/users/updateUser', updatedUser).then(res => {
+        AsyncStorage.setItem('user', JSON.stringify(updatedUser))
+        alert('تم اضافة الامتحان بنجاح')
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+  }
 
 
   const subjects = [
@@ -116,6 +148,7 @@ export default function Course() {
           <Text style={[ConstantStyles.Title1, { fontSize: 24 }]}>الفيديوهات</Text>
           <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', direction: 'rtl' }}>
             <TouchableOpacity style={styles.linkVideo} onPress={() => {
+              updateUser({ title: lessonData?.explainVideo.title })
               router.push({
                 pathname: '/(course)/explainVideo',
                 params: {
@@ -135,13 +168,17 @@ export default function Course() {
                 {userData?.videos?.find((video: { title: string | undefined }) => video.title === lessonData?.explainVideo.title) ? <MaterialIcons name="done" size={30} color={Colors.mainColor} /> : <AntDesign name="plus" size={30} color={Colors.mainColor} />}
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.linkVideo} onPress={() => router.push({
-              pathname: '/(course)/HWReview',
-              params: {
-                lesson: JSON.stringify(lessonData),
-                user: JSON.stringify(userData)
-              }
-            })}>
+            <TouchableOpacity style={styles.linkVideo} onPress={() => {
+              updateUser({ title: lessonData?.homeWorkVideo.title })
+              router.push({
+                pathname: '/(course)/HWReview',
+                params: {
+                  lesson: JSON.stringify(lessonData),
+                  user: JSON.stringify(userData)
+                }
+              })
+            }
+            }>
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={require('../../assets/images/lesson/homework.png')} style={{ width: 50, height: 50 }} />
                 <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', direction: 'rtl', marginHorizontal: 10 }}>
@@ -153,13 +190,16 @@ export default function Course() {
                 {userData?.videos?.find((video: { title: string | undefined }) => video.title === lessonData?.homeWorkVideo.title) ? <MaterialIcons name="done" size={30} color={Colors.mainColor} /> : <AntDesign name="plus" size={30} color={Colors.mainColor} />}
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.linkVideo} onPress={() => router.push({
-              pathname: '/(course)/examVideo',
-              params: {
-                lesson: JSON.stringify(lessonData),
-                user: JSON.stringify(userData)
-              }
-            })}>
+            <TouchableOpacity style={styles.linkVideo} onPress={() => {
+              updateUser({ title: lessonData?.examVideo.title })
+              router.push({
+                pathname: '/(course)/examVideo',
+                params: {
+                  lesson: JSON.stringify(lessonData),
+                  user: JSON.stringify(userData)
+                }
+              })
+            }}>
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={require('../../assets/images/lesson/exam.png')} style={{ width: 50, height: 50 }} />
                 <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', direction: 'rtl', marginHorizontal: 10 }}>
@@ -178,13 +218,16 @@ export default function Course() {
         <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', direction: 'rtl', marginVertical: 10, marginBottom: 50 }}>
           <Text style={[ConstantStyles.Title1, { fontSize: 24 }]}>الامتحان</Text>
           <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', direction: 'rtl' }}>
-            <TouchableOpacity style={styles.linkVideo} onPress={() => router.push({
-              pathname: '/(course)/Exam',
-              params: {
-                exam: JSON.stringify(lessonData?.exam), 
-                user: JSON.stringify(userData)
-              }
-            })}>
+            <TouchableOpacity style={styles.linkVideo} onPress={() => {
+              updateExam({ title: lessonData?.exam.title })
+              router.push({
+                pathname: '/(course)/Exam',
+                params: {
+                  exam: JSON.stringify(lessonData?.exam),
+                  user: JSON.stringify(userData)
+                }
+              })
+            }}>
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={require('../../assets/images/lesson/exam.png')} style={{ width: 50, height: 50 }} />
                 <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', direction: 'rtl', marginHorizontal: 10 }}>

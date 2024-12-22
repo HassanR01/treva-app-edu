@@ -49,18 +49,13 @@ export default function EditUser() {
             const userExist = await AsyncStorage.getItem('user')
             if (userExist) {
                 setUser(JSON.parse(userExist))
-                const user = users?.find(user => user._id === JSON.parse(userExist)._id)
-                if (user) {
-                    await AsyncStorage.setItem('user', JSON.stringify(user))
-                    setUser(user)
-                    setImage(user.image)
-                    setName(user.name)
-                    setEmail(user.email)
-                    setMobile(user.mobile)
-                    setPassword(user.password)
-                    setGrade(user.grade)
-                    setMajor(user.major)
-                }
+                setName(JSON.parse(userExist).name)
+                setEmail(JSON.parse(userExist).email)
+                setMobile(JSON.parse(userExist).mobile)
+                setPassword(JSON.parse(userExist).password)
+                setImage(JSON.parse(userExist).image)
+                setGrade(JSON.parse(userExist).grade)
+                setMajor(JSON.parse(userExist).major)
             } else {
                 router.push('/(SignIn)')
             }
@@ -84,7 +79,7 @@ export default function EditUser() {
     }
 
     const handleUpdateUserData = async () => {
-        if (name || email || mobile || password || image || grade || major) {
+        if (name && email && mobile && password && image && grade && major) {
             await axios.post('http://172.20.10.2:5000/api/v1/users/updateUser', { _id, image, name, email, mobile, password, grade, major, role }).then(res => {
                 console.log(res.data)
                 alert('تم تحديث البيانات بنجاح')
