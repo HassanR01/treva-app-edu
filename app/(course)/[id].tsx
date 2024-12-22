@@ -115,11 +115,19 @@ export default function Course() {
         <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', direction: 'rtl', marginVertical: 10 }}>
           <Text style={[ConstantStyles.Title1, { fontSize: 24 }]}>الفيديوهات</Text>
           <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', direction: 'rtl' }}>
-            <TouchableOpacity style={styles.linkVideo} onPress={() => { }}>
+            <TouchableOpacity style={styles.linkVideo} onPress={() => {
+              router.push({
+                pathname: '/(course)/explainVideo',
+                params: {
+                  lesson: JSON.stringify(lessonData),
+                  user: JSON.stringify(userData)
+                }
+              })
+            }}>
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={require('../../assets/images/lesson/presentation.png')} style={{ width: 50, height: 50 }} />
                 <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', direction: 'rtl', marginHorizontal: 10 }}>
-                  <Text style={[ConstantStyles.Title1, {fontSize: 26}]}>شرح الدرس</Text>
+                  <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>شرح الدرس</Text>
                   <Text style={[ConstantStyles.normalText, { fontSize: 20, color: Colors.textColor }]}>{lessonData?.explainVideo.title}</Text>
                 </View>
               </View>
@@ -127,11 +135,17 @@ export default function Course() {
                 {userData?.videos?.find((video: { title: string | undefined }) => video.title === lessonData?.explainVideo.title) ? <MaterialIcons name="done" size={30} color={Colors.mainColor} /> : <AntDesign name="plus" size={30} color={Colors.mainColor} />}
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.linkVideo} onPress={() => { }}>
+            <TouchableOpacity style={styles.linkVideo} onPress={() => router.push({
+              pathname: '/(course)/HWReview',
+              params: {
+                lesson: JSON.stringify(lessonData),
+                user: JSON.stringify(userData)
+              }
+            })}>
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={require('../../assets/images/lesson/homework.png')} style={{ width: 50, height: 50 }} />
                 <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', direction: 'rtl', marginHorizontal: 10 }}>
-                  <Text style={[ConstantStyles.Title1, {fontSize: 26}]}>حل الواجب</Text>
+                  <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>حل الواجب</Text>
                   <Text style={[ConstantStyles.normalText, { fontSize: 20, color: Colors.textColor }]}>{lessonData?.homeWorkVideo.title}</Text>
                 </View>
               </View>
@@ -139,11 +153,17 @@ export default function Course() {
                 {userData?.videos?.find((video: { title: string | undefined }) => video.title === lessonData?.homeWorkVideo.title) ? <MaterialIcons name="done" size={30} color={Colors.mainColor} /> : <AntDesign name="plus" size={30} color={Colors.mainColor} />}
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.linkVideo} onPress={() => { }}>
+            <TouchableOpacity style={styles.linkVideo} onPress={() => router.push({
+              pathname: '/(course)/examVideo',
+              params: {
+                lesson: JSON.stringify(lessonData),
+                user: JSON.stringify(userData)
+              }
+            })}>
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={require('../../assets/images/lesson/exam.png')} style={{ width: 50, height: 50 }} />
                 <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', direction: 'rtl', marginHorizontal: 10 }}>
-                  <Text style={[ConstantStyles.Title1, {fontSize: 26}]}>الامتحان</Text>
+                  <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>الامتحان</Text>
                   <Text style={[ConstantStyles.normalText, { fontSize: 20, color: Colors.textColor }]}>{lessonData?.examVideo.title}</Text>
                 </View>
               </View>
@@ -158,11 +178,17 @@ export default function Course() {
         <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', direction: 'rtl', marginVertical: 10, marginBottom: 50 }}>
           <Text style={[ConstantStyles.Title1, { fontSize: 24 }]}>الامتحان</Text>
           <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', direction: 'rtl' }}>
-            <TouchableOpacity style={styles.linkVideo} onPress={() => { }}>
+            <TouchableOpacity style={styles.linkVideo} onPress={() => router.push({
+              pathname: '/(course)/Exam',
+              params: {
+                exam: JSON.stringify(lessonData?.exam), 
+                user: JSON.stringify(userData)
+              }
+            })}>
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={require('../../assets/images/lesson/exam.png')} style={{ width: 50, height: 50 }} />
                 <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', direction: 'rtl', marginHorizontal: 10 }}>
-                  <Text style={[ConstantStyles.Title1, {fontSize: 18}]}>{lessonData?.exam.title.split(' ').slice(0, 6).join(' ')}..</Text>
+                  <Text style={[ConstantStyles.Title1, { fontSize: 18 }]}>{lessonData?.exam.title.split(' ').slice(0, 6).join(' ')}..</Text>
                   <Text style={[ConstantStyles.normalText, { fontSize: 20, color: Colors.textColor }]}>{lessonData?.exam.description}</Text>
                 </View>
               </View>
