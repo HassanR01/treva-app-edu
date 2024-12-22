@@ -19,28 +19,6 @@ export default function HWReview() {
   const HomeWrokVideo = Array.isArray(lesson) ? JSON.parse(lesson[0]).homeWorkVideo : JSON.parse(lesson).homeWorkVideo
 
 
-
-
-  const subjects = [
-    { image: require('../../assets/images/subjects/arabic.png'), name: 'اللغة العربية' },
-    { image: require('../../assets/images/subjects/english.png'), name: 'اللغة الانجليزية' },
-    { image: require('../../assets/images/subjects/french.png'), name: 'اللغة الفرنسية' },
-    { image: require('../../assets/images/subjects/german.png'), name: 'اللغة الالمانية' },
-    { image: require('../../assets/images/subjects/italy.png'), name: 'اللغة الايطالية' },
-    { image: require('../../assets/images/subjects/spanish.png'), name: 'اللغة الاسبانية' },
-    { image: require('../../assets/images/subjects/chinese.png'), name: 'اللغة الصينية' },
-    { image: require('../../assets/images/subjects/calculating.png'), name: 'الرياضيات' },
-    { image: require('../../assets/images/subjects/physics.png'), name: 'الفيزياء' },
-    { image: require('../../assets/images/subjects/chemistry.png'), name: 'الكيمياء' },
-    { image: require('../../assets/images/subjects/biology.png'), name: 'الاحياء' },
-    { image: require('../../assets/images/subjects/geology.png'), name: 'الجيولوجيا' },
-    { image: require('../../assets/images/subjects/history.png'), name: 'التاريخ' },
-    { image: require('../../assets/images/subjects/geography.png'), name: 'الجغرافيا' },
-    { image: require('../../assets/images/subjects/psychology.png'), name: 'الفلسفة' },
-    { image: require('../../assets/images/subjects/philosophy.png'), name: 'علم النفس' },
-  ]
-
-
   const player = useVideoPlayer(HomeWrokVideo.link, (player) => {
     player.staysActiveInBackground = true
     player.play()
