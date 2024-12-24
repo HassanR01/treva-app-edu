@@ -162,12 +162,6 @@ export default function SignUp() {
                   <Button title={'تسجيــل'} action={handleSubmit} />
                   <Text style={ConstantStyles.normalText}>بالفعل لديك حساب ؟ <Link style={{ color: Colors.mainColor }} href={'/LogInScreen'}>تسجيل دخول</Link></Text>
                 </View>
-                <View style={[styles.centerObjects, { flexDirection: 'row', justifyContent: 'flex-start', direction: 'rtl', paddingHorizontal: 20 }]}>
-                  <Text style={[ConstantStyles.Title1, { fontSize: 28 , marginBottom: 10 }]}>تسجيــل بإستخدام جوجل: </Text>
-                  <TouchableOpacity>
-                    <Image style={{ width: 50, height: 50 }} source={require('../../assets/images/Google.gif')} width={50} height={50} />
-                  </TouchableOpacity>
-                </View>
               </>
             )}
           </Formik>

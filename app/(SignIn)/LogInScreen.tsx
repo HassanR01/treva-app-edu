@@ -146,12 +146,6 @@ export default function LogInScreen() {
                     </View>
                   </View>
                   {errors.password && touched.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
-                  <View style={[styles.centerObjects, { flexDirection: 'row', justifyContent: 'flex-start', direction: 'rtl', paddingHorizontal: 20 }]}>
-                    <Text style={[ConstantStyles.Title1, { fontSize: 28 }]}>تسجيــل بإستخدام جوجل: </Text>
-                    <TouchableOpacity>
-                      <Image style={{ width: 50, height: 50 }} source={require('../../assets/images/Google.gif')} width={50} height={50} />
-                    </TouchableOpacity>
-                  </View>
                   <View style={styles.centerObjects}>
                     <Button title={'تسجيــل الدخول'} action={handleSubmit} />
                   </View>
