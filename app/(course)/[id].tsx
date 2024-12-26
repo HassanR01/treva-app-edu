@@ -28,7 +28,7 @@ export default function Course() {
       return
     } else {
       const updatedUser = { ...userData, videos: [...userData.videos, video] }
-      await axios.post('http://172.20.10.2:5000/api/v1/users/updateUser', updatedUser).then(res => {
+      await axios.post(`${process.env.API_URL}/users/updateUser`, updatedUser).then(res => {
         AsyncStorage.setItem('user', JSON.stringify(updatedUser))
         alert('تم اضافة الفيديو بنجاح')
       }).catch(err => {
@@ -44,7 +44,7 @@ export default function Course() {
       return
     } else {
       const updatedUser = { ...userData, exams: [...userData.exams, exam] }
-      await axios.post('http://172.20.10.2:5000/api/v1/users/updateUser', updatedUser).then(res => {
+      await axios.post(`${process.env.API_URL}/users/updateUser`, updatedUser).then(res => {
         AsyncStorage.setItem('user', JSON.stringify(updatedUser))
         alert('تم اضافة الامتحان بنجاح')
       }).catch(err => {

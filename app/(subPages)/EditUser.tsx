@@ -80,7 +80,7 @@ export default function EditUser() {
 
     const handleUpdateUserData = async () => {
         if (name && email && mobile && password && image && grade && major) {
-            await axios.post('http://172.20.10.2:5000/api/v1/users/updateUser', { _id, image, name, email, mobile, password, grade, major, role }).then(res => {
+            await axios.post(`${process.env.API_URL}/users/updateUser`, { _id, image, name, email, mobile, password, grade, major, role }).then(res => {
                 console.log(res.data)
                 alert('تم تحديث البيانات بنجاح')
                 const updateUser = { ...user, image, name, email, mobile, password, grade, major, role }
