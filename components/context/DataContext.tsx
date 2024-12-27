@@ -143,7 +143,7 @@ export default function DataProvider({ children }: { children: React.ReactNode }
     const [payments, setPayments] = React.useState<payment[] | null>(null)
 
     const apiURL = process.env.API_URL
-
+console.log(apiURL)
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -165,7 +165,7 @@ export default function DataProvider({ children }: { children: React.ReactNode }
         fetchData()
     }, [])
 
-    
+
 
     return (
         <DataContext.Provider value={{ lessons, users, payments, setLessons, setUsers, setPayments }}>
