@@ -219,8 +219,8 @@ export default function Course() {
           <Text style={[ConstantStyles.Title1, { fontSize: 24 }]}>الامتحان</Text>
           <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', direction: 'rtl' }}>
             <TouchableOpacity style={styles.linkVideo} onPress={() => {
-              updateExam({ title: lessonData?.exam.title })
-              router.push({
+              // updateExam({ title: lessonData?.exam.title })
+              router.replace({
                 pathname: '/(course)/Exam',
                 params: {
                   exam: JSON.stringify(lessonData?.exam),
@@ -232,7 +232,7 @@ export default function Course() {
                 <Image source={require('../../assets/images/lesson/exam.png')} style={{ width: 50, height: 50 }} />
                 <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', direction: 'rtl', marginHorizontal: 10 }}>
                   <Text style={[ConstantStyles.Title1, { fontSize: 18 }]}>{lessonData?.exam.title.split(' ').slice(0, 6).join(' ')}..</Text>
-                  <Text style={[ConstantStyles.normalText, { fontSize: 20, color: Colors.textColor }]}>{lessonData?.exam.description}</Text>
+                  <Text style={[ConstantStyles.normalText, { fontSize: 16, color: Colors.textColor }]}>{lessonData?.exam.description.split(' ').slice(0, 6).join(' ')}..</Text>
                 </View>
               </View>
               <View>
