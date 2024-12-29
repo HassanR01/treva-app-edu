@@ -1,11 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { ConstantStyles } from '@/Constants/constantStyles'
 
 export default function Payment() {
   return (
-    <View>
-      <Text>Payment</Text>
-    </View>
+    <ScrollView style={ConstantStyles.page}>
+      <View style={{}}>
+      </View>
+        <Text>المحفظة</Text>
+    </ScrollView>
   )
 }
 

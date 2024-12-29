@@ -98,7 +98,12 @@ export interface user {
             points: number
         }[],
     }[], // title , techer, lessone, answers , finalResult
-    bills: {}[],
+    bills: {
+        cost: number,
+        code: string,
+        date: string,
+        method: string,
+    }[],
     logs: {}[],
 
     // Techers
