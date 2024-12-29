@@ -101,7 +101,7 @@ export default function Profile() {
             <TouchableOpacity style={styles.buttonProfile} onPress={() => router.navigate('/(subPages)/About')}>
                 <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     <AntDesign name="questioncircle" size={20} color={Colors.bgColor} />
-                    <Text style={styles.textBtnProfile}>عن تريفا</Text>
+                    <Text style={styles.textBtnProfile}>عن تريڤا</Text>
                 </View>
                 <MaterialIcons name="keyboard-arrow-left" size={24} color={Colors.bgColor} />
             </TouchableOpacity>
@@ -123,7 +123,7 @@ export default function Profile() {
             </TouchableOpacity>
             {/* Version and Copyrights */}
             <Text style={[ConstantStyles.normalText, { textAlign: 'center', marginTop: 20, color: 'gray' }]}>الاصدار 1.0.0</Text>
-            <Text style={[ConstantStyles.normalText, { textAlign: 'center', marginBottom: 20, color: 'gray' }]}>جميع الحقوق محفوظة لتريفا</Text>
+            <Text style={[ConstantStyles.normalText, { textAlign: 'center', marginBottom: 20, color: 'gray' }]}>جميع الحقوق محفوظة لتريڤا</Text>
         </ScrollView>
     )
 }

@@ -1,4 +1,4 @@
-import { Dimensions, Image, RefreshControl, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, RefreshControl, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Link, router } from 'expo-router'
 import { Fonts } from '@/Constants/Fonts'
@@ -11,6 +11,7 @@ import Loading from '@/components/Loading'
 import { date } from 'yup'
 import LessonComponent from '@/components/elements/LessonComponent'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
+import LottieView from 'lottie-react-native'
 
 
 export default function Home() {
@@ -142,7 +143,9 @@ export default function Home() {
                         <Text style={ConstantStyles.normalText}>الساعة بتقبل القسمة علي 60 ؟ 👀</Text>
                     </View>
                 </View>
+                <StatusBar barStyle={'dark-content'} />
                 <ScrollView
+                    contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={
                         <RefreshControl
                             colors={[Colors.mainColor]}
@@ -154,8 +157,28 @@ export default function Home() {
                     style={ConstantStyles.page}
                     showsVerticalScrollIndicator={false}
                 >
+
                     {user?.grade && user?.major ? (
                         <>
+                            <View style={{
+                                position: 'absolute',
+                                top: 250,
+                                left: 0,
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: 100,
+                                height: 100,
+                                zIndex: 100,
+                            }}>
+                                <LottieView
+                                    source={require('../../assets/animations/science.json')}
+                                    autoPlay
+                                    loop
+                                    style={{ width: 100, height: 100 }}
+                                />
+                            </View>
                             {/* Search input */}
                             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 10, direction: 'rtl' }}>
                                 <TouchableOpacity style={styles.iconContainer} onPress={() => router.push('/(subPages)/search')}>
@@ -216,6 +239,25 @@ export default function Home() {
                                         </TouchableOpacity>
                                     ))}
                                 </ScrollView>
+                                <View style={{
+                                    position: 'absolute',
+                                    top: 150,
+                                    left: 80,
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: 100,
+                                    height: 100,
+                                    zIndex: 100,
+                                }}>
+                                    <LottieView
+                                        source={require('../../assets/animations/eduP.json')}
+                                        autoPlay
+                                        loop
+                                        style={{ width: 100, height: 100 }}
+                                    />
+                                </View>
                                 <Text style={[ConstantStyles.Title1, { fontSize: 26, marginTop: 20 }]}>المحاضرات السابقة</Text>
                                 {lessonsInStorage.length > 0 ? (
                                     <ScrollView
