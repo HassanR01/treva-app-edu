@@ -38,17 +38,24 @@ export default function Course() {
   }
 
   // update user Data with new exam in database
-  const updateExam = async (exam: { title: any }) => {
-    if (userData?.exams?.find((ex: { title: string | undefined }) => ex.title === exam.title)) {
+  console.log(userData.exams)
+  const updateExam = async (title: any) => {
+    if (userData?.exams?.find((ex: any) => ex.title === title)) {
       alert('لقد قمت بحل هذا الامتحان من قبل')
-      return
+      router.push({
+        pathname: '/(subPages)/reviewExam',
+        params: {
+          user: JSON.stringify(userData?.exams[-1]),
+        }
+      })
     } else {
-      const updatedUser = { ...userData, exams: [...userData.exams, exam] }
-      await axios.post(`${process.env.API_URL}/users/updateUser`, updatedUser).then(res => {
-        AsyncStorage.setItem('user', JSON.stringify(updatedUser))
-        alert('تم اضافة الامتحان بنجاح')
-      }).catch(err => {
-        console.log(err)
+      router.replace({
+        pathname: '/(course)/Exam',
+        params: {
+          exam: JSON.stringify(lessonData?.exam),
+          user: JSON.stringify(userData),
+          id: lessonData?._id
+        }
       })
     }
   }
@@ -219,14 +226,7 @@ export default function Course() {
           <Text style={[ConstantStyles.Title1, { fontSize: 24 }]}>الامتحان</Text>
           <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', direction: 'rtl' }}>
             <TouchableOpacity style={styles.linkVideo} onPress={() => {
-              // updateExam({ title: lessonData?.exam.title })
-              router.replace({
-                pathname: '/(course)/Exam',
-                params: {
-                  exam: JSON.stringify(lessonData?.exam),
-                  user: JSON.stringify(userData)
-                }
-              })
+              updateExam(lessonData?.exam.title)
             }}>
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={require('../../assets/images/lesson/exam.png')} style={{ width: 50, height: 50 }} />

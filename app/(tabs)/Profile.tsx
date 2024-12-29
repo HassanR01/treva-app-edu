@@ -81,7 +81,7 @@ export default function Profile() {
                 <MaterialIcons name="keyboard-arrow-left" size={24} color={Colors.bgColor} />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonProfile} onPress={() => router.navigate('/(course)/Exam')}>
+            <TouchableOpacity style={styles.buttonProfile} onPress={() => router.navigate('/(course)/StudentReview')}>
                 <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     <AntDesign name="filetext1" size={20} color={Colors.bgColor} />
                     <Text style={styles.textBtnProfile}>الامتحانات</Text>
