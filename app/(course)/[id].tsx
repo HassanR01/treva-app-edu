@@ -104,7 +104,9 @@ export default function Course() {
 
       />
 
-      <ScrollView style={ConstantStyles.page}>
+      <ScrollView style={ConstantStyles.page}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', direction: 'rtl', marginBottom: 10 }}>
           <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>{lessonData?.title}</Text>
           <Text style={[ConstantStyles.Title2, { fontSize: 22, color: 'gray' }]}>{lessonData?.grade}</Text>

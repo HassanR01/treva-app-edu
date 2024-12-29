@@ -130,6 +130,7 @@ export default function Home() {
                         />
                     }
                     style={ConstantStyles.page}
+                    showsVerticalScrollIndicator={false}
                 >
                     {user?.grade && user?.major ? (
                         <>

@@ -55,7 +55,10 @@ export default function Courses() {
   } else {
 
     return (
-      <ScrollView style={ConstantStyles.page}>
+      <ScrollView style={ConstantStyles.page}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         <Text style={ConstantStyles.Title1}>المحاضرات</Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: 20, direction: 'rtl' }}>
           {subjects.map((subject, index) => {

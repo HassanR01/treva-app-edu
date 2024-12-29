@@ -67,8 +67,19 @@ export default function Exam() {
 
 
   const StartExam = () => {
-    alert('انت الان تبدأ الامتحان')
-    setStartExam(true)
+    if (userDate.exams.some((exam: any) => exam.title === examData.title)) {
+      alert('انت قد قمت بحل هذا الامتحان من قبل')
+      router.replace({
+        pathname: "/(subPages)/reviewExam",
+        params: {
+          user: JSON.stringify(userDate.exams.find((exam: any) => exam.title === examData.title))
+        }
+      })
+      return;
+    } else {
+      alert('انت الان تبدأ الامتحان')
+      setStartExam(true)
+    }
   }
 
   const [minutes, setMinutes] = useState(Math.ceil(examData.time));
@@ -97,40 +108,75 @@ export default function Exam() {
     )
   }
 
-  const [exam, setExam] = useState({
+  const [exam, setExam] = useState<{
+    name: string,
+    title: string,
+    totalPoints: number,
+    answers: { answer: string, points: number }[],
+  }>({
     name: userDate.name,
     title: examData.title,
     totalPoints: 0,
-    answers: [{
-      answer: '',
-      points: 0,
-    }],
+    answers: [],
   })
 
-  const handelAnswers = (answer: any) => {
+  const [nextShow, setNextShow] = useState(false)
+  const [submitExam, setSubmitExam] = useState(false)
 
-    if (answer) {
-      setExam({ ...exam, answers: [...exam.answers, { answer: answer.answer, points: answer.isRight === 'true' ? examData.questions[currentQuestion].points : 0 }] })
-
+  const handelAnswers = (ans: any) => {
+    // Check if the answer is already selected
+    if (exam.answers[currentQuestion]) {
+      return;
     }
 
-    if (answer.isRight === 'true') {
-      setScore(score + +examData.questions[currentQuestion].points)
-      setExam({ ...exam, totalPoints: score + +examData.questions[currentQuestion].points })
+    let answer = {
+      answer: ans.answer,
+      points: ans.isRight === 'true' ? examData.questions[currentQuestion].points : 0
     }
-    if (currentQuestion === examData.questions.length - 1) {
-      setShowScore(true)
-      const updateExams = [...userDate.exams, exam]
-      setUser({ ...userDate, exams: updateExams })
-      setExamData({ ...examData, students: [...examData.students, exam] })
-      AsyncStorage.setItem('user', JSON.stringify(userDate))
-      axios.post(`http://172.20.10.2:5000/api/v1/lessons/updateLesson`, { _id: id, exam: examData }).then(res => { console.log(res.data) }).catch(err => console.log(err))
-      axios.post(`http://172.20.10.2:5000/api/v1/users/updateUser`, { _id: userDate._id, exams: updateExams }).then(res => { console.log(res.data) }).catch(err => console.log(err))
-      alert('انتهيت من الامتحان')
+
+    // Update the answer for the current question
+    const updatedAnswers = [...exam.answers];
+    updatedAnswers[currentQuestion] = answer;
+
+    setExam({ ...exam, answers: updatedAnswers });
+
+    // Update the score if the answer is correct
+    if (ans.isRight === 'true') {
+      setScore(score + +answer.points);
+      setExam(prevExam => ({ ...prevExam, totalPoints: +prevExam.totalPoints + +answer.points }));
+    }
+
+    // Move to the next question or submit the exam if it's the last question
+    if (currentQuestion < examData.questions.length - 1) {
+      setNextShow(true);
     } else {
-      setCurrentQuestion(currentQuestion + 1)
+      setSubmitExam(true);
+      setNextShow(false);
     }
-    console.log(exam)
+  }
+
+  const submitExamHandler = async () => {
+    setShowScore(true);
+    try {
+      await axios.post(`${process.env.API_URL}/users/updateUser`, {
+        _id: userDate._id,
+        exams: [...userDate.exams, exam]
+      }).then(res => {
+        console.log(res.data)
+      })
+      const updatedUser = { ...userDate, exams: [...userDate.exams, exam] };
+      await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
+
+      await axios.post(`${process.env.API_URL}/lessons/updateLesson`, {
+        _id: id,
+        students: [...examData.students, exam]
+      }).then(res => {
+        console.log(res.data)
+      })
+
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 
@@ -144,7 +190,7 @@ export default function Exam() {
         <StatusBar backgroundColor={Colors.mainColor} barStyle={startExam ? "light-content" : 'dark-content'} />
         {startExam && !showScore ? (
           <>
-            <ScrollView style={[ConstantStyles.page, { padding: 10, backgroundColor: Colors.mainColor }]}>
+            <ScrollView showsVerticalScrollIndicator={false} style={[ConstantStyles.page, { padding: 10, backgroundColor: Colors.mainColor }]}>
               <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start', marginVertical: 30, direction: 'rtl' }}>
                 <View style={{
                   width: '100%',
@@ -178,15 +224,79 @@ export default function Exam() {
                 <Text style={[ConstantStyles.Title2, { fontSize: 22, textAlign: 'center', marginTop: 10, color: Colors.bgColor }]}>{examData.questions[currentQuestion].description}</Text>
               </View>
               <View>
-                {examData.questions[currentQuestion].answers.map((answer: any, index: any) => (
-                  <TouchableOpacity key={index} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10, padding: 10, backgroundColor: Colors.bgColor, borderRadius: 5, borderWidth: 1, borderColor: Colors.textColor }} onPress={() => handelAnswers(answer)}>
-                    <Text style={[ConstantStyles.Title1, { fontSize: 22, textAlign: 'center' }]}>{answer.answer}</Text>
-                  </TouchableOpacity>
-                ))}
+                {examData.questions[currentQuestion].answers.map((answer: any, index: any) => {
+                  const isSelected = exam.answers[currentQuestion]?.answer === answer.answer;
+                  const isCorrect = answer.isRight === 'true';
+                  const backgroundColor = isSelected ? (isCorrect ? '#b9f5b6' : '#f5bfb6') : Colors.bgColor;
+
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        margin: 10,
+                        padding: 10,
+                        backgroundColor: backgroundColor,
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        borderColor: Colors.textColor,
+                      }}
+                      onPress={() => handelAnswers(answer)}
+                    >
+                      <Text style={[ConstantStyles.Title1, { fontSize: 22, textAlign: 'center' }]}>{answer.answer}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
               {/* Score */}
-              <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginVertical: 10 }}>
-                <Text style={[ConstantStyles.Title1, { fontSize: 26, textAlign: 'center', color: Colors.bgColor }]}>الدرجة الحالية: {score}</Text>
+              <View style={{ height: 60 }}>
+
+              </View>
+              <View style={{ display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', margin: 10, padding: 10, position: 'absolute', bottom: 0, width: '100%' }}>
+                {!nextShow && submitExam && currentQuestion === examData.questions.length - 1 ? (
+                  <>
+                    <TouchableOpacity style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }} onPress={() => {
+                      setSubmitExam(true)
+                      submitExamHandler()
+                      console.log(exam)
+                    }}>
+                      <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, marginRight: 10 }]}>تسليم الامتحان</Text>
+                      <FontAwesome5 name="paper-plane" size={24} color="white" />
+                    </TouchableOpacity>
+                  </>
+                ) : (
+                  <>
+                    <TouchableOpacity style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }} onPress={() => {
+                      setCurrentQuestion(currentQuestion + 1)
+                      setNextShow(false)
+                      console.log(exam)
+                    }}>
+                      <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, marginRight: 10 }]}>التالي</Text>
+                      <FontAwesome5 name="angle-right" size={24} color="white" />
+                    </TouchableOpacity>
+
+                  </>
+                )}
+                {currentQuestion !== 0 && (
+                  <TouchableOpacity style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                  }} onPress={() => {
+                    setCurrentQuestion(currentQuestion - 1)
+                  }}>
+                    <FontAwesome5 name="angle-left" size={24} color="white" />
+                    <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, marginLeft: 10 }]}>السابق</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </ScrollView>
           </>
@@ -264,7 +374,7 @@ export default function Exam() {
               </>
             ) : (
               <>
-                <ScrollView style={ConstantStyles.page}>
+                <ScrollView showsVerticalScrollIndicator={false} style={ConstantStyles.page}>
                   <View style={styles.videoContainer}>
                     <Image source={require('../../assets/images/lesson/doExam.png')} style={{ width: '100%', height: 200 }} />
                   </View>
@@ -307,8 +417,9 @@ export default function Exam() {
               </>
             )}
           </>
-        )}
-      </SafeAreaView>
+        )
+        }
+      </SafeAreaView >
     </>
   )
 }

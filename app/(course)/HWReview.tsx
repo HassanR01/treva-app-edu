@@ -49,7 +49,9 @@ export default function HWReview() {
 
       />
 
-      <ScrollView style={ConstantStyles.page}>
+      <ScrollView style={ConstantStyles.page}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.videoContainer}>
           <VideoView player={player} style={{
             width: '100%',

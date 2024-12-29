@@ -45,6 +45,7 @@ export default function Profile() {
                 />
             }
             style={ConstantStyles.page}
+            showsVerticalScrollIndicator={false}
         >
             <TouchableOpacity onPress={() => router.navigate('/(subPages)/EditUser')} style={styles.editIcon}>
                 <FontAwesome5 name="user-edit" size={24} color={Colors.mainColor} />
