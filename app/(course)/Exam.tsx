@@ -256,7 +256,7 @@ export default function Exam() {
 
               </View>
               <View style={{ display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', margin: 10, padding: 10, position: 'absolute', bottom: 0, width: '100%' }}>
-                {!nextShow && submitExam && currentQuestion === examData.questions.length - 1 ? (
+                {submitExam && currentQuestion === examData.questions.length - 1 ? (
                   <>
                     <TouchableOpacity style={{
                       display: 'flex',
@@ -272,17 +272,21 @@ export default function Exam() {
                   </>
                 ) : (
                   <>
-                    <TouchableOpacity style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                    }} onPress={() => {
-                      setCurrentQuestion(currentQuestion + 1)
-                      setNextShow(false)
-                      console.log(exam)
-                    }}>
-                      <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, marginRight: 10 }]}>التالي</Text>
-                      <FontAwesome5 name="angle-right" size={24} color="white" />
-                    </TouchableOpacity>
+                    {nextShow ? (
+                      <TouchableOpacity style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                      }} onPress={() => {
+                        setCurrentQuestion(currentQuestion + 1)
+                        console.log(exam)
+                      }}>
+                        <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, marginRight: 10 }]}>التالي</Text>
+                        <FontAwesome5 name="angle-right" size={24} color="white" />
+                      </TouchableOpacity>
+
+                    ) : (
+                      <></>
+                    )}
 
                   </>
                 )}
@@ -292,6 +296,7 @@ export default function Exam() {
                     flexDirection: 'row',
                   }} onPress={() => {
                     setCurrentQuestion(currentQuestion - 1)
+                    setNextShow(true)
                   }}>
                     <FontAwesome5 name="angle-left" size={24} color="white" />
                     <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, marginLeft: 10 }]}>السابق</Text>

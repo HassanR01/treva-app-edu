@@ -1,13 +1,17 @@
-import { Image, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ConstantStyles } from '@/Constants/constantStyles'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { user } from '@/components/context/DataContext'
+import { useDataContext, user } from '@/components/context/DataContext'
 import Loading from '@/components/Loading'
 import { Colors } from '@/Constants/Colors'
+import LessonComponent from '@/components/elements/LessonComponent'
 
 export default function Wallet() {
   const [user, setUser] = useState<user>()
+
+  const { lessons } = useDataContext()
+
 
 
   const fetchUser = async () => {
@@ -26,6 +30,11 @@ export default function Wallet() {
   } else {
 
     const TotalBillsCost = user.bills.reduce((acc, bill) => acc + +bill.cost, 0)
+
+    const lessonMeanet = (lesson: any) => {
+      const lessonMean = lessons?.find((l: any) => l._id === lesson)
+      return lessonMean
+    }
 
     return (
       <ScrollView
@@ -52,6 +61,19 @@ export default function Wallet() {
             <Text style={[ConstantStyles.Title1, { fontSize: 50 }]}>{user.points}.00</Text>
             <Text style={[ConstantStyles.Title1, { fontSize: 20, marginTop: 5, marginRight: 5 }]}>ج.م</Text>
           </View>
+        </View>
+        {/* Charge */}
+        <View style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          direction: 'rtl',
+          marginTop: 20,
+        }}>
+          <TouchableOpacity style={[ConstantStyles.btn, { width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginVertical: 0 }]}>
+            <Text style={[ConstantStyles.Title3, { fontSize: 24, color: Colors.bgColor }]}>شحن الرصيد</Text>
+          </TouchableOpacity>
         </View>
         {/* StudentType */}
         <View style={{
@@ -119,7 +141,12 @@ export default function Wallet() {
 
         {/* Lessons */}
         <Text style={[ConstantStyles.Title2, { marginTop: 20 }]}>المحاضرات</Text>
-
+        <View style={{ display: 'flex', flexDirection: 'column', direction: 'rtl', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+          {user.lessons.map((lesson, index) => {
+            const lessonData = lessonMeanet(lesson);
+            return lessonData && <LessonComponent key={index} lesson={lessonData} user={user} />;
+          })}
+        </View>
       </ScrollView>
     )
   }

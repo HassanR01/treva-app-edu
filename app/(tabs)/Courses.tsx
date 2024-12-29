@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ConstantStyles } from '@/Constants/constantStyles'
 import { useDataContext, user } from '@/components/context/DataContext'
@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import LessonComponent from '@/components/elements/LessonComponent'
 import Loading from '@/components/Loading'
 import ExamComponent from '@/components/elements/ExamComponent'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 const subjects = [
   { image: require('../../assets/images/subjects/arabic.png'), name: 'اللغة العربية' },
@@ -32,16 +33,17 @@ const subjects = [
 export default function Courses() {
   const [user, setUser] = useState<user>()
   const { users, lessons } = useDataContext()
+  
+  const fetchUser = async () => {
+    const userExist = await AsyncStorage.getItem('user')
+    if (userExist) {
+      setUser(JSON.parse(userExist))
+    } else {
+      router.push('/(SignIn)')
+    }
+  }
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const userExist = await AsyncStorage.getItem('user')
-      if (userExist) {
-        setUser(JSON.parse(userExist))
-      } else {
-        router.push('/(SignIn)')
-      }
-    }
     fetchUser()
   }, [])
 
@@ -56,6 +58,14 @@ export default function Courses() {
 
     return (
       <ScrollView style={ConstantStyles.page}
+        refreshControl={
+          <RefreshControl
+            colors={[Colors.mainColor]}
+            progressBackgroundColor={Colors.bgColor}
+            refreshing={false}
+            onRefresh={() => fetchUser()}
+          />
+        }
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >

@@ -104,6 +104,9 @@ export interface user {
         date: string,
         method: string,
     }[],
+    lessons: {
+        _id: string,
+    }[],
     logs: {}[],
 
     // Techers
@@ -164,12 +167,12 @@ export default function DataProvider({ children }: { children: React.ReactNode }
             console.log(error)
         }
     }
-    
+
     useEffect(() => {
         fetchData()
         const interval = setInterval(() => {
             fetchData()
-        }, 600) // 1 minute
+        }, 1000) // 1 minute
 
         return () => clearInterval(interval)
     }, [])

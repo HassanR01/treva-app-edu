@@ -32,25 +32,7 @@ const validationSchema = yup.object().shape({
 })
 
 export default function LogInScreen() {
-  const config = {
-    iosClientId,
-    androidClientId,
-    webClientId
-  }
-  const [request, response, promptAsync] = Google.useIdTokenAuthRequest(config)
-  const handelToken = async () => {
-    if (response?.type === 'success') {
-      const { authentication } = response
-      const token = authentication?.accessToken
-      console.log(token)
-    }
-  }
-  useEffect(() => {
-    handelToken()
-  }, [response])
-
   const { users } = useDataContext()
-
 
   const animation = useRef<LottieView>(null)
   const [userInfo, setUserInfo] = useState({
@@ -68,19 +50,6 @@ export default function LogInScreen() {
     } else {
       alert('User Not Found')
     }
-
-    // try {
-    //   const res = await axios.post('http://10.0.0.7:5000/api/v1/users/login', { mobile, password })
-    //   if (res.data.status == 'ok') {
-    //     alert('User Logged In Successfully')
-    //     AsyncStorage.setItem('token', res.data.data)
-    //     router.push('/(tabs)')
-    //   } else {
-    //     alert('User Not Found')
-    //   }
-    // } catch (error) {
-    //   console.log(error)
-    // }
   }
 
   if (!users) {
