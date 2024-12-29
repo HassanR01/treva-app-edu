@@ -1,4 +1,4 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Image, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ConstantStyles } from '@/Constants/constantStyles'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -28,7 +28,17 @@ export default function Wallet() {
     const TotalBillsCost = user.bills.reduce((acc, bill) => acc + +bill.cost, 0)
 
     return (
-      <ScrollView style={[ConstantStyles.page, { padding: 20 }]}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            colors={[Colors.mainColor]}
+            progressBackgroundColor={Colors.bgColor}
+            refreshing={false}
+            onRefresh={() => fetchUser()}
+          />
+        }
+        style={[ConstantStyles.page, { padding: 20 }]}
+      >
         <Text style={ConstantStyles.Title1}>المحفظة</Text>
         <View style={{
           display: 'flex',
@@ -56,9 +66,9 @@ export default function Wallet() {
           <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <Text style={[ConstantStyles.Title1, { fontSize: 30, marginLeft: 10 }]}>{user.type}</Text>
             {user.type === 'TrevaGo' ? (
-              <Image source={require('../../assets/images/trevaGo.png')} style={{ width: 50, height: 50}} />
+              <Image source={require('../../assets/images/trevaGo.png')} style={{ width: 50, height: 50 }} />
             ) : (
-              <Image source={require('../../assets/images/trevaIn.png')} style={{ width: 50, height: 50}} />
+              <Image source={require('../../assets/images/trevaIn.png')} style={{ width: 50, height: 50 }} />
             )}
           </View>
         </View>

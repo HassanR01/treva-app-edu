@@ -146,29 +146,34 @@ export default function DataProvider({ children }: { children: React.ReactNode }
     const [lessons, setLessons] = React.useState<lesson[] | null>(null)
     const [users, setUsers] = React.useState<user[] | null>(null)
     const [payments, setPayments] = React.useState<payment[] | null>(null)
-
     const apiURL = process.env.API_URL
-console.log(apiURL)
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [resLessons, resUsers, resPayments] = await Promise.all([
-                    axios.get<lesson[]>(`${apiURL}/lessons/getLessons`),
-                    axios.get<user[]>(`${apiURL}/users/getUsers`),
-                    axios.get<payment[]>(`${apiURL}/payments/getPayments`),
-                ])
 
-                setLessons(resLessons.data)
-                setUsers(resUsers.data)
-                setPayments(resPayments.data)
+    const fetchData = async () => {
+        try {
+            const [resLessons, resUsers, resPayments] = await Promise.all([
+                axios.get<lesson[]>(`${apiURL}/lessons/getLessons`),
+                axios.get<user[]>(`${apiURL}/users/getUsers`),
+                axios.get<payment[]>(`${apiURL}/payments/getPayments`),
+            ])
 
-            } catch (error) {
-                console.log(error)
-            }
+            setLessons(resLessons.data)
+            setUsers(resUsers.data)
+            setPayments(resPayments.data)
+
+        } catch (error) {
+            console.log(error)
         }
-
+    }
+    
+    useEffect(() => {
         fetchData()
+        const interval = setInterval(() => {
+            fetchData()
+        }, 600) // 1 minute
+
+        return () => clearInterval(interval)
     }, [])
+
 
 
 

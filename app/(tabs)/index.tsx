@@ -25,6 +25,13 @@ export default function Home() {
         const lastLessons = await AsyncStorage.getItem('lastLessons');
         if (userExist) {
             setUser(JSON.parse(userExist))
+            if (user) {
+                const userExist = users?.find(userDB => userDB._id === user._id)
+                if (userExist && JSON.stringify(userExist) !== JSON.stringify(user)) {
+                    setUser(userExist)
+                    AsyncStorage.setItem('user', JSON.stringify(userExist))
+                }
+            }
         } else {
             router.push('/(SignIn)/Welcome')
         }
@@ -32,7 +39,7 @@ export default function Home() {
         if (lastLessons) {
             // find the lessons and update from database
             setLessonsInStorage(JSON.parse(lastLessons));
-            
+
             const updatedLessons = lessons?.filter(lesson => {
                 return JSON.parse(lastLessons).some((lessonInStorage: lesson) => lessonInStorage._id === lesson._id)
             })
@@ -45,9 +52,24 @@ export default function Home() {
 
     }
 
+    const updateUserFromDB = () => {
+
+        if (user) {
+            const userExist = users?.find(userDB => userDB._id === user._id)
+            if (userExist) {
+                setUser(userExist)
+                AsyncStorage.setItem('user', JSON.stringify(userExist))
+
+
+            } else {
+                router.push('/(SignIn)/Welcome')
+            }
+        }
+    }
+
     useEffect(() => {
         fetchUser()
-    }, [])
+    }, [users])
 
     const subjects = [
         { image: require('../../assets/images/subjects/arabic.png'), name: 'اللغة العربية' },
@@ -68,8 +90,8 @@ export default function Home() {
         { image: require('../../assets/images/subjects/philosophy.png'), name: 'علم النفس' },
     ]
 
-    
-    
+
+
     if (!users || !lessons || !user) {
         return <Loading />
     } else {
@@ -126,7 +148,7 @@ export default function Home() {
                             colors={[Colors.mainColor]}
                             progressBackgroundColor={Colors.bgColor}
                             refreshing={false}
-                            onRefresh={() => fetchUser()}
+                            onRefresh={() => updateUserFromDB()}
                         />
                     }
                     style={ConstantStyles.page}
