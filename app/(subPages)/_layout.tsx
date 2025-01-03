@@ -41,6 +41,11 @@ export default function Layout() {
         options={{
           headerShown: false
         }} />
+      <Stack.Screen name='Leaderboard'
+        options={{
+          headerShown: false
+        }}
+      />
     </Stack>
   )
 }

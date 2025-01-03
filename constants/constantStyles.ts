@@ -78,7 +78,9 @@ export const ConstantStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        backgroundColor: Colors.calmWhite,
+        backgroundColor: Colors.bgColor,
+        borderWidth: 1,
+        borderColor: Colors.mainColor,
         marginVertical: 5
     },
     section: {

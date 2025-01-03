@@ -126,7 +126,7 @@ export default function EditUser() {
                 </View>
 
                 {/* User Info */}
-                <View style={ConstantStyles.section}>
+                <View style={[ConstantStyles.section, { backgroundColor: Colors.bgColor, padding: 20 }]}>
                     <View style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -158,7 +158,7 @@ export default function EditUser() {
                         <TextInput
                             placeholder={user.email}
                             placeholderTextColor={"#ccc"}
-                            style={[ConstantStyles.inputText, { width: '70%', fontSize: 20 }]}
+                            style={[ConstantStyles.inputText, { width: '60%', fontSize: 20 }]}
                             value={email}
                             onChangeText={(e) => setEmail(e)}
                         />

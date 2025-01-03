@@ -12,6 +12,7 @@ import { date } from 'yup'
 import LessonComponent from '@/components/elements/LessonComponent'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import LottieView from 'lottie-react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 
 
 export default function Home() {
@@ -136,7 +137,7 @@ export default function Home() {
             <>
                 <View style={styles.header}>
                     <Link href={'/Profile'}>
-                        <Image className='border border-black rounded-full overflow-hidden' source={{ uri: user?.image || 'https://res.cloudinary.com/db152mwtg/image/upload/v1732834946/Treva%20Edu%20App/users/majicowky6me6stkjpuf.jpg' }} width={50} height={50} />
+                        <Image className='border border-black rounded-full overflow-hidden' source={{ uri: user?.image || 'https://res.cloudinary.com/db152mwtg/image/upload/v1734695620/Treva%20Edu%20App/users/tx4dze4uiwb1in8hkz0z.png' }} width={50} height={50} />
                     </Link>
                     <View>
                         <Text style={ConstantStyles.Title1}>مرحباً, {name}</Text>
@@ -197,27 +198,44 @@ export default function Home() {
                                 </View>
                             </View>
                             {/* Scoure */}
-                            <View style={styles.ScoureContainer}>
-                                <Image source={require('../../assets/images/star.gif')} style={{ width: 40, height: 40, borderRadius: 50, position: 'absolute', top: -5, right: -5 }} />
-                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
-                                    <Text style={[ConstantStyles.Title1, { fontSize: 30 }]}>النقاط</Text>
-                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                        <Text style={[ConstantStyles.Title1, { fontSize: 70 }]}>{score}</Text>
+                            <TouchableOpacity style={styles.ScoureContainer} onPress={() => router.push('/(subPages)/Leaderboard')}>
+                                <Image source={require('../../assets/images/star.gif')} style={{ width: 40, height: 40, borderRadius: 50, position: 'absolute', top: -5, right: -5, zIndex: 10 }} />
+                                <LinearGradient
+                                    colors={[Colors.calmWhite, "#ffc18e"]}
+                                    start={{ x: 1, y: 0 }}
+                                    end={{ x: 0.4, y: 1 }}
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'center',
+                                        width: '100%',
+                                        height: '100%',
+                                        paddingHorizontal: 20,
+                                        paddingVertical: 10,
+                                        borderRadius: 10,
+                                    }}
+                                >
+                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
+                                        <Text style={[ConstantStyles.Title1, { fontSize: 30 }]}>النقاط</Text>
+                                        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 70 }]}>{score}</Text>
+                                        </View>
                                     </View>
-                                </View>
-                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl', marginBottom: 10 }}>
-                                    <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>الترتيب</Text>
-                                    <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>{rank}st</Text>
-                                </View>
-                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
-                                    <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>المحاضرات المشاهدة</Text>
-                                    <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>{user.videos.length}</Text>
-                                </View>
-                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
-                                    <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>الامتحانات</Text>
-                                    <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>{user.exams.length}</Text>
-                                </View>
-                            </View>
+                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl', marginBottom: 10 }}>
+                                        <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>الترتيب</Text>
+                                        <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>{rank}st</Text>
+                                    </View>
+                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
+                                        <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>المحاضرات المشاهدة</Text>
+                                        <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>{user.videos.length}</Text>
+                                    </View>
+                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
+                                        <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>الامتحانات</Text>
+                                        <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>{user.exams.length}</Text>
+                                    </View>
+                                </LinearGradient>
+                            </TouchableOpacity>
 
                             {/* Subjects */}
                             <View style={styles.Subjects}>
@@ -343,9 +361,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         width: Dimensions.get('screen').width - 40,
         height: 200,
-        backgroundColor: Colors.calmWhite,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
         alignItems: 'center',
         margin: 10,
         direction: 'rtl',

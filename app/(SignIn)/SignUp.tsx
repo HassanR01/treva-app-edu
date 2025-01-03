@@ -160,7 +160,7 @@ export default function SignUp() {
                 {errors.confirmPassword && touched.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
                 <View style={styles.centerObjects}>
                   <Button title={'تسجيــل'} action={handleSubmit} />
-                  <Text style={ConstantStyles.normalText}>بالفعل لديك حساب ؟ <Link style={{ color: Colors.mainColor }} href={'/LogInScreen'}>تسجيل دخول</Link></Text>
+                  <Text style={ConstantStyles.normalText}>بالفعل لديك حساب ؟ <Link style={{ color: Colors.mainColor, fontFamily: Fonts.boldText }} href={'/LogInScreen'}>تسجيل دخول</Link></Text>
                 </View>
               </>
             )}
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.itemBgColor,
+    backgroundColor: Colors.mainColor,
     borderBottomStartRadius: 50,
     marginBottom: 10,
   },
