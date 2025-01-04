@@ -201,9 +201,10 @@ export default function Home() {
                             <TouchableOpacity style={styles.ScoureContainer} onPress={() => router.push('/(subPages)/Leaderboard')}>
                                 <Image source={require('../../assets/images/star.gif')} style={{ width: 40, height: 40, borderRadius: 50, position: 'absolute', top: -5, right: -5, zIndex: 10 }} />
                                 <LinearGradient
-                                    colors={[Colors.calmWhite, "#ffc18e"]}
+                                    colors={[Colors.itemBgColor, Colors.bgColor]}
                                     start={{ x: 1, y: 0 }}
-                                    end={{ x: 0.4, y: 1 }}
+                                    end={{ x: 0, y: 1 }}
+                                    locations={[0.15, 1]}
                                     style={{
                                         display: 'flex',
                                         flexDirection: 'column',

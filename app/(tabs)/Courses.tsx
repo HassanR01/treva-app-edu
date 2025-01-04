@@ -33,7 +33,7 @@ const subjects = [
 export default function Courses() {
   const [user, setUser] = useState<user>()
   const { users, lessons } = useDataContext()
-  
+
   const fetchUser = async () => {
     const userExist = await AsyncStorage.getItem('user')
     if (userExist) {
@@ -47,14 +47,16 @@ export default function Courses() {
     fetchUser()
   }, [])
 
-  const filteredLessons = lessons?.filter(lesson => lesson.grade === user?.grade).reverse()
-
-  const Exams = filteredLessons?.map(lesson => lesson.exam)
 
   if (!users || !lessons || !user) {
     return <Loading />
 
   } else {
+
+    const filteredLessons = lessons?.filter(lesson => lesson.grade === user?.grade).reverse()
+    filteredLessons?.reverse()
+
+    const Exams = filteredLessons?.map(lesson => lesson.exam)
 
     return (
       <ScrollView style={ConstantStyles.page}
@@ -89,7 +91,7 @@ export default function Courses() {
         </View>
         {/* last Lessons */}
         <Text style={[ConstantStyles.Title2, { marginTop: 20 }]}>اخر المحاضرات</Text>
-        <View style={{display: 'flex', flexDirection: 'column', direction: 'rtl', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ display: 'flex', flexDirection: 'column', direction: 'rtl', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
           {filteredLessons?.map((lesson, index) => {
             return (
               <LessonComponent key={index} lesson={lesson} user={user} />
@@ -97,7 +99,7 @@ export default function Courses() {
           }).slice(0, 9)}
         </View>
 
-        {/* last Exams */}
+        {/* last Exams
         <Text style={[ConstantStyles.Title2, { marginTop: 20 }]}>اخر الامتحانات</Text>
         <View style={{display: 'flex', flexDirection: 'column', direction: 'rtl', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
           {filteredLessons?.map((lesson, index) => (
@@ -106,7 +108,7 @@ export default function Courses() {
             </View>
           )) }
         </View>
-        
+         */}
       </ScrollView>
     )
   }
