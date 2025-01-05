@@ -112,7 +112,7 @@ export default function Exam() {
     name: string,
     title: string,
     totalPoints: number,
-    answers: { answer: string, points: number }[],
+    answers: { question: string , answer: string, points: number }[],
   }>({
     name: userDate.name,
     title: examData.title,
@@ -130,6 +130,7 @@ export default function Exam() {
     }
 
     let answer = {
+      question: examData.questions[currentQuestion].title,
       answer: ans.answer,
       points: ans.isRight === 'true' ? examData.questions[currentQuestion].points : 0
     }

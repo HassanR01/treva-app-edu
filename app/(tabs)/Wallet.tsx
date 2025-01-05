@@ -140,13 +140,13 @@ export default function Wallet() {
         </View>
 
         {/* Lessons */}
-        <Text style={[ConstantStyles.Title2, { marginTop: 20 }]}>المحاضرات</Text>
+        {/* <Text style={[ConstantStyles.Title2, { marginTop: 20 }]}>المحاضرات</Text>
         <View style={{ display: 'flex', flexDirection: 'column', direction: 'rtl', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
           {user.lessons.map((lesson, index) => {
             const lessonData = lessonMeanet(lesson);
             return lessonData && <LessonComponent key={index} lesson={lessonData} user={user} />;
           })}
-        </View>
+        </View> */}
       </ScrollView>
     )
   }
