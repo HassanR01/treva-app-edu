@@ -39,8 +39,7 @@ export default function Course() {
       alert('يجب شراء المحاضرة اولاً')
       setHasLesson(false)
       } else if (userData.videos.some((vid: { title: string }) => vid.title === video.title)) {
-      alert('لقد قمت بمشاهدة هذا الدرس من قبل')
-      router.push({
+       router.push({
         pathname: '/(course)/explainVideo',
         params: {
         lesson: JSON.stringify(lessonData),
@@ -73,7 +72,6 @@ export default function Course() {
   const updateHomeWorkVideo = async (video: { title: any }) => {
     if (hasLesson) {
       if (userData?.videos?.find((vid: { title: string | undefined }) => vid.title === video.title)) {
-        alert('لقد قمت بمشاهدة هذا الدرس من قبل')
         router.push({
           pathname: '/(course)/HWReview',
           params: {
@@ -104,7 +102,6 @@ export default function Course() {
   const updateExamVideo = async (video: { title: any }) => {
     if (hasLesson) {
       if (userData?.videos?.find((vid: { title: string | undefined }) => vid.title === video.title)) {
-        alert('لقد قمت بمشاهدة هذا الدرس من قبل')
         router.push({
           pathname: '/(course)/examVideo',
           params: {
@@ -349,7 +346,7 @@ export default function Course() {
             </View>
           </View>
           {!hasLesson && (
-
+ 
             <Modal
               animationType="slide"
               transparent={true}
