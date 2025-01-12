@@ -6,6 +6,7 @@ import { Colors } from '@/Constants/Colors'
 import { Feather, FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import { ConstantStyles } from '@/Constants/constantStyles'
 import { useVideoPlayer, VideoView } from 'expo-video'
+import YoutubeIframe from 'react-native-youtube-iframe'
 
 interface props {
   lesson: lesson
@@ -53,13 +54,21 @@ export default function ExamVideo() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.videoContainer}>
-          <VideoView player={player} style={{
-            width: '100%',
-            height: '100%',
-          }}
-            allowsFullscreen
-            allowsPictureInPicture
-            startsPictureInPictureAutomatically
+          <YoutubeIframe
+            videoId={ExamVideo.link}
+            height={210}
+            width={Dimensions.get('window').width - 20}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              right: 50,
+              bottom: 10,
+              padding: 5,
+              zIndex: 1,
+              width: 70,
+              height: 30,
+            }}
           />
         </View>
         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 10, direction: 'rtl' }}>
