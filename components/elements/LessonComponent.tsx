@@ -197,13 +197,14 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     backComplete: {
-        ...StyleSheet.absoluteFillObject,
+        height: 5,
         backgroundColor: Colors.itemBgColor,
         position: 'absolute',
         borderRadius: 10,
         zIndex: -1,
         top: 0,
         left: 0,
+
     },
     lessonImage: {
         width: 20,

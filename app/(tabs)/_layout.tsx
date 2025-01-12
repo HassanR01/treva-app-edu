@@ -10,7 +10,7 @@ export default function Layout() {
     return (
         <SafeAreaView edges={['top', 'left', 'right']} style={{
             flex: 1,
-            backgroundColor: Colors.bgColor,
+            backgroundColor: Colors.mainColor,
         }}>
             <Tabs screenOptions={{
                 headerShown: false,
@@ -18,7 +18,8 @@ export default function Layout() {
                     paddingBottom: 0,
                     marginVertical: 0,
                     gap: 10,
-                    direction: 'rtl'
+                    direction: 'rtl',
+                    backgroundColor: Colors.calmWhite,
                 },
                 tabBarLabelStyle: {
                     marginTop: 5,
@@ -30,8 +31,8 @@ export default function Layout() {
                 <Tabs.Screen name='index' options={{
                     title: 'الرئيسية',
                     tabBarActiveTintColor: Colors.mainColor,
-                    tabBarInactiveBackgroundColor: Colors.bgColor,
-                    tabBarActiveBackgroundColor: Colors.bgColor,
+                    tabBarInactiveBackgroundColor: Colors.calmWhite,
+                    tabBarActiveBackgroundColor: Colors.calmWhite,
                     tabBarInactiveTintColor: Colors.textColor,
                     tabBarHideOnKeyboard: true,
                     tabBarAllowFontScaling: true,
@@ -40,8 +41,8 @@ export default function Layout() {
                 <Tabs.Screen name='Courses' options={{
                     title: 'المحاضرات',
                     tabBarActiveTintColor: Colors.mainColor,
-                    tabBarInactiveBackgroundColor: Colors.bgColor,
-                    tabBarActiveBackgroundColor: Colors.bgColor,
+                    tabBarInactiveBackgroundColor: Colors.calmWhite,
+                    tabBarActiveBackgroundColor: Colors.calmWhite,
                     tabBarInactiveTintColor: Colors.textColor,
                     tabBarHideOnKeyboard: true,
                     tabBarAllowFontScaling: true,
@@ -50,8 +51,8 @@ export default function Layout() {
                 <Tabs.Screen name='Wallet' options={{
                     title: 'المحفظة',
                     tabBarActiveTintColor: Colors.mainColor,
-                    tabBarInactiveBackgroundColor: Colors.bgColor,
-                    tabBarActiveBackgroundColor: Colors.bgColor,
+                    tabBarInactiveBackgroundColor: Colors.calmWhite,
+                    tabBarActiveBackgroundColor: Colors.calmWhite,
                     tabBarInactiveTintColor: Colors.textColor,
                     tabBarHideOnKeyboard: true,
                     tabBarAllowFontScaling: true,
@@ -60,8 +61,8 @@ export default function Layout() {
                 <Tabs.Screen name='Profile' options={{
                     title: 'بياناتـــك',
                     tabBarActiveTintColor: Colors.mainColor,
-                    tabBarInactiveBackgroundColor: Colors.bgColor,
-                    tabBarActiveBackgroundColor: Colors.bgColor,
+                    tabBarInactiveBackgroundColor: Colors.calmWhite,
+                    tabBarActiveBackgroundColor: Colors.calmWhite,
                     tabBarInactiveTintColor: Colors.textColor,
                     tabBarHideOnKeyboard: true,
                     tabBarAllowFontScaling: true,

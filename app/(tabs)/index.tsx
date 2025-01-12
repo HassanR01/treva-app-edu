@@ -132,19 +132,21 @@ export default function Home() {
 
         const rank = sortedStudents?.findIndex(student => student._id === user._id) + 1;
 
+        const filteredLessons = lessons?.filter(lesson => lesson.grade === user?.grade).reverse()
+        filteredLessons?.reverse()
 
         return (
             <>
                 <View style={styles.header}>
                     <Link href={'/Profile'}>
-                        <Image className='border border-black rounded-full overflow-hidden' source={{ uri: user?.image || 'https://res.cloudinary.com/db152mwtg/image/upload/v1734695620/Treva%20Edu%20App/users/tx4dze4uiwb1in8hkz0z.png' }} width={50} height={50} />
+                        <Image style={{backgroundColor: Colors.calmWhite}} className='border border-black rounded-full overflow-hidden' source={{ uri: user?.image || 'https://res.cloudinary.com/db152mwtg/image/upload/v1734695620/Treva%20Edu%20App/users/tx4dze4uiwb1in8hkz0z.png' }} width={50} height={50} />
                     </Link>
                     <View>
-                        <Text style={ConstantStyles.Title1}>مرحباً, {name}</Text>
-                        <Text style={ConstantStyles.normalText}>الساعة بتقبل القسمة علي 60 ؟ 👀</Text>
+                        <Text style={[ConstantStyles.Title1, {color: Colors.calmWhite}]}>مرحباً, {name}</Text>
+                        <Text style={[ConstantStyles.normalText, {color: Colors.calmWhite}]}>الساعة بتقبل القسمة علي 60 ؟ 👀</Text>
                     </View>
                 </View>
-                <StatusBar barStyle={'dark-content'} />
+                <StatusBar barStyle={'light-content'} />
                 <ScrollView
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={
@@ -181,27 +183,27 @@ export default function Home() {
                                 />
                             </View>
                             {/* Search input */}
-                            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 10, direction: 'rtl' }}>
+                            <TouchableOpacity onPress={() => router.push('/(subPages)/search')} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 10, direction: 'rtl', backgroundColor: Colors.calmWhite, borderRadius: 10, padding: 10 }}>
                                 <TouchableOpacity style={styles.iconContainer} onPress={() => router.push('/(subPages)/search')}>
-                                    <FontAwesome name="search" size={24} color={Colors.bgColor} />
+                                    <FontAwesome name="search" size={30} color={Colors.mainColor} />
                                 </TouchableOpacity>
                                 <View>
                                     <TextInput
                                         style={[styles.inputText]}
-                                        placeholder="ابحث عن محاضرة"
+                                        placeholder="دور  براحتك 😁"
                                         placeholderTextColor={Colors.mainColor}
                                         onFocus={() => router.push('/(subPages)/search')}
-
                                         value={search}
-                                        onChangeText={(e => setSearch(e))}
+                                        onChangeText={(e => router.push('/(subPages)/search'))}
+                                        
                                     />
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                             {/* Scoure */}
                             <TouchableOpacity style={styles.ScoureContainer} onPress={() => router.push('/(subPages)/Leaderboard')}>
                                 <Image source={require('../../assets/images/star.gif')} style={{ width: 40, height: 40, borderRadius: 50, position: 'absolute', top: -5, right: -5, zIndex: 10 }} />
                                 <LinearGradient
-                                    colors={[Colors.itemBgColor, Colors.bgColor]}
+                                    colors={[Colors.calmWhite, Colors.calmWhite]}
                                     start={{ x: 1, y: 0 }}
                                     end={{ x: 0, y: 1 }}
                                     locations={[0.15, 1]}
@@ -240,24 +242,18 @@ export default function Home() {
 
                             {/* Subjects */}
                             <View style={styles.Subjects}>
-                                <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>المواد</Text>
+                                <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>المحاضرات الجديدة</Text>
                                 <ScrollView
                                     style={{ direction: 'rtl' }}
                                     showsHorizontalScrollIndicator={false}
+                                    pagingEnabled={true}
                                     horizontal
                                 >
-                                    {subjects.map((subject, index) => (
-                                        <TouchableOpacity key={index} style={styles.cardsubject} onPress={() => router.push({
-                                            pathname: '/(subPages)/Results',
-                                            params: {
-                                                data: subject.name,
-                                            }
-                                        })}>
-                                            <Image source={subject.image} width={100} height={100} style={{ width: 50, height: 50 }} />
-                                            <Text style={ConstantStyles.Title3}>{subject.name}</Text>
-                                        </TouchableOpacity>
-                                    ))}
+                                    {lessons?.map((lesson, index) => (
+                                        <LessonComponent key={index} lesson={lesson} user={user} />
+                                    )).slice(0, 5)}
                                 </ScrollView>
+
                                 <View style={{
                                     position: 'absolute',
                                     top: 150,
@@ -313,7 +309,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
     },
     header: {
-        backgroundColor: Colors.bgColor,
+        backgroundColor: Colors.mainColor,
         padding: 10,
         width: '100%',
         textAlign: 'right',
@@ -341,19 +337,15 @@ const styles = StyleSheet.create({
         height: 120,
     },
     iconContainer: {
-        backgroundColor: Colors.mainColor,
-        padding: 10,
+        padding: 5,
         borderRadius: 5,
     },
     inputText: {
         padding: 6,
         fontSize: 24,
         fontFamily: Fonts.mediumText,
-        width: Dimensions.get('screen').width - 90,
+        width: Dimensions.get('screen').width - 100,
         textAlign: 'right',
-        marginRight: 10,
-        borderWidth: 2,
-        borderColor: Colors.mainColor,
         borderRadius: 5,
     },
     ScoureContainer: {
