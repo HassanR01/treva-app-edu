@@ -198,11 +198,11 @@ const styles = StyleSheet.create({
     },
     backComplete: {
         height: 5,
-        backgroundColor: Colors.itemBgColor,
+        backgroundColor: Colors.mainColor,
         position: 'absolute',
         borderRadius: 10,
         zIndex: -1,
-        top: 0,
+        bottom: 0,
         left: 0,
 
     },
