@@ -112,7 +112,7 @@ export default function Exam() {
     name: string,
     title: string,
     totalPoints: number,
-    answers: { question: string , answer: string, points: number }[],
+    answers: { question: string, answer: string, points: number }[],
   }>({
     name: userDate.name,
     title: examData.title,
@@ -187,7 +187,7 @@ export default function Exam() {
       <Stack.Screen options={{
         headerShown: false,
       }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: startExam ? Colors.mainColor : Colors.bgColor }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: startExam ? Colors.mainColor : Colors.calmWhite }}>
         <StatusBar backgroundColor={Colors.mainColor} barStyle={startExam ? "light-content" : 'dark-content'} />
         {startExam && !showScore ? (
           <>
@@ -213,7 +213,7 @@ export default function Exam() {
                   </View>
                   <Timer />
                 </View>
-                <Text style={[ConstantStyles.Title1, { fontSize: 26, color: Colors.bgColor }]}>السؤال {currentQuestion + 1} من {examData.questions.length}</Text>
+                <Text style={[ConstantStyles.Title1, { fontSize: 26, color: Colors.calmWhite }]}>السؤال {currentQuestion + 1} من {examData.questions.length}</Text>
               </View>
               <View>
                 {examData.questions[currentQuestion].image ? (
@@ -221,14 +221,14 @@ export default function Exam() {
                 ) : (
                   <View style={{ height: 200 }}></View>
                 )}
-                <Text style={[ConstantStyles.Title1, { fontSize: 26, textAlign: 'center', marginTop: 10, color: Colors.bgColor }]}>{examData.questions[currentQuestion].title}</Text>
-                <Text style={[ConstantStyles.Title2, { fontSize: 22, textAlign: 'center', marginTop: 10, color: Colors.bgColor }]}>{examData.questions[currentQuestion].description}</Text>
+                <Text style={[ConstantStyles.Title1, { fontSize: 26, textAlign: 'center', marginTop: 10, color: Colors.calmWhite }]}>{examData.questions[currentQuestion].title}</Text>
+                <Text style={[ConstantStyles.Title2, { fontSize: 22, textAlign: 'center', marginTop: 10, color: Colors.calmWhite }]}>{examData.questions[currentQuestion].description}</Text>
               </View>
               <View>
                 {examData.questions[currentQuestion].answers.map((answer: any, index: any) => {
                   const isSelected = exam.answers[currentQuestion]?.answer === answer.answer;
                   const isCorrect = answer.isRight === 'true';
-                  const backgroundColor = isSelected ? (isCorrect ? '#b9f5b6' : '#f5bfb6') : Colors.bgColor;
+                  const backgroundColor = isSelected ? (isCorrect ? '#b9f5b6' : '#f5bfb6') : Colors.calmWhite;
 
                   return (
                     <TouchableOpacity
@@ -338,15 +338,15 @@ export default function Exam() {
                       />
                     </>
                   )}
-                  <Text style={[ConstantStyles.Title1, { fontSize: 26, textAlign: 'center', marginVertical: 10, color: Colors.bgColor }]}>النتيجة النهائية</Text>
+                  <Text style={[ConstantStyles.Title1, { fontSize: 26, textAlign: 'center', marginVertical: 10, color: Colors.calmWhite }]}>النتيجة النهائية</Text>
                   <Text style={[ConstantStyles.Title2, { fontSize: 22, textAlign: 'center', color: score >= totalExamPoints ? '#39FF14' : 'yellow' }]}>الدرجة: {score} من {totalExamPoints}</Text>
                   {score >= totalExamPoints / 2 ? <Text style={[ConstantStyles.Title1, { fontSize: 28, textAlign: 'center', color: '#39FF14' }]}>شاطر يا صديقي .. استمر</Text> : <Text style={[ConstantStyles.Title1, { fontSize: 26, textAlign: 'center', color: 'yellow' }]}>ذاكر اكتر و هتنجح المرة الجاية</Text>}
                   <View>
-                    <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 20, padding: 10, backgroundColor: Colors.bgColor, borderRadius: 5, borderWidth: 1, borderColor: Colors.textColor, width: 250 }} onPress={() => {
+                    <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 20, padding: 10, backgroundColor: Colors.calmWhite, borderRadius: 5, borderWidth: 1, borderColor: Colors.textColor, width: 250 }} onPress={() => {
                       router.push({
                         pathname: '/(subPages)/reviewExam',
                         params: {
-                          user: JSON.stringify(userDate.exams[-1]),
+                          exam: JSON.stringify(exam)
                         }
                       })
                     }}>
@@ -442,6 +442,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: Colors.bgColor,
+    borderColor: Colors.calmWhite,
   },
 })

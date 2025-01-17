@@ -173,12 +173,12 @@ export default function Home() {
 
         return (
             <>
-                <View style={styles.header}>
+                <View style={[styles.header, ConstantStyles.shadowContainer]}>
                     <Link href={'/Profile'}>
                         <Image style={{ backgroundColor: Colors.calmWhite }} className='border border-black rounded-full overflow-hidden' source={{ uri: user?.image || 'https://res.cloudinary.com/db152mwtg/image/upload/v1734695620/Treva%20Edu%20App/users/tx4dze4uiwb1in8hkz0z.png' }} width={50} height={50} />
                     </Link>
                     <View>
-                        <Text style={[ConstantStyles.Title1, { color: Colors.calmWhite }]}>مرحباً, {name}</Text>
+                        <Text style={[ConstantStyles.Title1, { color: Colors.calmWhite, fontSize: 28 }]}>{name}, اهلاً بك في عالم تريڤا</Text>
                         <Text style={[ConstantStyles.normalText, { color: Colors.calmWhite, fontSize: 20 }]}>{randomSentence[Math.floor(Math.random() * randomSentence.length)]}</Text>
                     </View>
                 </View>
@@ -212,51 +212,30 @@ export default function Home() {
 
                         {user?.grade && user?.major ? (
                             <>
-                                <View style={{
-                                    position: 'absolute',
-                                    top: 250,
-                                    right: 0,
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: 70,
-                                    height: 70,
-                                    zIndex: 100,
-                                }}>
-                                    <LottieView
-                                        source={require('../../assets/animations/science.json')}
-                                        autoPlay
-                                        loop
-                                        style={{ width: 70, height: 70 }}
-                                    />
-                                </View>
                                 {/* Search input */}
-                                <TouchableOpacity onPress={() => router.push('/(subPages)/search')} style={[ConstantStyles.shadowContainer, { display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 10, direction: 'rtl', backgroundColor: Colors.calmWhite, borderRadius: 50, padding: 10 }]}>
+                                <TouchableOpacity onPress={() => router.push('/(subPages)/search')} style={[ConstantStyles.shadowContainer, { display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10, direction: 'rtl', backgroundColor: Colors.calmWhite, borderRadius: 50, padding: 10 }]}>
                                     <TouchableOpacity style={styles.iconContainer} onPress={() => router.push('/(subPages)/search')}>
-                                        <FontAwesome name="search" size={20} color={Colors.mainColor} />
+                                        <FontAwesome name="search" size={20} color={'gray'} />
                                     </TouchableOpacity>
                                     <View>
                                         <TextInput
                                             style={[styles.inputText]}
-                                            placeholder="معاك تريڤا .. اقدر اساعدك ازاي ؟"
-                                            placeholderTextColor={Colors.mainColor}
+                                            placeholder="معــاك تريـڤـا .. اقــدر  اسـاعـدك ازاي ؟"
+                                            placeholderTextColor={'gray'}
                                             onFocus={() => router.push('/(subPages)/search')}
                                             value={search}
                                             onChangeText={(e => router.push('/(subPages)/search'))}
-
                                         />
                                     </View>
                                 </TouchableOpacity>
                                 {/* Scoure */}
                                 <TouchableOpacity style={[styles.ScoureContainer, ConstantStyles.shadowContainer]} onPress={() => router.push('/(subPages)/Leaderboard')}>
-                                    <Image source={require('../../assets/images/star.gif')} style={{ width: 40, height: 40, borderRadius: 50, position: 'absolute', top: -5, right: -5, zIndex: 10 }} />
                                     <Image source={require('@/assets/images/win.png')} style={{
-                                        width: 200,
-                                        height: 200,
+                                        width: 220,
+                                        height: 220,
                                         zIndex: 10,
                                         position: 'absolute',
-                                        bottom: 0,
+                                        bottom: -5,
                                         left: -40,
 
                                     }} />
@@ -273,20 +252,20 @@ export default function Home() {
                                             borderRadius: 10,
                                         }}
                                     >
-                                        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
-                                            <Text style={[ConstantStyles.Title1, { fontSize: 30 }]}>النقاط</Text>
-                                            <Text style={[ConstantStyles.Title1, { fontSize: 35, marginLeft: -5 }]}>{score}</Text>
+                                        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl', marginBottom: 20 }}>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 30, color: Colors.textColor }]}>النقاط</Text>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 50, marginLeft: -5 }]}>{score}</Text>
                                         </View>
                                         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl', marginBottom: 10 }}>
-                                            <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>الترتيب</Text>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 26, color: Colors.textColor }]}>الترتيب</Text>
                                             <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>{rank === 1 ? `${rank}st` : rank === 2 ? `${rank}nd` : rank === 3 ? `${rank}rd` : `${rank}th`}</Text>
                                         </View>
                                         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
-                                            <Text style={[ConstantStyles.Title1, { fontSize: 18 }]}>المحاضرات</Text>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 18, color: Colors.textColor }]}>المحاضرات</Text>
                                             <Text style={[ConstantStyles.Title1, { fontSize: 18 }]}>{user.videos.length}</Text>
                                         </View>
                                         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
-                                            <Text style={[ConstantStyles.Title1, { fontSize: 18 }]}>الامتحانات</Text>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 18, color: Colors.textColor }]}>الامتحانات</Text>
                                             <Text style={[ConstantStyles.Title1, { fontSize: 18 }]}>{user.exams.length}</Text>
                                         </View>
                                     </View>
@@ -303,7 +282,7 @@ export default function Home() {
                                         <View style={{
                                             position: 'absolute',
                                             top: -50,
-                                            left: -150,
+                                            left: -155,
                                             width: 300,
                                             height: 300,
                                             borderRadius: 300,
@@ -335,19 +314,19 @@ export default function Home() {
                                                         user: JSON.stringify(user)
                                                     }
                                                 })}>
-                                                <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', padding: 5 }}>
-                                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', width: '100%', marginTop: 10 }}>
-                                                        <Image source={subjects.find(subject => subject.name === lesson.subject)?.image} style={{ width: 20, height: 20 }} />
-                                                        <Text style={[ConstantStyles.Title2, { fontSize: 20, fontFamily: Fonts.blackText, marginRight: 5, marginBottom: 0 }]}>مادة {lesson.subject}</Text>
+                                                <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', marginBottom: 20 }}>
+                                                    <Image source={subjects.find(subject => subject.name === lesson.subject)?.image} style={{ width: 20, height: 20 }} />
+                                                    <Text style={[ConstantStyles.Title2, { fontSize: 20, fontFamily: Fonts.boldText, textAlign: 'center', color: Colors.calmWhite }]}>{lesson.title}</Text>
+                                                    <Text style= {[ConstantStyles.Title2, { fontSize: 20, fontFamily: Fonts.blackText, marginBottom: 0, color: Colors.calmWhite }]}>مادة {lesson.subject}</Text>
+                                                    <Text style={[ConstantStyles.normalText, { fontSize: 16, fontFamily: Fonts.mediumText, textAlign: 'center', color: Colors.calmWhite }]}>م/ {lesson.teacher}</Text>
+                                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', width: '100%', marginBottom: 30 }}>
                                                     </View>
-                                                    <Text style={[ConstantStyles.Title2, { fontSize: 20, fontFamily: Fonts.boldText, textAlign: 'center' }]}>{lesson.title}</Text>
-                                                    <Text style={[ConstantStyles.normalText, { fontSize: 16, fontFamily: Fonts.mediumText, textAlign: 'center' }]}>م/ {lesson.teacher}</Text>
                                                 </View>
-                                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: '100%', marginTop: 10, backgroundColor: Colors.mainColor, padding: 5, borderRadius: 5 }}>
-                                                    <Text style={[ConstantStyles.Title2, { fontSize: 20, color: Colors.calmWhite, marginLeft: 20 }]}>شاهد الان</Text>
+                                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: '85%', marginTop: 10, backgroundColor: Colors.calmWhite, padding: 5, borderRadius: 5, position: 'absolute', bottom: 0, overflowX: 'hidden' }}>
+                                                    <Text style={[ConstantStyles.Title2, { fontSize: 20, color: Colors.mainColor, marginLeft: 20, fontFamily: Fonts.boldText }]}>شاهد الان</Text>
                                                     <Image source={require('../../assets/images/explore.png')} style={{
-                                                        width: 80,
-                                                        height: 80,
+                                                        width: 70,
+                                                        height: 70,
                                                         position: 'absolute',
                                                         bottom: 0,
                                                         right: -10,
@@ -431,16 +410,15 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     cardsubject: {
-        backgroundColor: Colors.calmWhite,
+        backgroundColor: Colors.mainColor,
         margin: 5,
-        borderRadius: 10,
+        borderRadius: 100,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         width: 180,
-        height: 155,
-        overflow: 'hidden',
+        height: 180,
         shadowColor: Colors.textColor,
         shadowOffset: {
             width: 0,
@@ -456,10 +434,11 @@ const styles = StyleSheet.create({
     },
     inputText: {
         fontSize: 20,
-        fontFamily: Fonts.mediumText,
+        fontFamily: Fonts.boldText,
         width: Dimensions.get('screen').width - 100,
-        textAlign: 'right',
+        textAlign: 'center',
         borderRadius: 5,
+        color: 'gray',
     },
     ScoureContainer: {
         position: 'relative',

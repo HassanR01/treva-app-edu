@@ -55,7 +55,7 @@ export default function LessonComponent({ lesson, user }: LessonComponentProps) 
         fetchLastLessons();
     }, [])
 
-    const conditionalNewLesson = new Date(lesson.createdAt).getTime() > new Date().setDate(new Date().getDate() - 50)
+    const conditionalNewLesson = new Date(lesson.createdAt).getTime() > new Date().setDate(new Date().getDate() - 2)
 
     const addlessonVideoToUser = async () => {
 
@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden',
         paddingHorizontal: 20,
         paddingVertical: 20,
         marginVertical: 10,
@@ -218,7 +219,7 @@ const styles = StyleSheet.create({
         height: 5,
         backgroundColor: Colors.mainColor,
         position: 'absolute',
-        borderRadius: 10,
+        borderRadius: 50,
         zIndex: -1,
         bottom: 0,
         left: 0,
