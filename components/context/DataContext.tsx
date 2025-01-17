@@ -14,6 +14,7 @@ export interface lesson {
     comments: {}[],
     level: string,
     price: number,
+    availableFor: number,
     HomeWrokAttaches: string,
     explainVideo: {
         link: string,
@@ -106,6 +107,7 @@ export interface user {
     }[],
     lessons: {
         _id: string,
+        date: number
     }[],
     logs: {}[],
 

@@ -1,4 +1,4 @@
-import { Image, Modal, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, Modal, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { AntDesign, Feather, FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons'
@@ -20,58 +20,68 @@ export default function Course() {
   const lessonData = lessons?.find(lesson => lesson._id === id)
 
   useEffect(() => {
-    if (userData.lessons.find((les: any) => les === lessonData?._id) || userData.type === 'TrevaIn') {
-      setHasLesson(true)
+    // check if user has this lesson and if the available time for this lesson is not expired
+    if (userData.lessons.find((les: any) => les._id === lessonData?._id) || userData.type === 'TrevaIn') {
+      const lessonwithDate = userData.lessons.find((les: any) => les._id === lessonData?._id)
+      if (lessonwithDate.date + +(lessonData?.availableFor ?? 0) * 24 * 60 * 60 * 1000 < Date.now()) {
+        Alert.alert('انتهت صلاحية المحاضرة', 'لقد انتهت صلاحية المحاضرة يرجى شراء المحاضرة للوصول اليها')
+        setHasLesson(false)
+      } else {
+        setHasLesson(true)
+      }
     } else {
       setHasLesson(false)
     }
   }, [])
 
 
-
   // Techer Data from lessonData
   const techerData = users?.find(user => user.name === lessonData?.teacher)
 
   // update user Data with new video in database
-  const updateExplainVideo = async (video: { title: any }) => {   
-    if (hasLesson) {
-      if (userData.type === 'TrevaIn' && !userData.lessons.includes(lessonData?._id)) {
-      alert('يجب شراء المحاضرة اولاً')
-      setHasLesson(false)
-      } else if (userData.videos.some((vid: { title: string }) => vid.title === video.title)) {
-       router.push({
+  const updateExplainVideo = async (video: { title: any }) => {
+    if (!hasLesson || userData.videos.find((video: { title: string }) => video.title === lessonData?.explainVideo.title)) {
+      router.push({
         pathname: '/(course)/explainVideo',
         params: {
-        lesson: JSON.stringify(lessonData),
-        user: JSON.stringify(userData)
+          lesson: JSON.stringify(lessonData),
+          user: JSON.stringify(userData)
         }
       })
-      } else {
+    } else {
+
       const updatedUser = { ...userData, videos: [...userData.videos, video] }
       try {
         await axios.post(`${process.env.API_URL}/users/updateUser`, updatedUser)
         await AsyncStorage.setItem('user', JSON.stringify(updatedUser))
         alert('تم اضافة الفيديو بنجاح')
         router.push({
-        pathname: '/(course)/explainVideo',
-        params: {
-          lesson: JSON.stringify(lessonData),
-          user: JSON.stringify(userData)
-        }
+          pathname: '/(course)/explainVideo',
+          params: {
+            lesson: JSON.stringify(lessonData),
+            user: JSON.stringify(userData)
+          }
         })
       } catch (err) {
         console.error(err)
       }
-      }
-    } else {
-      alert('يجب شراء المحاضرة اولاً')
     }
   }
 
-
   const updateHomeWorkVideo = async (video: { title: any }) => {
-    if (hasLesson) {
-      if (userData?.videos?.find((vid: { title: string | undefined }) => vid.title === video.title)) {
+    if (!hasLesson || userData.videos.find((video: { title: string }) => video.title === lessonData?.homeWorkVideo.title)) {
+      router.push({
+        pathname: '/(course)/HWReview',
+        params: {
+          lesson: JSON.stringify(lessonData),
+          user: JSON.stringify(userData)
+        }
+      })
+    } else {
+      const updatedUser = { ...userData, videos: [...userData.videos, video] }
+      await axios.post(`${process.env.API_URL}/users/updateUser`, updatedUser).then(res => {
+        AsyncStorage.setItem('user', JSON.stringify(updatedUser))
+        alert('تم اضافة الفيديو بنجاح')
         router.push({
           pathname: '/(course)/HWReview',
           params: {
@@ -79,29 +89,26 @@ export default function Course() {
             user: JSON.stringify(userData)
           }
         })
-      } else {
-        const updatedUser = { ...userData, videos: [...userData.videos, video] }
-        await axios.post(`${process.env.API_URL}/users/updateUser`, updatedUser).then(res => {
-          AsyncStorage.setItem('user', JSON.stringify(updatedUser))
-          alert('تم اضافة الفيديو بنجاح')
-          router.push({
-            pathname: '/(course)/HWReview',
-            params: {
-              lesson: JSON.stringify(lessonData),
-              user: JSON.stringify(userData)
-            }
-          })
-        }).catch(err => {
-          console.log(err)
-        })
-      }
-    } else {
-      alert('يجب شراء المحاضرة اولاً')
+      }).catch(err => {
+        console.log(err)
+      })
     }
+
   }
   const updateExamVideo = async (video: { title: any }) => {
-    if (hasLesson) {
-      if (userData?.videos?.find((vid: { title: string | undefined }) => vid.title === video.title)) {
+    if (!hasLesson || userData.videos.find((video: { title: string }) => video.title === lessonData?.examVideo.title)) {
+      router.push({
+        pathname: '/(course)/examVideo',
+        params: {
+          lesson: JSON.stringify(lessonData),
+          user: JSON.stringify(userData)
+        }
+      })
+    } else {
+      const updatedUser = { ...userData, videos: [...userData.videos, video] }
+      await axios.post(`${process.env.API_URL}/users/updateUser`, updatedUser).then(res => {
+        AsyncStorage.setItem('user', JSON.stringify(updatedUser))
+        alert('تم اضافة الفيديو بنجاح')
         router.push({
           pathname: '/(course)/examVideo',
           params: {
@@ -109,30 +116,15 @@ export default function Course() {
             user: JSON.stringify(userData)
           }
         })
-      } else {
-        const updatedUser = { ...userData, videos: [...userData.videos, video] }
-        await axios.post(`${process.env.API_URL}/users/updateUser`, updatedUser).then(res => {
-          AsyncStorage.setItem('user', JSON.stringify(updatedUser))
-          alert('تم اضافة الفيديو بنجاح')
-          router.push({
-            pathname: '/(course)/examVideo',
-            params: {
-              lesson: JSON.stringify(lessonData),
-              user: JSON.stringify(userData)
-            }
-          })
-        }).catch(err => {
-          console.log(err)
-        })
-      }
-    } else {
-      alert('يجب شراء المحاضرة اولاً')
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 
   // update user Data with new exam in database
   const updateExam = async (title: any) => {
-    if (hasLesson) {
+    if (hasLesson || userData.type === 'TrevaIn') {
       if (userData?.exams?.find((ex: any) => ex.title === title)) {
         alert('لقد قمت بحل هذا الامتحان من قبل')
         router.push({
@@ -176,27 +168,6 @@ export default function Course() {
     { image: require('../../assets/images/subjects/philosophy.png'), name: 'علم النفس' },
   ]
 
-
-  const BuyLesson = async () => {
-    if (lessonData?.price !== undefined) {
-      if (+userData.points < +lessonData.price) {
-        alert('لا يوجد لديك رصيد كافي لشراء المحاضرة')
-        router.push('/(tabs)/Wallet')
-      } else {
-        const updatedUser = { ...userData, lessons: [...userData.lessons, lessonData?._id], points: +userData.points - +lessonData.price }
-        await axios.post(`${process.env.API_URL}/users/updateUser`, updatedUser).then(res => {
-          AsyncStorage.setItem('user', JSON.stringify(updatedUser))
-          alert('تم شراء المحاضرة بنجاح')
-          setHasLesson(true)
-          router.push({
-            pathname: '/(tabs)/Wallet'
-          })
-        }).catch(err => {
-          console.log(err)
-        })
-      }
-    }
-  }
 
   if (!lessonData || !users || !userData) {
     return <Loading />
@@ -345,36 +316,6 @@ export default function Course() {
               </TouchableOpacity>
             </View>
           </View>
-          {!hasLesson && (
- 
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={!hasLesson}
-              onRequestClose={() => {
-                setHasLesson(true);
-              }}
-            >
-              <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center', width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', pointerEvents: hasLesson ? 'none' : 'auto' }}>
-                <TouchableOpacity style={{ width: '100%', height: '100%' }} onPress={() => {
-                  setHasLesson(true)
-                  router.push('/(tabs)')
-
-                }} />
-                <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: 270, backgroundColor: Colors.calmWhite, borderRadius: 10, padding: 20 }}>
-                  <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>يجب شراء المحاضرة اولاً</Text>
-                  <Text style={[ConstantStyles.normalText, { fontSize: 22, color: Colors.textColor, textAlign: 'center' }]}>قم بشراء المحاضرة لتتمكن من مشاهدة الفيديوهات والامتحان</Text>
-                  <Text style={[ConstantStyles.Title1, { fontSize: 24, marginTop: 10 }]}>السعر: {lessonData?.price} جنية مصري</Text>
-                  <TouchableOpacity style={{ backgroundColor: Colors.mainColor, padding: 10, borderRadius: 5, marginTop: 10, width: '100%' }} onPress={() => {
-                    console.log(lessonData?.price)
-                    BuyLesson()
-                  }}>
-                    <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.bgColor, textAlign: 'center' }]}>شراء المحاضرة</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
-          )}
         </ScrollView >
       </>
     )
