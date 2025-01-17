@@ -126,7 +126,7 @@ export default function EditUser() {
                 </View>
 
                 {/* User Info */}
-                <View style={[ConstantStyles.section, { backgroundColor: Colors.bgColor, padding: 20 }]}>
+                <View style={[ConstantStyles.section, { backgroundColor: Colors.calmWhite, padding: 20 }]}>
                     <View style={{
                         display: 'flex',
                         flexDirection: 'row',

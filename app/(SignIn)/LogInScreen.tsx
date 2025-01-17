@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     position: 'relative',
     width: Dimensions.get('window').width,
-    backgroundColor: Colors.bgColor
+    backgroundColor: Colors.calmWhite
   },
   headerSignIn: {
     width: '100%',

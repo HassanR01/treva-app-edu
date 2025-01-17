@@ -73,6 +73,42 @@ export default function Home() {
         fetchUser()
     }, [users])
 
+
+    const randomSentence = [
+        'شدي حيلك، الدنيا مافيش زيها 🏆',
+        'النجاح مش وصول للغاية، ده رحلة 🚀',
+        'خطوة خطوة، وكل حاجة هتبقى تمام! 👍',
+        'التعليم مفتاح النجاح 🎓',
+        'التعليم هو السلاح الأقوى 💪',
+        'التعليم هو الطريق للتغيير 🛤️',
+        'مش مهم تعثر، المهم تقوم تاني! 💪',
+        'المذاكرة مش سهلة، لكن إنت أكيد قدها! 🌟',
+        'عارف إنك شاطر، خلي المذاكرة تثبت ده! 🌟',
+        'لو حسيت بالملل، خد بريك بسيط وارجع تاني! ⛅',
+        'كل ما تذاكر أكتر، هتفتح قدامك فرص أكتر! 🔓',
+        'مش مهم متى تبدأ، المهم تبدأ! 🔄',
+        'علشان تبقى أحسن، خلي المذاكرة هويتك! 🦸‍♂️',
+        'ركز شوية وهتشوف السحر بيحصل! ✨📖',
+        'يا واد ذاكر بدل ما النتيجة تفاجئك! 😅📄',
+        'لو المذاكرة أكلة، كنت بقيت شيف عالمي دلوقتي! 🍳📘',
+        'كل ما تذاكر، بتقرب خطوة من أحلامك! 🚀📘',
+        'الدنيا لعبة، بس الامتحان مش بيهزر! 🎮📄',
+        "النجاح مش حظ، النجاح تعب واجتهاد! 💯📚",
+        "كل صفحة بتفتحها، بتفتح لك باب جديد! 🚪📘",
+        'العقل جواهر، والمذاكرة مفتاح الخزنة! 💎📖',
+        "ذاكر شوية وزود جرعة الكوفي! ☕📚",
+        "النجاح بيحب الناس اللي بتسعى ليه! 💪🌟",
+        "لما تخلص كتاب، افتكر إنك كسبت معركة! ⚔️📖",
+        "كل ما تذاكر، بتكتب قصة نجاحك! 📝📖",
+        "ابدأ بصفحة واحدة، والباقي هييجي لوحده! 📖🚀",
+        "ركز، دماغك أقوى من أي آلة حاسبة! 🧠📐",
+        "بلاش كسوف، اسأل لو مش فاهم! 🤔✍️",
+        "امتحاناتك مش نهاية العالم، بس البداية! 🚀📄",
+        "النجاح بيحب اللي بيعافر عشانه! 🏋️‍♂️📖",
+        "تعب دلوقتي، وراحة بعدين! 🛌📚",
+        "ذاكر، ولو غلط، مش مشكلة، اتعلم! 🔄📘",
+    ]
+
     const subjects = [
         { image: require('../../assets/images/subjects/arabic.png'), name: 'اللغة العربية' },
         { image: require('../../assets/images/subjects/english.png'), name: 'اللغة الانجليزية' },
@@ -139,164 +175,233 @@ export default function Home() {
             <>
                 <View style={styles.header}>
                     <Link href={'/Profile'}>
-                        <Image style={{backgroundColor: Colors.calmWhite}} className='border border-black rounded-full overflow-hidden' source={{ uri: user?.image || 'https://res.cloudinary.com/db152mwtg/image/upload/v1734695620/Treva%20Edu%20App/users/tx4dze4uiwb1in8hkz0z.png' }} width={50} height={50} />
+                        <Image style={{ backgroundColor: Colors.calmWhite }} className='border border-black rounded-full overflow-hidden' source={{ uri: user?.image || 'https://res.cloudinary.com/db152mwtg/image/upload/v1734695620/Treva%20Edu%20App/users/tx4dze4uiwb1in8hkz0z.png' }} width={50} height={50} />
                     </Link>
                     <View>
-                        <Text style={[ConstantStyles.Title1, {color: Colors.calmWhite}]}>مرحباً, {name}</Text>
-                        <Text style={[ConstantStyles.normalText, {color: Colors.calmWhite}]}>الساعة بتقبل القسمة علي 60 ؟ 👀</Text>
+                        <Text style={[ConstantStyles.Title1, { color: Colors.calmWhite }]}>مرحباً, {name}</Text>
+                        <Text style={[ConstantStyles.normalText, { color: Colors.calmWhite, fontSize: 20 }]}>{randomSentence[Math.floor(Math.random() * randomSentence.length)]}</Text>
                     </View>
                 </View>
                 <StatusBar barStyle={'light-content'} />
-                <ScrollView
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    refreshControl={
-                        <RefreshControl
-                            colors={[Colors.mainColor]}
-                            progressBackgroundColor={Colors.bgColor}
-                            refreshing={false}
-                            onRefresh={() => updateUserFromDB()}
-                        />
-                    }
-                    style={ConstantStyles.page}
-                    showsVerticalScrollIndicator={false}
+                <LinearGradient
+                    colors={[Colors.bgColor, Colors.itemBgColor, Colors.bgColor]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 1 }}
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        marginBottom: 80,
+                    }}
                 >
+                    <ScrollView
+                        contentContainerStyle={{ flexGrow: 1 }}
+                        refreshControl={
+                            <RefreshControl
+                                colors={[Colors.mainColor]}
+                                progressBackgroundColor={Colors.bgColor}
+                                refreshing={false}
+                                onRefresh={() => updateUserFromDB()}
+                            />
+                        }
+                        style={ConstantStyles.page}
+                        showsVerticalScrollIndicator={false}
+                    >
 
-                    {user?.grade && user?.major ? (
-                        <>
-                            <View style={{
-                                position: 'absolute',
-                                top: 250,
-                                left: 0,
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: 100,
-                                height: 100,
-                                zIndex: 100,
-                            }}>
-                                <LottieView
-                                    source={require('../../assets/animations/science.json')}
-                                    autoPlay
-                                    loop
-                                    style={{ width: 100, height: 100 }}
-                                />
-                            </View>
-                            {/* Search input */}
-                            <TouchableOpacity onPress={() => router.push('/(subPages)/search')} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 10, direction: 'rtl', backgroundColor: Colors.calmWhite, borderRadius: 10, padding: 10 }}>
-                                <TouchableOpacity style={styles.iconContainer} onPress={() => router.push('/(subPages)/search')}>
-                                    <FontAwesome name="search" size={30} color={Colors.mainColor} />
-                                </TouchableOpacity>
-                                <View>
-                                    <TextInput
-                                        style={[styles.inputText]}
-                                        placeholder="دور  براحتك 😁"
-                                        placeholderTextColor={Colors.mainColor}
-                                        onFocus={() => router.push('/(subPages)/search')}
-                                        value={search}
-                                        onChangeText={(e => router.push('/(subPages)/search'))}
-                                        
-                                    />
-                                </View>
-                            </TouchableOpacity>
-                            {/* Scoure */}
-                            <TouchableOpacity style={styles.ScoureContainer} onPress={() => router.push('/(subPages)/Leaderboard')}>
-                                <Image source={require('../../assets/images/star.gif')} style={{ width: 40, height: 40, borderRadius: 50, position: 'absolute', top: -5, right: -5, zIndex: 10 }} />
-                                <LinearGradient
-                                    colors={[Colors.calmWhite, Colors.calmWhite]}
-                                    start={{ x: 1, y: 0 }}
-                                    end={{ x: 0, y: 1 }}
-                                    locations={[0.15, 1]}
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'flex-start',
-                                        alignItems: 'center',
-                                        width: '100%',
-                                        height: '100%',
-                                        paddingHorizontal: 20,
-                                        paddingVertical: 10,
-                                        borderRadius: 10,
-                                    }}
-                                >
-                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
-                                        <Text style={[ConstantStyles.Title1, { fontSize: 30 }]}>النقاط</Text>
-                                        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                            <Text style={[ConstantStyles.Title1, { fontSize: 70 }]}>{score}</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl', marginBottom: 10 }}>
-                                        <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>الترتيب</Text>
-                                        <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>{rank}st</Text>
-                                    </View>
-                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
-                                        <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>المحاضرات المشاهدة</Text>
-                                        <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>{user.videos.length}</Text>
-                                    </View>
-                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
-                                        <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>الامتحانات</Text>
-                                        <Text style={[ConstantStyles.Title1, { fontSize: 20 }]}>{user.exams.length}</Text>
-                                    </View>
-                                </LinearGradient>
-                            </TouchableOpacity>
-
-                            {/* Subjects */}
-                            <View style={styles.Subjects}>
-                                <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>المحاضرات الجديدة</Text>
-                                <ScrollView
-                                    style={{ direction: 'rtl' }}
-                                    showsHorizontalScrollIndicator={false}
-                                    pagingEnabled={true}
-                                    horizontal
-                                >
-                                    {lessons?.map((lesson, index) => (
-                                        <LessonComponent key={index} lesson={lesson} user={user} />
-                                    )).slice(0, 5)}
-                                </ScrollView>
-
+                        {user?.grade && user?.major ? (
+                            <>
                                 <View style={{
                                     position: 'absolute',
-                                    top: 150,
-                                    left: 80,
+                                    top: 250,
+                                    right: 0,
                                     display: 'flex',
                                     flexDirection: 'row',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    width: 100,
-                                    height: 100,
+                                    width: 70,
+                                    height: 70,
                                     zIndex: 100,
                                 }}>
                                     <LottieView
-                                        source={require('../../assets/animations/eduP.json')}
+                                        source={require('../../assets/animations/science.json')}
                                         autoPlay
                                         loop
-                                        style={{ width: 100, height: 100 }}
+                                        style={{ width: 70, height: 70 }}
                                     />
                                 </View>
-                                <Text style={[ConstantStyles.Title1, { fontSize: 26, marginTop: 20 }]}>المحاضرات السابقة</Text>
-                                {lessonsInStorage.length > 0 ? (
+                                {/* Search input */}
+                                <TouchableOpacity onPress={() => router.push('/(subPages)/search')} style={[ConstantStyles.shadowContainer, { display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 10, direction: 'rtl', backgroundColor: Colors.calmWhite, borderRadius: 50, padding: 10 }]}>
+                                    <TouchableOpacity style={styles.iconContainer} onPress={() => router.push('/(subPages)/search')}>
+                                        <FontAwesome name="search" size={20} color={Colors.mainColor} />
+                                    </TouchableOpacity>
+                                    <View>
+                                        <TextInput
+                                            style={[styles.inputText]}
+                                            placeholder="معاك تريڤا .. اقدر اساعدك ازاي ؟"
+                                            placeholderTextColor={Colors.mainColor}
+                                            onFocus={() => router.push('/(subPages)/search')}
+                                            value={search}
+                                            onChangeText={(e => router.push('/(subPages)/search'))}
+
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+                                {/* Scoure */}
+                                <TouchableOpacity style={[styles.ScoureContainer, ConstantStyles.shadowContainer]} onPress={() => router.push('/(subPages)/Leaderboard')}>
+                                    <Image source={require('../../assets/images/star.gif')} style={{ width: 40, height: 40, borderRadius: 50, position: 'absolute', top: -5, right: -5, zIndex: 10 }} />
+                                    <Image source={require('@/assets/images/win.png')} style={{
+                                        width: 200,
+                                        height: 200,
+                                        zIndex: 10,
+                                        position: 'absolute',
+                                        bottom: 0,
+                                        left: -40,
+
+                                    }} />
+                                    <View
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            width: '50%',
+                                            height: '100%',
+                                            paddingHorizontal: 20,
+                                            paddingVertical: 10,
+                                            borderRadius: 10,
+                                        }}
+                                    >
+                                        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 30 }]}>النقاط</Text>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 35, marginLeft: -5 }]}>{score}</Text>
+                                        </View>
+                                        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl', marginBottom: 10 }}>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>الترتيب</Text>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>{rank === 1 ? `${rank}st` : rank === 2 ? `${rank}nd` : rank === 3 ? `${rank}rd` : `${rank}th`}</Text>
+                                        </View>
+                                        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 18 }]}>المحاضرات</Text>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 18 }]}>{user.videos.length}</Text>
+                                        </View>
+                                        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', direction: 'rtl' }}>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 18 }]}>الامتحانات</Text>
+                                            <Text style={[ConstantStyles.Title1, { fontSize: 18 }]}>{user.exams.length}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{
+                                        height: '100%',
+                                        width: '50%',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        overflow: 'hidden',
+                                        borderRadius: 10,
+                                    }}>
+                                        <View style={{
+                                            position: 'absolute',
+                                            top: -50,
+                                            left: -150,
+                                            width: 300,
+                                            height: 300,
+                                            borderRadius: 300,
+                                            backgroundColor: Colors.mainColor,
+                                            zIndex: 0,
+                                        }}>
+
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+
+                                {/* Subjects */}
+                                <View style={styles.Subjects}>
+                                    <Text style={[ConstantStyles.Title1, { fontSize: 30, color: Colors.textColor }]}>آخر الاحداث</Text>
                                     <ScrollView
                                         style={{ direction: 'rtl', width: "100%" }}
                                         showsHorizontalScrollIndicator={false}
                                         pagingEnabled={true}
                                         horizontal
                                     >
-                                        {lessonsInStorage.map((lesson, index) => (
-                                            <LessonComponent key={index} lesson={lesson} user={user} />
-                                        ))}
-                                    </ScrollView>
-                                ) : (
-                                    <Text style={ConstantStyles.Title2}>لم تقم بمشاهدة اي محاضرة بعد</Text>
-                                )}
-                            </View>
+                                        {filteredLessons?.map((lesson, index) => (
+                                            <TouchableOpacity
+                                                key={index} style={[styles.cardsubject]}
+                                                onPress={() => router.push({
+                                                    pathname: '/(course)/[id]',
+                                                    params: {
+                                                        id: lesson._id,
+                                                        lesson: JSON.stringify(lesson),
+                                                        user: JSON.stringify(user)
+                                                    }
+                                                })}>
+                                                <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', padding: 5 }}>
+                                                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', width: '100%', marginTop: 10 }}>
+                                                        <Image source={subjects.find(subject => subject.name === lesson.subject)?.image} style={{ width: 20, height: 20 }} />
+                                                        <Text style={[ConstantStyles.Title2, { fontSize: 20, fontFamily: Fonts.blackText, marginRight: 5, marginBottom: 0 }]}>مادة {lesson.subject}</Text>
+                                                    </View>
+                                                    <Text style={[ConstantStyles.Title2, { fontSize: 20, fontFamily: Fonts.boldText, textAlign: 'center' }]}>{lesson.title}</Text>
+                                                    <Text style={[ConstantStyles.normalText, { fontSize: 16, fontFamily: Fonts.mediumText, textAlign: 'center' }]}>م/ {lesson.teacher}</Text>
+                                                </View>
+                                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', width: '100%', marginTop: 10, backgroundColor: Colors.mainColor, padding: 5, borderRadius: 5 }}>
+                                                    <Text style={[ConstantStyles.Title2, { fontSize: 20, color: Colors.calmWhite, marginLeft: 20 }]}>شاهد الان</Text>
+                                                    <Image source={require('../../assets/images/explore.png')} style={{
+                                                        width: 80,
+                                                        height: 80,
+                                                        position: 'absolute',
+                                                        bottom: 0,
+                                                        right: -10,
+                                                    }} />
 
-                        </>
-                    ) : (
-                        <>
-                            <CompletingDataFrom user={user} />
-                        </>
-                    )}
-                </ScrollView>
+                                                </View>
+                                            </TouchableOpacity>
+                                        )).slice(0, 5)}
+                                    </ScrollView>
+
+                                    <View style={{
+                                        position: 'absolute',
+                                        top: 150,
+                                        left: 80,
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        width: 100,
+                                        height: 100,
+                                        zIndex: 100,
+                                    }}>
+                                        <LottieView
+                                            source={require('../../assets/animations/eduP.json')}
+                                            autoPlay
+                                            loop
+                                            style={{ width: 100, height: 100 }}
+                                        />
+                                    </View>
+                                    <Text style={[ConstantStyles.Title1, { fontSize: 30, color: Colors.textColor, marginTop: 20 }]}>المحاضرات السابقة</Text>
+                                    {lessonsInStorage.length > 0 ? (
+                                        <ScrollView
+                                            style={{ direction: 'rtl', width: "100%" }}
+                                            showsHorizontalScrollIndicator={false}
+                                            pagingEnabled={true}
+                                            horizontal
+                                        >
+                                            {lessonsInStorage.map((lesson, index) => (
+                                                <LessonComponent key={index} lesson={lesson} user={user} />
+                                            ))}
+                                        </ScrollView>
+                                    ) : (
+                                        <Text style={ConstantStyles.Title2}>لم تقم بمشاهدة اي محاضرة بعد</Text>
+                                    )}
+                                </View>
+
+                            </>
+                        ) : (
+                            <>
+                                <CompletingDataFrom user={user} />
+                            </>
+                        )}
+                    </ScrollView>
+                </LinearGradient>
             </>
         )
     }
@@ -327,36 +432,47 @@ const styles = StyleSheet.create({
     },
     cardsubject: {
         backgroundColor: Colors.calmWhite,
-        padding: 10,
         margin: 5,
         borderRadius: 10,
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-around',
-        width: 120,
-        height: 120,
+        justifyContent: 'space-between',
+        width: 180,
+        height: 155,
+        overflow: 'hidden',
+        shadowColor: Colors.textColor,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 6,
+        elevation: 20,
     },
     iconContainer: {
         padding: 5,
         borderRadius: 5,
     },
     inputText: {
-        padding: 6,
-        fontSize: 24,
+        fontSize: 20,
         fontFamily: Fonts.mediumText,
         width: Dimensions.get('screen').width - 100,
         textAlign: 'right',
         borderRadius: 5,
     },
     ScoureContainer: {
+        position: 'relative',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'flex-start',
+        alignItems: 'center',
         width: Dimensions.get('screen').width - 40,
         height: 200,
-        alignItems: 'center',
         margin: 10,
         direction: 'rtl',
         borderRadius: 10,
+        backgroundColor: Colors.calmWhite,
+
     }
 })

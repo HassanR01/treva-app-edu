@@ -1,7 +1,7 @@
 export const Colors = {
-    bgColor: '#f3f2f4',
+    bgColor: '#8fc2d6',
     calmWhite: '#ffffff',
-    mainColor: "#0040dd",
-    itemBgColor: "#a2f6ff",
+    mainColor: "#17829c",
+    itemBgColor: "#e7e7e9",
     textColor: '#000000',
 }

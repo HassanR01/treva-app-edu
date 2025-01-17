@@ -1,4 +1,4 @@
-import { Dimensions, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Colors } from '@/Constants/Colors'
@@ -51,9 +51,9 @@ export default function SignUp() {
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={{
       flex: 1,
-      backgroundColor: Colors.itemBgColor,
+      backgroundColor: Colors.mainColor,
     }}>
-
+      <StatusBar barStyle='light-content' />
       <KeyboardAwareScrollView
         contentContainerStyle={styles.container}
       >
@@ -177,13 +177,13 @@ const styles = StyleSheet.create({
     flexGrow: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.bgColor
+    backgroundColor: Colors.calmWhite
   },
   CenterScreen: {
     flexGrow: 2,
     position: 'relative',
     width: Dimensions.get('window').width,
-    backgroundColor: Colors.bgColor,
+    backgroundColor: Colors.calmWhite,
     paddingBottom: 50,
   },
   headerSignIn: {

@@ -6,6 +6,7 @@ import { Fonts } from '@/Constants/Fonts';
 import { Colors } from '@/Constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { ConstantStyles } from '@/Constants/constantStyles';
 
 interface LessonComponentProps {
     lesson: lesson;
@@ -53,6 +54,8 @@ export default function LessonComponent({ lesson, user }: LessonComponentProps) 
         };
         fetchLastLessons();
     }, [])
+
+    const conditionalNewLesson = new Date(lesson.createdAt).getTime() > new Date().setDate(new Date().getDate() - 50)
 
     const addlessonVideoToUser = async () => {
 
@@ -120,7 +123,7 @@ export default function LessonComponent({ lesson, user }: LessonComponentProps) 
 
 
     return (
-        <TouchableOpacity style={styles.lessonContainer} onPress={() => addlessonVideoToUser()}>
+        <TouchableOpacity style={[styles.lessonContainer, ConstantStyles.shadowContainer]} onPress={() => addlessonVideoToUser()}>
             <View style={[styles.backComplete, { width: `${points}%` }]} />
             {/* Image matched subject */}
             <View style={{
@@ -128,13 +131,13 @@ export default function LessonComponent({ lesson, user }: LessonComponentProps) 
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 width: '100%',
-                marginBottom: 10
+                marginBottom: 5
             }}>
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
                     alignItems: 'center',
-                    marginBottom: 10
+                    marginBottom: 5
                 }}>
                     <Image source={subjects.find(subject => subject.name === lesson.subject)?.image} style={styles.lessonImage} />
                     <Text style={styles.lessonText}>{lesson.title}</Text>
@@ -153,7 +156,7 @@ export default function LessonComponent({ lesson, user }: LessonComponentProps) 
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     width: '100%',
-                    marginBottom: 10
+                    marginBottom: 5
                 }}>
                     <Text style={styles.lessonText2}>{lesson.subject}</Text>
                     <Text style={styles.lessonText2}>{lesson.grade}</Text>
@@ -169,6 +172,21 @@ export default function LessonComponent({ lesson, user }: LessonComponentProps) 
                     <Text style={styles.lessonText2}>{new Date(lesson.createdAt).toLocaleDateString()}</Text>
                 </View>
             </View>
+            {conditionalNewLesson && (
+                <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    backgroundColor: 'yellow',
+                    padding: 5,
+                    paddingHorizontal: 10,
+                    borderTopRightRadius: 10,
+                    borderBottomLeftRadius: 10
+                }}>
+                    <Text style={[styles.lessonText2, { color: Colors.textColor, fontSize: 15 }]}>جديد</Text>
+                </View>
+            )}
+
         </TouchableOpacity>
     )
 }
@@ -178,23 +196,23 @@ const styles = StyleSheet.create({
     lessonContainer: {
         width: '100%',
         minWidth: Dimensions.get('window').width - 60,
-        height: 150,
+        height: 160,
         backgroundColor: Colors.calmWhite,
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         paddingHorizontal: 20,
+        paddingVertical: 20,
         marginVertical: 10,
         borderRadius: 10,
-        shadowColor: '#000',
+        shadowColor: Colors.textColor,
         shadowOffset: {
             width: 0,
-            height: 1,
+            height: 2,
         },
-        shadowOpacity: 0.22,
-        shadowRadius: 2.22,
-        overflow: 'hidden',
-        elevation: 3,
+        shadowOpacity: 0.2,
+        shadowRadius: 6,
+        elevation: 20,
     },
     backComplete: {
         height: 5,

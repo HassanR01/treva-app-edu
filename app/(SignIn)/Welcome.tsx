@@ -15,9 +15,9 @@ export default function Welcome() {
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={{
       flex: 1,
-      backgroundColor: Colors.bgColor,
+      backgroundColor: Colors.calmWhite,
     }}>
-      <View style={[styles.CenterScreen, { backgroundColor: Colors.bgColor }]}>
+      <View style={[styles.CenterScreen, { backgroundColor: Colors.calmWhite }]}>
         <Animated.View entering={FadeInDown.duration(500).delay(1000).springify()}>
           <LottieView
             ref={animation}

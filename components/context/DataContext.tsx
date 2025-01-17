@@ -174,7 +174,7 @@ export default function DataProvider({ children }: { children: React.ReactNode }
         fetchData()
         const interval = setInterval(() => {
             fetchData()
-        }, 1000) // 1 minute
+        }, 10000) // 1 minute
 
         return () => clearInterval(interval)
     }, [])

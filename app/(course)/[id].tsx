@@ -126,11 +126,12 @@ export default function Course() {
   const updateExam = async (title: any) => {
     if (hasLesson || userData.type === 'TrevaIn') {
       if (userData?.exams?.find((ex: any) => ex.title === title)) {
+        const exam = userData?.exams?.find((ex: any) => ex.title === title)
         alert('لقد قمت بحل هذا الامتحان من قبل')
         router.push({
           pathname: '/(subPages)/reviewExam',
           params: {
-            user: JSON.stringify(userData?.exams[-1]),
+            exam: JSON.stringify(exam)
           }
         })
       } else {
@@ -182,14 +183,14 @@ export default function Course() {
           title: lessonData?.title,
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
-              <FontAwesome name="chevron-left" size={24} color={Colors.bgColor} />
+              <FontAwesome name="chevron-left" size={24} color={Colors.calmWhite} />
             </TouchableOpacity>
           ),
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: Colors.mainColor,
           },
-          headerTintColor: Colors.bgColor,
+          headerTintColor: Colors.calmWhite,
           headerTitleStyle: {
             fontWeight: 'bold',
             fontSize: 20,
@@ -212,17 +213,17 @@ export default function Course() {
             <View style={styles.controllers}>
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                 <TouchableOpacity onPress={() => { }}>
-                  <FontAwesome5 name="play" size={18} color={Colors.bgColor} />
+                  <FontAwesome5 name="play" size={18} color={Colors.calmWhite} />
                 </TouchableOpacity>
                 {/* time */}
-                <Text style={[ConstantStyles.Title2, { fontSize: 18, marginLeft: 10, color: Colors.bgColor, marginBottom: 0 }]}>20:40</Text>
+                <Text style={[ConstantStyles.Title2, { fontSize: 18, marginLeft: 10, color: Colors.calmWhite, marginBottom: 0 }]}>20:40</Text>
               </View>
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                 <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => { }}>
-                  <Feather name="volume-2" size={24} color={Colors.bgColor} />
+                  <Feather name="volume-2" size={24} color={Colors.calmWhite} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => { }}>
-                  <MaterialIcons name="fit-screen" size={24} color={Colors.bgColor} />
+                  <MaterialIcons name="fit-screen" size={24} color={Colors.calmWhite} />
                 </TouchableOpacity>
               </View>
             </View>

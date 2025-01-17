@@ -10,6 +10,7 @@ import LessonComponent from '@/components/elements/LessonComponent'
 import Loading from '@/components/Loading'
 import ExamComponent from '@/components/elements/ExamComponent'
 import { Colors } from '@/Constants/Colors'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const subjects = [
   { image: require('../../assets/images/subjects/arabic.png'), name: 'اللغة العربية' },
@@ -61,50 +62,65 @@ export default function Courses() {
     return (
       <>
         <View style={{ display: 'flex', flexDirection: 'column', direction: 'rtl', width: '100%', alignItems: 'flex-start', justifyContent: 'center', backgroundColor: Colors.mainColor, padding: 10 }}>
-          <Text style={[ConstantStyles.Title1, {color: Colors.calmWhite}]}>المحاضرات</Text>
+          <Text style={[ConstantStyles.Title1, { color: Colors.calmWhite }]}>المحاضرات</Text>
         </View>
-        <ScrollView style={ConstantStyles.page}
-          refreshControl={
-            <RefreshControl
-              colors={[Colors.mainColor]}
-              progressBackgroundColor={Colors.bgColor}
-              refreshing={false}
-              onRefresh={() => fetchUser()}
-            />
-          }
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
+        <LinearGradient
+          colors={[Colors.bgColor, Colors.itemBgColor, Colors.bgColor]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            marginBottom: 80,
+            height: '100%'
+          }}
         >
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: 20, direction: 'rtl' }}>
-            {subjects.map((subject, index) => {
-              return (
-                <TouchableOpacity key={index} style={styles.subject} onPress={() => {
-                  router.push({
-                    pathname: '/(subPages)/Results',
-                    params: {
-                      data: subject.name
-                    }
-                  })
-                }}>
-                  <View style={{ width: 50, height: 50, borderRadius: 10, backgroundColor: Colors.calmWhite, justifyContent: 'center', alignItems: 'center' }}>
-                  <Image source={subject.image} style={styles.subjectImage} />
-                  </View>
-                  <Text style={styles.subjectText}>{subject.name}</Text>
-                </TouchableOpacity>
-              )
-            })}
-          </View>
-          {/* last Lessons */}
-          <Text style={[ConstantStyles.Title1, { marginTop: 20 }]}>اخر المحاضرات</Text>
-          <View style={{ display: 'flex', flexDirection: 'column', direction: 'rtl', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-            {filteredLessons?.map((lesson, index) => {
-              return (
-                <LessonComponent key={index} lesson={lesson} user={user} />
-              )
-            }).slice(0, 9)}
-          </View>
 
-          {/* last Exams
+          <ScrollView style={ConstantStyles.page}
+            refreshControl={
+              <RefreshControl
+                colors={[Colors.mainColor]}
+                progressBackgroundColor={Colors.bgColor}
+                refreshing={false}
+                onRefresh={() => fetchUser()}
+              />
+            }
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          >
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: 20, direction: 'rtl' }}>
+              {subjects.map((subject, index) => {
+                return (
+                  <TouchableOpacity key={index} style={styles.subject} onPress={() => {
+                    router.push({
+                      pathname: '/(subPages)/Results',
+                      params: {
+                        data: subject.name
+                      }
+                    })
+                  }}>
+                    <View style={{ width: 50, height: 50, borderRadius: 10, backgroundColor: Colors.calmWhite, justifyContent: 'center', alignItems: 'center' }}>
+                      <Image source={subject.image} style={styles.subjectImage} />
+                    </View>
+                    <Text style={styles.subjectText}>{subject.name}</Text>
+                  </TouchableOpacity>
+                )
+              })}
+            </View>
+            {/* last Lessons */}
+            <Text style={[ConstantStyles.Title1, { marginTop: 20 }]}>اخر المحاضرات</Text>
+            <View style={{ display: 'flex', flexDirection: 'column', direction: 'rtl', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              {filteredLessons?.map((lesson, index) => {
+                return (
+                  <LessonComponent key={index} lesson={lesson} user={user} />
+                )
+              }).slice(0, 9)}
+            </View>
+
+            {/* last Exams
         <Text style={[ConstantStyles.Title2, { marginTop: 20 }]}>اخر الامتحانات</Text>
         <View style={{display: 'flex', flexDirection: 'column', direction: 'rtl', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
           {filteredLessons?.map((lesson, index) => (
@@ -114,7 +130,8 @@ export default function Courses() {
           )) }
           </View>
           */}
-        </ScrollView>
+          </ScrollView>
+        </LinearGradient>
       </>
     )
   }

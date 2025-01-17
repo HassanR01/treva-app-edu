@@ -5,7 +5,6 @@ import { Fonts } from "./Fonts"
 
 export const ConstantStyles = StyleSheet.create({
     page: {
-        backgroundColor: Colors.bgColor,
         padding: 10,
         width: '100%'
     },
@@ -42,7 +41,7 @@ export const ConstantStyles = StyleSheet.create({
     btn: {
         fontFamily: Fonts.boldText,
         backgroundColor: Colors.mainColor,
-        color: Colors.bgColor,
+        color: Colors.calmWhite,
         padding: 10,
         width: 200,
         fontSize: 28,
@@ -78,7 +77,7 @@ export const ConstantStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        backgroundColor: Colors.bgColor,
+        backgroundColor: Colors.calmWhite,
         borderWidth: 1,
         borderColor: Colors.mainColor,
         marginVertical: 5
@@ -89,6 +88,16 @@ export const ConstantStyles = StyleSheet.create({
         backgroundColor: Colors.calmWhite,
         borderRadius: 10,
         direction: 'rtl'
+    },
+    shadowContainer: {
+        shadowColor: Colors.textColor,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 6,
+        elevation: 20,
     }
 
 })
