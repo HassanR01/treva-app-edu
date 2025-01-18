@@ -45,8 +45,14 @@ export default function LogInScreen() {
 
     const user = users?.find(user => user.mobile === mobile && user.password === password)
     if (user) {
-      await AsyncStorage.setItem('user', JSON.stringify(user))
-      router.replace('/(tabs)')
+
+      if (user.role === 'student') {
+        await AsyncStorage.setItem('user', JSON.stringify(user))
+        router.replace('/(tabs)')
+      } else {
+        await AsyncStorage.setItem('user', JSON.stringify(user))
+        router.replace('/(teacher)')
+      }
     } else {
       alert('User Not Found')
     }

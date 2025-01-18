@@ -500,7 +500,7 @@ export default function ExamVideo() {
           }}
         >
           <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', pointerEvents: !CardBuyLesson ? 'none' : 'auto' }}>
-            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '95%', height: 350, backgroundColor: Colors.calmWhite, borderRadius: 10, padding: 20 }}>
+            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', backgroundColor: Colors.calmWhite, borderRadius: 10, padding: 20 }}>
               <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>تأكيد الشراء</Text>
               <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: 20 }}>
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
@@ -527,7 +527,7 @@ export default function ExamVideo() {
                   <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5, color: 'red' }]}>لا يوجد لديك رصيد كافي لشراء المحاضرة</Text>
                 ) : (
                   <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
-                    <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>الرصيد المتبقي:</Text>
+                    <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>الرصيد بعد عملية الشراء:</Text>
                     <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{userData.points - lessonData?.price} ج.م</Text>
                   </View>
                 )}
@@ -551,8 +551,7 @@ export default function ExamVideo() {
 
           </View>
         </Modal >
-      )
-      }
+      )}
 
     </>
   )
