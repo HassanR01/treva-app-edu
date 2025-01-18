@@ -22,16 +22,21 @@ export default function Course() {
   useEffect(() => {
     // check if user has this lesson and if the available time for this lesson is not expired
     if (userData.lessons.find((les: any) => les._id === lessonData?._id) || userData.type === 'TrevaIn') {
-      const lessonwithDate = userData.lessons.find((les: any) => les._id === lessonData?._id)
-      if (lessonwithDate.date + +(lessonData?.availableFor ?? 0) * 24 * 60 * 60 * 1000 < Date.now()) {
-        Alert.alert('انتهت صلاحية المحاضرة', 'لقد انتهت صلاحية المحاضرة يرجى شراء المحاضرة للوصول اليها')
-        setHasLesson(false)
-      } else {
+      if (userData.type === 'TrevaIn') {
         setHasLesson(true)
+      } else {
+        const lessonwithDate = userData.lessons.find((les: any) => les._id === lessonData?._id)
+        if (lessonwithDate.date + +(lessonData?.availableFor ?? 0) * 24 * 60 * 60 * 1000 < Date.now()) {
+          Alert.alert('انتهت صلاحية المحاضرة', 'لقد انتهت صلاحية المحاضرة يرجى شراء المحاضرة للوصول اليها')
+          setHasLesson(false)
+        } else {
+          setHasLesson(true)
+        }
       }
     } else {
       setHasLesson(false)
     }
+
   }, [])
 
 
@@ -50,11 +55,7 @@ export default function Course() {
       })
     } else {
 
-      const updatedUser = { ...userData, videos: [...userData.videos, video] }
-      try {
-        await axios.post(`${process.env.API_URL}/users/updateUser`, updatedUser)
-        await AsyncStorage.setItem('user', JSON.stringify(updatedUser))
-        alert('تم اضافة الفيديو بنجاح')
+      if (userData.type === 'TrevaIn' && userData.lessons.find((les: any) => les._id === lessonData?._id) === undefined) {
         router.push({
           pathname: '/(course)/explainVideo',
           params: {
@@ -62,8 +63,22 @@ export default function Course() {
             user: JSON.stringify(userData)
           }
         })
-      } catch (err) {
-        console.error(err)
+      } else {
+        const updatedUser = { ...userData, videos: [...userData.videos, video] }
+        try {
+          await axios.post(`${process.env.API_URL}/users/updateUser`, updatedUser)
+          await AsyncStorage.setItem('user', JSON.stringify(updatedUser))
+          alert('تم اضافة الفيديو بنجاح')
+          router.push({
+            pathname: '/(course)/explainVideo',
+            params: {
+              lesson: JSON.stringify(lessonData),
+              user: JSON.stringify(userData)
+            }
+          })
+        } catch (err) {
+          console.error(err)
+        }
       }
     }
   }
@@ -174,7 +189,6 @@ export default function Course() {
     return <Loading />
 
   } else {
-
 
     return (
       <>

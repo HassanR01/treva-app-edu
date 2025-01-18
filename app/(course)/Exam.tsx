@@ -265,7 +265,6 @@ export default function Exam() {
                     }} onPress={() => {
                       setSubmitExam(true)
                       submitExamHandler()
-                      console.log(exam)
                     }}>
                       <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, marginRight: 10 }]}>تسليم الامتحان</Text>
                       <FontAwesome5 name="paper-plane" size={24} color="white" />
@@ -279,7 +278,6 @@ export default function Exam() {
                         flexDirection: 'row',
                       }} onPress={() => {
                         setCurrentQuestion(currentQuestion + 1)
-                        console.log(exam)
                       }}>
                         <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, marginRight: 10 }]}>التالي</Text>
                         <FontAwesome5 name="angle-right" size={24} color="white" />

@@ -24,8 +24,9 @@ export default function HWReview() {
   const [showcontrolers, setShowControlers] = useState(true)
   const [hasLesson, setHasLesson] = useState(false)
   const [openBuyLesson, setOpenBuyLesson] = useState(false)
-  const userData = Array.isArray(user) ? JSON.parse(user[0]) : JSON.parse(user)
+  const [CardBuyLesson, setCardBuyLesson] = useState(false)
 
+  const userData = Array.isArray(user) ? JSON.parse(user[0]) : JSON.parse(user)
   const lessonData = Array.isArray(lesson) ? JSON.parse(lesson[0]) : JSON.parse(lesson)
   const HomeWrokVideo = Array.isArray(lesson) ? JSON.parse(lesson[0]).homeWorkVideo : JSON.parse(lesson).homeWorkVideo
 
@@ -43,13 +44,17 @@ export default function HWReview() {
   useEffect(() => {
     // check if user has this lesson and if the available time for this lesson is not expired
     if (userData.lessons.find((les: any) => les._id === lessonData?._id) || userData.type === 'TrevaIn') {
-      const lessonwithDate = userData.lessons.find((les: any) => les._id === lessonData?._id)
-      if (lessonwithDate.date + +lessonData?.availableFor * 24 * 60 * 60 * 1000 < Date.now()) {
-        Alert.alert('انتهت صلاحية المحاضرة', 'لقد انتهت صلاحية المحاضرة يرجى شراء المحاضرة للوصول اليها')
-        setHasLesson(false)
-        setOpenBuyLesson(false)
-      } else {
+      if (userData.type === 'TrevaIn') {
         setHasLesson(true)
+      } else {
+        const lessonwithDate = userData.lessons.find((les: any) => les._id === lessonData?._id)
+        if (lessonwithDate.date + +lessonData?.availableFor * 24 * 60 * 60 * 1000 < Date.now()) {
+          Alert.alert('انتهت صلاحية المحاضرة', 'لقد انتهت صلاحية المحاضرة يرجى شراء المحاضرة للوصول اليها')
+          setHasLesson(false)
+          setOpenBuyLesson(false)
+        } else {
+          setHasLesson(true)
+        }
       }
     } else {
       setHasLesson(false)
@@ -471,18 +476,84 @@ export default function HWReview() {
             }} />
             <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: 270, backgroundColor: Colors.calmWhite, borderRadius: 10, padding: 20 }}>
               <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>يجب شراء المحاضرة اولاً</Text>
-              <Text style={[ConstantStyles.normalText, { fontSize: 22, color: Colors.textColor, textAlign: 'center' }]}>قم بشراء المحاضرة لتتمكن من مشاهدة الفيديوهات والامتحان</Text>
-              <Text style={[ConstantStyles.Title1, { fontSize: 24, marginTop: 10 }]}>السعر: {lessonData?.price} جنية مصري</Text>
+              <Text style={[ConstantStyles.normalText, { fontSize: 18, marginBottom: 5, color: Colors.textColor, textAlign: 'center' }]}>قم بشراء المحاضرة لتتمكن من مشاهدة الفيديوهات والامتحان</Text>
+              <Text style={[ConstantStyles.Title1, { fontSize: 24, marginTop: 10 }]}>السعر: {lessonData?.price} ج.م</Text>
               <TouchableOpacity style={{ backgroundColor: Colors.mainColor, padding: 10, borderRadius: 5, marginTop: 10, width: '100%' }} onPress={() => {
-                console.log(lessonData?.price)
-                BuyLesson()
+                setHasLesson(true)
+                setCardBuyLesson(true)
               }}>
-                <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.bgColor, textAlign: 'center' }]}>شراء المحاضرة</Text>
+                <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, textAlign: 'center' }]}>شراء المحاضرة</Text>
               </TouchableOpacity>
             </View>
           </View>
         </Modal>
       )}
+
+      {CardBuyLesson && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={CardBuyLesson}
+          onRequestClose={() => {
+            setCardBuyLesson(false);
+            setHasLesson(false)
+          }}
+        >
+          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', pointerEvents: !CardBuyLesson ? 'none' : 'auto' }}>
+            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '95%', height: 350, backgroundColor: Colors.calmWhite, borderRadius: 10, padding: 20 }}>
+              <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>تأكيد الشراء</Text>
+              <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: 20 }}>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
+                  <Text style={[ConstantStyles.Title2, { fontSize: 20, marginBottom: 5 }]}>عنوان المحاضرة:</Text>
+                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{lessonData.title}</Text>
+                </View>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
+                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>المادة:</Text>
+                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{lessonData.subject}</Text>
+                </View>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
+                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>الصف:</Text>
+                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{lessonData.grade}</Text>
+                </View>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
+                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>السعر:</Text>
+                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{lessonData?.price} ج.م</Text>
+                </View>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
+                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>الرصيد الحالي:</Text>
+                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{userData.points} ج.م</Text>
+                </View>
+                {userData.points - lessonData?.price < 0 ? (
+                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5, color: 'red' }]}>لا يوجد لديك رصيد كافي لشراء المحاضرة</Text>
+                ) : (
+                  <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
+                    <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>الرصيد المتبقي:</Text>
+                    <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{userData.points - lessonData?.price} ج.م</Text>
+                  </View>
+                )}
+              </View>
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginTop: 20 }}>
+                <TouchableOpacity style={{ backgroundColor: Colors.mainColor, padding: 10, borderRadius: 5, width: '45%' }} onPress={() => {
+                  setHasLesson(false)
+                  setCardBuyLesson(false)
+                }}>
+                  <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, textAlign: 'center' }]}>الغاء</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ backgroundColor: Colors.mainColor, padding: 10, borderRadius: 5, width: '45%' }} onPress={() => {
+                  BuyLesson()
+                  setCardBuyLesson(false)
+                }}>
+                  <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, textAlign: 'center' }]}>تأكيد</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+
+          </View>
+        </Modal >
+      )
+      }
+
 
     </>
   )
