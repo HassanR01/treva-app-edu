@@ -9,6 +9,8 @@ import { useVideoPlayer, VideoView } from 'expo-video'
 import YoutubeIframe, { YoutubeIframeRef } from 'react-native-youtube-iframe'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
+import { LinearGradient } from 'expo-linear-gradient'
+import { Image } from 'react-native'
 
 
 interface props {
@@ -475,7 +477,7 @@ export default function explainVideo() {
             <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: 270, backgroundColor: Colors.calmWhite, borderRadius: 10, padding: 20 }}>
               <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>يجب شراء المحاضرة اولاً</Text>
               <Text style={[ConstantStyles.normalText, { fontSize: 18, marginBottom: 5, color: Colors.textColor, textAlign: 'center' }]}>قم بشراء المحاضرة لتتمكن من مشاهدة الفيديوهات والامتحان</Text>
-              <Text style={[ConstantStyles.Title1, { fontSize: 24, marginTop: 10 }]}>السعر: {lessonData?.price} ج.م</Text>
+              <Text style={[ConstantStyles.Title1, { fontSize: 24, marginTop: 10 }]}>السعر: {lessonData?.price} جنية مصري</Text>
               <TouchableOpacity style={{ backgroundColor: Colors.mainColor, padding: 10, borderRadius: 5, marginTop: 10, width: '100%' }} onPress={() => {
                 setHasLesson(true)
                 setCardBuyLesson(true)
@@ -498,55 +500,96 @@ export default function explainVideo() {
           }}
         >
           <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', pointerEvents: !CardBuyLesson ? 'none' : 'auto' }}>
-            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', backgroundColor: Colors.calmWhite, borderRadius: 10, padding: 20 }}>
-              <Text style={[ConstantStyles.Title1, { fontSize: 26 }]}>تأكيد الشراء</Text>
-              <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: 20 }}>
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
-                  <Text style={[ConstantStyles.Title2, { fontSize: 20, marginBottom: 5 }]}>عنوان المحاضرة:</Text>
-                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{lessonData.title}</Text>
-                </View>
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
-                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>المادة:</Text>
-                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{lessonData.subject}</Text>
-                </View>
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
-                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>الصف:</Text>
-                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{lessonData.grade}</Text>
-                </View>
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
-                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>السعر:</Text>
-                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{lessonData?.price} ج.م</Text>
-                </View>
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
-                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>الرصيد الحالي:</Text>
-                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{userData.points} ج.م</Text>
-                </View>
-                {userData.points - lessonData?.price < 0 ? (
-                  <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5, color: 'red' }]}>لا يوجد لديك رصيد كافي لشراء المحاضرة</Text>
-                ) : (
-                  <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl' }}>
-                    <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>الرصيد بعد عملية الشراء:</Text>
-                    <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5 }]}>{userData.points - lessonData?.price} ج.م</Text>
+            <LinearGradient
+              colors={[Colors.bgColor, Colors.itemBgColor, Colors.bgColor]}
+              style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '100%', backgroundColor: Colors.calmWhite, borderRadius: 10, padding: 20 }}
+            >
+              <ScrollView style={{ width: '100%', height: '100%', paddingVertical: 80 }}>
+                <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                  <View style={[ConstantStyles.shadowContainer, { display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end', backgroundColor: Colors.calmWhite, borderRadius: 10, padding: 20, marginBottom: 20, width: '65%', direction: 'rtl' }]}>
+                    <Text style={[ConstantStyles.Title1, { fontSize: 40, color: Colors.textColor }]}>تأكيد الشراء</Text>
+                    <Image source={require('../../assets/images/handMoney.png')} style={{
+                      width: 60,
+                      height: 120,
+                      position: 'absolute',
+                      bottom: 0,
+                      right: -5,
+                    }} />
                   </View>
-                )}
-              </View>
-              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginTop: 20 }}>
-                <TouchableOpacity style={{ backgroundColor: Colors.mainColor, padding: 10, borderRadius: 5, width: '45%' }} onPress={() => {
-                  setHasLesson(false)
-                  setCardBuyLesson(false)
-                }}>
-                  <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, textAlign: 'center' }]}>الغاء</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ backgroundColor: Colors.mainColor, padding: 10, borderRadius: 5, width: '45%' }} onPress={() => {
-                  BuyLesson()
-                  setCardBuyLesson(false)
-                }}>
-                  <Text style={[ConstantStyles.Title1, { fontSize: 20, color: Colors.calmWhite, textAlign: 'center' }]}>تأكيد</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+                </View>
+                <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: 20 }}>
+                  <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl', marginBottom: 10 }}>
+                    <Text style={[ConstantStyles.Title2, { fontSize: 22, marginBottom: 5 }]}>عنوان المحاضرة:</Text>
+                    <View style={[ConstantStyles.shadowContainer, { display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.calmWhite, padding: 5, width: '100%', borderRadius: 20 }]}>
+                      <Text style={[ConstantStyles.Title2, { fontSize: 18, color: Colors.mainColor }]}>{lessonData.title}</Text>
+                    </View>
+                  </View>
+                  <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl', marginBottom: 10 }}>
+                    <Text style={[ConstantStyles.Title2, { fontSize: 22, marginBottom: 5 }]}>المادة:</Text>
+                    <View style={[ConstantStyles.shadowContainer, { display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.calmWhite, padding: 5, width: '100%', borderRadius: 20 }]}>
+                      <Text style={[ConstantStyles.Title2, { fontSize: 18, color: Colors.mainColor }]}>{lessonData.subject}</Text>
+                    </View>
+                  </View>
+                  <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl', marginBottom: 10 }}>
+                    <Text style={[ConstantStyles.Title2, { fontSize: 22, marginBottom: 5 }]}>الصف:</Text>
+                    <View style={[ConstantStyles.shadowContainer, { display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.calmWhite, padding: 5, width: '100%', borderRadius: 20 }]}>
+                      <Text style={[ConstantStyles.Title2, { fontSize: 18, color: Colors.mainColor }]}>{lessonData.grade}</Text>
+                    </View>
+                  </View>
+                  <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl', marginBottom: 10 }}>
+                    <Text style={[ConstantStyles.Title2, { fontSize: 22, marginBottom: 5 }]}>السعر:</Text>
+                    <View style={[ConstantStyles.shadowContainer, { display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.calmWhite, padding: 5, width: '100%', borderRadius: 20 }]}>
+                      <Text style={[ConstantStyles.Title2, { fontSize: 18, color: Colors.mainColor }]}>{lessonData?.price} جنية مصري</Text>
+                    </View>
+                  </View>
+                  <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl', marginBottom: 10 }}>
+                    <Text style={[ConstantStyles.Title2, { fontSize: 22, marginBottom: 5 }]}>الرصيد الحالي:</Text>
+                    <View style={[ConstantStyles.shadowContainer, { display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.calmWhite, padding: 5, width: '100%', borderRadius: 20 }]}>
+                      <Text style={[ConstantStyles.Title2, { fontSize: 18, color: Colors.mainColor }]}>{userData.points} جنية مصري</Text>
+                    </View>
+                  </View>
+                  {userData.points - lessonData?.price < 0 ? (
+                    <Text style={[ConstantStyles.Title2, { fontSize: 18, marginBottom: 5, color: 'red' }]}>لا يوجد لديك رصيد كافي لشراء المحاضرة</Text>
+                  ) : (
+                    <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%', direction: 'rtl', marginBottom: 10 }}>
+                      <Text style={[ConstantStyles.Title2, { fontSize: 22, marginBottom: 5 }]}>الرصيد بعد عملية الشراء:</Text>
+                      <View style={[ConstantStyles.shadowContainer, { display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.calmWhite, padding: 5, width: '100%', borderRadius: 20 }]}>
+                        <Text style={[ConstantStyles.Title2, { fontSize: 18, color: Colors.mainColor }]}>{userData.points - lessonData?.price} جنية مصري</Text>
+                      </View>
+                    </View>
+                  )}
+                </View>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '100%', marginTop: 20 }}>
+                  <TouchableOpacity style={{ backgroundColor: Colors.calmWhite, padding: 10, borderRadius: 5, width: '40%', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'flex-end', direction: 'rtl' }} onPress={() => {
+                    setHasLesson(false)
+                    setCardBuyLesson(false)
+                  }}>
+                    <Text style={[ConstantStyles.Title1, { fontSize: 26, color: Colors.textColor, textAlign: 'center' }]}>الغاء</Text>
+                    <Image source={require('../../assets/images/exit.png')} style={{
+                      width: 60,
+                      height: 60,
+                      position: 'absolute',
+                      bottom: -2,
+                      right: -20,
+                    }} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{ backgroundColor: Colors.calmWhite, padding: 10, borderRadius: 5, width: '40%', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'flex-end', direction: 'rtl' }} onPress={() => {
+                    BuyLesson()
+                    setCardBuyLesson(false)
+                  }}>
+                    <Text style={[ConstantStyles.Title1, { fontSize: 26, color: Colors.textColor, textAlign: 'center' }]}>تأكيد</Text>
+                    <Image source={require('../../assets/images/sure.png')} style={{
+                      width: 60,
+                      height: 60,
+                      position: 'absolute',
+                      bottom: -2,
+                      right: -20,
+                    }} />
+                  </TouchableOpacity>
+                </View>
 
-
+              </ScrollView>
+            </LinearGradient>
           </View>
         </Modal >
       )
