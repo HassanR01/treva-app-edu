@@ -50,10 +50,9 @@ export default function Leaderboard() {
     return (
       <>
         <LinearGradient style={[ConstantStyles.page, { justifyContent: 'flex-end', alignItems: 'center', backgroundColor: Colors.itemBgColor, height: Dimensions.get('screen').height, padding: 10, paddingVertical: 50 }]}
-          colors={[Colors.bgColor, Colors.itemBgColor]}
+          colors={[Colors.bgColor ,Colors.itemBgColor, Colors.bgColor]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          locations={[0.15, 0.5]}
         >
           <Image
             source={require('../../assets/images/circlesBG.png')}
@@ -112,8 +111,8 @@ export default function Leaderboard() {
                 alignItems: 'center',
               }}>
                 <Image source={{ uri: students[2].image ? students[2].image : 'https://res.cloudinary.com/db152mwtg/image/upload/v1734695620/Treva%20Edu%20App/users/tx4dze4uiwb1in8hkz0z.png' }} style={{ width: 50, height: 50, borderRadius: 25, position: 'absolute', top: -25, backgroundColor: Colors.itemBgColor, borderWidth: 1, borderColor: Colors.itemBgColor }} />
-                <Text style={[ConstantStyles.Title3, { color: Colors.bgColor }]}>{students[2].name}</Text>
-                <Text style={[ConstantStyles.Title3, { color: Colors.bgColor }]}>{studentScore(students[2])} - 3rd</Text>
+                <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite }]}>{students[2].name}</Text>
+                <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite }]}>{studentScore(students[2])} - 3rd</Text>
 
               </View>
             </Animated.View>
@@ -136,8 +135,8 @@ export default function Leaderboard() {
                 alignItems: 'center',
               }}>
                 <Image source={{ uri: students[1].image ? students[1].image : 'https://res.cloudinary.com/db152mwtg/image/upload/v1734695620/Treva%20Edu%20App/users/tx4dze4uiwb1in8hkz0z.png' }} style={{ width: 60, height: 60, borderRadius: 30, position: 'absolute', top: -30, backgroundColor: Colors.itemBgColor, borderWidth: 1, borderColor: Colors.itemBgColor }} />
-                <Text style={[ConstantStyles.Title3, { color: Colors.bgColor }]}>{students[1].name}</Text>
-                <Text style={[ConstantStyles.Title3, { color: Colors.bgColor }]}>{studentScore(students[1])} - 2nd</Text>
+                <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite }]}>{students[1].name}</Text>
+                <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite }]}>{studentScore(students[1])} - 2nd</Text>
               </View>
             </Animated.View>
             <Animated.View
@@ -159,8 +158,8 @@ export default function Leaderboard() {
                 alignItems: 'center',
               }}>
                 <Image source={{ uri: students[0].image ? students[0].image : 'https://res.cloudinary.com/db152mwtg/image/upload/v1734695620/Treva%20Edu%20App/users/tx4dze4uiwb1in8hkz0z.png' }} style={{ width: 70, height: 70, borderRadius: 35, position: 'absolute', top: -35, backgroundColor: Colors.itemBgColor, borderWidth: 1, borderColor: Colors.itemBgColor }} />
-                <Text style={[ConstantStyles.Title3, { color: Colors.bgColor }]}>{students[0].name}</Text>
-                <Text style={[ConstantStyles.Title3, { color: Colors.bgColor }]}>{studentScore(students[0])} - 1st</Text>
+                <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite }]}>{students[0].name}</Text>
+                <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite }]}>{studentScore(students[0])} - 1st</Text>
 
               </View>
             </Animated.View>
@@ -168,19 +167,19 @@ export default function Leaderboard() {
 
           <View style={{ width: '100%', padding: 10, height: Dimensions.get('screen').height * 0.5, backgroundColor: Colors.textColor, borderRadius: 10, marginTop: 5 }}>
             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, paddingHorizontal: 10, borderBottomWidth: 1, borderBottomColor: Colors.bgColor }}>
-              <Text style={[ConstantStyles.Title3, { color: Colors.bgColor, paddingVertical: 10 }]}>الترتيب</Text>
-              <Text style={[ConstantStyles.Title3, { color: Colors.bgColor, paddingVertical: 10 }]}>الاسم</Text>
-              <Text style={[ConstantStyles.Title3, { color: Colors.bgColor, paddingVertical: 10 }]}>النقاط</Text>
+              <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite, paddingVertical: 10 }]}>الترتيب</Text>
+              <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite, paddingVertical: 10 }]}>الاسم</Text>
+              <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite, paddingVertical: 10 }]}>النقاط</Text>
             </View>
 
             <ScrollView style={{ width: '100%', padding: 10, height: Dimensions.get('screen').height * 0.5 }}>
               {students.map((user, index) => (
                 <View key={index} style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 5, paddingVertical: 10 }}>
-                  <Text style={[ConstantStyles.Title3, { color: Colors.bgColor }]}>{index + 1}</Text>
-                  <Text style={[ConstantStyles.Title3, { color: Colors.bgColor }]}>{user.name}</Text>
-                  <Text style={[ConstantStyles.Title3, { color: Colors.bgColor }]}>{studentScore(user)}</Text>
+                  <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite }]}>{index + 1}</Text>
+                  <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite }]}>{user.name}</Text>
+                  <Text style={[ConstantStyles.Title3, { color: Colors.calmWhite }]}>{studentScore(user)}</Text>
                 </View>
-              )).slice(0, students.length)}
+              )).slice(3, students.length)}
 
             </ScrollView>
           </View>

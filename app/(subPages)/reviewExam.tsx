@@ -25,8 +25,6 @@ export default function reviewExam() {
           <Text style={ConstantStyles.Title1}>مراجعة الامتحان</Text>
           <Text style={ConstantStyles.normalText}>الامتحان: {ExamData?.title}</Text>
           <Text style={ConstantStyles.normalText}>الدرجة: {ExamData?.totalPoints}</Text>
-          <Text style={ConstantStyles.normalText}>الوقت: {lesson.exam.time}د</Text>
-          <Text style={ConstantStyles.normalText}>التاريخ: {new Date(lesson.updatedAt).toLocaleDateString()}</Text>
         </View>
         {/* Answers */}
         <View style={{ marginVertical: 10 }}>
