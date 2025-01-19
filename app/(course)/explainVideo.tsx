@@ -560,11 +560,11 @@ export default function explainVideo() {
                   )}
                 </View>
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '100%', marginTop: 20 }}>
-                  <TouchableOpacity style={{ backgroundColor: Colors.calmWhite, padding: 10, borderRadius: 5, width: '40%', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'flex-end', direction: 'rtl' }} onPress={() => {
+                  <TouchableOpacity style={{ backgroundColor: Colors.calmWhite, padding: 10, borderRadius: 5, width: 110, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'flex-end', direction: 'rtl' }} onPress={() => {
                     setHasLesson(false)
                     setCardBuyLesson(false)
                   }}>
-                    <Text style={[ConstantStyles.Title1, { fontSize: 26, color: Colors.textColor, textAlign: 'center' }]}>الغاء</Text>
+                    <Text style={[ConstantStyles.Title1, { fontSize: 30, color: 'red', textAlign: 'center' }]}>الغاء</Text>
                     <Image source={require('../../assets/images/exit.png')} style={{
                       width: 60,
                       height: 60,
@@ -573,11 +573,11 @@ export default function explainVideo() {
                       right: -20,
                     }} />
                   </TouchableOpacity>
-                  <TouchableOpacity style={{ backgroundColor: Colors.calmWhite, padding: 10, borderRadius: 5, width: '40%', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'flex-end', direction: 'rtl' }} onPress={() => {
+                  <TouchableOpacity style={{ backgroundColor: Colors.calmWhite, padding: 10, borderRadius: 5, width: 110, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'flex-end', direction: 'rtl' }} onPress={() => {
                     BuyLesson()
                     setCardBuyLesson(false)
                   }}>
-                    <Text style={[ConstantStyles.Title1, { fontSize: 26, color: Colors.textColor, textAlign: 'center' }]}>تأكيد</Text>
+                    <Text style={[ConstantStyles.Title1, { fontSize: 30, color: 'green', textAlign: 'center' }]}>تأكيد</Text>
                     <Image source={require('../../assets/images/sure.png')} style={{
                       width: 60,
                       height: 60,
