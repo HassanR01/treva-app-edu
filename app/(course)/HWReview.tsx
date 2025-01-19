@@ -567,11 +567,11 @@ export default function HWReview() {
                   }}>
                     <Text style={[ConstantStyles.Title1, { fontSize: 30, color: 'red', textAlign: 'center' }]}>الغاء</Text>
                     <Image source={require('../../assets/images/exit.png')} style={{
-                      width: 60,
-                      height: 60,
+                      width: 62,
+                      height: 62,
                       position: 'absolute',
                       bottom: -2,
-                      right: -20,
+                      right: -22,
                     }} />
                   </TouchableOpacity>
                   <TouchableOpacity style={{ backgroundColor: Colors.calmWhite, padding: 10, borderRadius: 5, width: 110, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'flex-end', direction: 'rtl' }} onPress={() => {
