@@ -1,4 +1,4 @@
-import { Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ConstantStyles } from '@/Constants/constantStyles'
 import Animated, { ZoomInEasyUp, ZoomOutEasyDown } from 'react-native-reanimated'
@@ -29,8 +29,19 @@ export default function Profile() {
 
     // Logout
     const Logout = async () => {
-        await AsyncStorage.removeItem('user')
-        router.replace('/(SignIn)/Welcome')
+        const Confirm = Alert.alert('تسجيل الخروج', 'هل تريد تسجيل الخروج؟', [
+            {
+                text: 'نعم',
+                onPress: () => {
+                    AsyncStorage.removeItem('user')
+                    router.replace('/(SignIn)/Welcome')
+                }
+            },
+            {
+                text: 'لا',
+                style: 'cancel'
+            }
+        ])
     }
 
 

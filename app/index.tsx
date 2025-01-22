@@ -5,6 +5,7 @@ import { Redirect, router } from "expo-router";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { StatusBar, Text, View } from "react-native";
+import * as LocalAuthentication from 'expo-local-authentication';
 
 export default function Index() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -17,14 +18,20 @@ export default function Index() {
         setIsLoggedIn(true)
         setUser(JSON.parse(token))
         if (JSON.parse(token).role === 'teacher') {
-          router.push('/(teacher)')
+          router.replace('/(teacher)')
         } else if (JSON.parse(token).role === 'student') {
-          router.push('/(tabs)')
+          const result = await LocalAuthentication.authenticateAsync()
+          
+          if (result.success) {
+            router.replace('/(tabs)')
+          } else {
+            router.replace('/(SignIn)/Welcome')
+          }
         } else {
-          router.push('/(SignIn)/Welcome')
+          router.replace('/(SignIn)/Welcome')
         }
       } else {
-        router.push('/(SignIn)/Welcome')
+        router.replace('/(SignIn)/Welcome')
       }
     }
     checkLogin()

@@ -193,7 +193,7 @@ export default function Home() {
                         justifyContent: 'center',
                         alignItems: 'center',
                         width: '100%',
-                        marginBottom: 80,
+                        flex: 1,
                     }}
                 >
                     <ScrollView

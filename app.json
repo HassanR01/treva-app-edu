@@ -10,7 +10,11 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hassan236.trevaappedu"
+      "bundleIdentifier": "com.hassan236.trevaappedu",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "This app uses the Face ID and Touch ID to verify user's identity and authenticate the user.",
+        "NSPhotoLibraryUsageDescription": "This app accesses your photos to let users add them images."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -42,7 +46,13 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ],
-      "expo-video"
+      "expo-video",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

@@ -14,17 +14,11 @@ import { TextInput } from 'react-native'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { Fonts } from '@/Constants/Fonts'
-import * as WebBrowser from 'expo-web-browser'
-import * as Google from 'expo-auth-session/providers/google'
+import * as LocalAuthentication from 'expo-local-authentication'
+
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDataContext } from '@/components/context/DataContext'
 import Loading from '@/components/Loading'
-import axios from 'axios'
-
-
-const webClientId = '101717640430-vlbljmo054o43njior3meibpt5fac2gs.apps.googleusercontent.com'
-const iosClientId = '101717640430-3bdf6frlflglrk9jml2af556hg0pf6u5.apps.googleusercontent.com'
-const androidClientId = '101717640430-k4g793bmhnna6k0ipfjjkfr0e7f7sctj.apps.googleusercontent.com'
 
 const validationSchema = yup.object().shape({
   mobile: yup.string().required("mobile Is Required").label('mobile'),
@@ -46,12 +40,18 @@ export default function LogInScreen() {
     const user = users?.find(user => user.mobile === mobile && user.password === password)
     if (user) {
 
-      if (user.role === 'student') {
-        await AsyncStorage.setItem('user', JSON.stringify(user))
-        router.replace('/(tabs)')
+      const result = await LocalAuthentication.authenticateAsync()
+      if (result.success) {
+        alert('مرحباً بك')
+        if (user.role === 'student') {
+          await AsyncStorage.setItem('user', JSON.stringify(user))
+          router.replace('/(tabs)')
+        } else {
+          await AsyncStorage.setItem('user', JSON.stringify(user))
+          router.replace('/(teacher)')
+        }
       } else {
-        await AsyncStorage.setItem('user', JSON.stringify(user))
-        router.replace('/(teacher)')
+        alert('لا يمكن تسجيل الدخول')
       }
     } else {
       alert('User Not Found')
