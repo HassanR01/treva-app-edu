@@ -1,4 +1,4 @@
-import { Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Image, Linking, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { lesson, user } from '@/components/context/DataContext'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
@@ -115,6 +115,13 @@ export default function HWReview() {
   }
 
 
+  const installPDF = async () => {
+    if (hasLesson) {
+      await Linking.openURL(HomeWrokVideo.attaches)
+    } else {
+      setOpenBuyLesson(false)
+    }
+  }
 
   return (
     <>
@@ -331,7 +338,9 @@ export default function HWReview() {
           <Text style={[ConstantStyles.Title1, { fontSize: 24 }]}>المرفقات</Text>
           <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', direction: 'rtl' }}>
             {HomeWrokVideo.attaches ? (
-              <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 10, padding: 10, borderWidth: 1, borderColor: Colors.mainColor, borderRadius: 5, width: '100%' }}>
+              <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 10, padding: 10, borderWidth: 1, borderColor: Colors.mainColor, borderRadius: 5, width: '100%' }}
+                onPress={() => installPDF()}
+              >
                 <FontAwesome5 name="file-pdf" size={30} color={Colors.mainColor} />
                 <Text style={[ConstantStyles.Title2, { fontSize: 18, marginRight: 10 }]}>{HomeWrokVideo.attaches.slice(0, 50)}</Text>
               </TouchableOpacity>
