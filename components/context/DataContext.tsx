@@ -102,7 +102,7 @@ export interface user {
     bills: {
         cost: number,
         code: string,
-        date: string,
+        date: string | number,
         method: string,
     }[],
     lessons: {

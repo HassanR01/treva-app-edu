@@ -1,4 +1,4 @@
-import { Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ConstantStyles } from '@/Constants/constantStyles'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -7,6 +7,7 @@ import Loading from '@/components/Loading'
 import { Colors } from '@/Constants/Colors'
 import LessonComponent from '@/components/elements/LessonComponent'
 import { LinearGradient } from 'expo-linear-gradient'
+import axios from 'axios'
 
 export default function Wallet() {
   const [user, setUser] = useState<user>()
@@ -35,6 +36,73 @@ export default function Wallet() {
     const lessonMeanet = (lesson: any) => {
       const lessonMean = lessons?.find((l: any) => l._id === lesson)
       return lessonMean
+    }
+
+    const ChargePoints = () => { 
+      if (user.type === 'TrevaGo') {
+        Alert.alert("الاشتراك الشهري", 'هل تريد الاشتراك الشهري لطلاب المعهد فقط ب 400 جنيه', [
+          {
+            text: 'نعم',
+            onPress: async () => {
+              if (user.points >= 400) {
+                const bill = {
+                  method: 'الاشتراك الشهري',
+                  cost: 400,
+                  date: new Date().getTime(),
+                  code: `${new Date().getTime()}`
+                }
+                user.bills.push(bill)
+                user.logs.push(`تم دفع ${bill.cost} جنيه للاشتراك الشهري`)
+                user.points -= 400
+                user.type = 'TrevaIn'
+                setUser(user)
+                await axios.post(`${process.env.API_URL}/users/updateUser`, user ).then(res => {
+                  AsyncStorage.setItem('user', JSON.stringify(user))
+                  Alert.alert('تم', 'تم الاشتراك بنجاح')
+                })
+              } else {
+                Alert.alert('خطأ', 'رصيدك غير كافي')
+              }
+            }
+          },
+          {
+            text: 'لا',
+            onPress: () => { }
+          }
+        ])
+        
+      } else {
+        Alert.alert("الاشتراك الشهري", 'هل تريد الاشتراك الشهري ب 400 جنيه', [
+          {
+            text: 'نعم',
+            onPress: async () => {
+              if (user.points >= 400) {
+                const bill = {
+                  method: 'الاشتراك الشهري',
+                  cost: 400,
+                  date: new Date().getTime(),
+                  code: `${new Date().getTime()}`
+                }
+                user.bills.push(bill)
+                user.logs.push(`تم دفع ${bill.cost} جنيه للاشتراك الشهري`)
+                user.points -= 400
+                setUser(user)
+                console.log(user)
+                await axios.post(`${process.env.API_URL}/users/updateUser`, user ).then(res => {
+                  AsyncStorage.setItem('user', JSON.stringify(user))
+                  Alert.alert('تم', 'تم الاشتراك بنجاح')
+                })
+              } else {
+                Alert.alert('خطأ', 'رصيدك غير كافي')
+              }
+            }
+          },
+          {
+            text: 'لا',
+            onPress: () => { }
+          }
+        ])
+      }
     }
 
     return (
@@ -110,8 +178,10 @@ export default function Wallet() {
                 alignItems: 'center',
                 direction: 'rtl',
               }}>
-                <TouchableOpacity style={[ConstantStyles.btn, { width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginVertical: 0 }]}>
-                  <Text style={[ConstantStyles.Title3, { fontSize: 24, color: Colors.calmWhite }]}>شحن الرصيد</Text>
+                <TouchableOpacity style={[ConstantStyles.btn, { width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginVertical: 0 }]}
+                  onPress={() => ChargePoints()}
+                >
+                  <Text style={[ConstantStyles.Title3, { fontSize: 24, color: Colors.calmWhite }]}>الاشتراك الشهري</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -184,7 +254,7 @@ export default function Wallet() {
                         <Text style={[ConstantStyles.Title2, { fontSize: 20 }]}>{bill.method}</Text>
                         <Text style={[ConstantStyles.Title3, { fontSize: 20 }]}>{bill.cost}.00 ج.م</Text>
                       </View>
-                      <Text style={[ConstantStyles.normalText, { fontSize: 16, color: Colors.mainColor, textAlign: 'left' }]}>{bill.date}</Text>
+                      <Text style={[ConstantStyles.normalText, { fontSize: 16, color: Colors.mainColor, textAlign: 'left' }]}>{typeof(bill.date) === 'number' ? new Date(bill.date).toLocaleDateString() : bill.date}</Text>
                     </View>
                   </View>
                 )

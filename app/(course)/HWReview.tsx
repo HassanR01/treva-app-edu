@@ -46,7 +46,18 @@ export default function HWReview() {
     // check if user has this lesson and if the available time for this lesson is not expired
     if (userData.lessons.find((les: any) => les._id === lessonData?._id) || userData.type === 'TrevaIn') {
       if (userData.type === 'TrevaIn') {
-        setHasLesson(true)
+        if (userData.bills[userData.bills.length - 1]?.date !== undefined) {
+          const lastBill = userData.bills[userData.bills.length - 1]
+          if (new Date(lastBill.date).getTime() + (30 * 24 * 60 * 60 * 1000) > Date.now() && lastBill.cost >= 400) {
+            setHasLesson(true)
+          } else {
+            Alert.alert('يجب عليك دفع الاشتراك الشهري لطلاب المعهد', ' قيمة الاشتراك 400 جنية مصري شهرياً')
+            setHasLesson(false)
+          }
+        } else {
+          Alert.alert('يجب عليك دفع الاشتراك الشهري لطلاب المعهد', ' قيمة الاشتراك 400 جنية مصري شهرياً')
+          setHasLesson(false)
+        }
       } else {
         const lessonwithDate = userData.lessons.find((les: any) => les._id === lessonData?._id)
         if (lessonwithDate.date + +lessonData?.availableFor * 24 * 60 * 60 * 1000 < Date.now()) {
